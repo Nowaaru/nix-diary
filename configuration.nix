@@ -107,6 +107,7 @@
       discordo
       firefox
       kate
+      starship
     #  thunderbird
     ];
   };
@@ -132,8 +133,9 @@
      fzf
      fishPlugins.grc
      grc
-     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" ]; })
+     home-manager
 
+     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" ]; })
   #  wget
   ];
 

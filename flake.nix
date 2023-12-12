@@ -19,15 +19,20 @@
       		nixosConfigurations = {
 			lastation = lib.nixosSystem {
 	  			specialArgs = { inherit inputs; };
-	  			modules = [ ./configuration.nix ];
+	  			modules = [ 
+					./configuration.nix
+					home-manager.nixosModules.home-manager 
+					{ home-manager.useGlobalPkgs = true; }
+				];
+				
+				
 			};
 		};
 
-		homeConfigurations = {
-			"noire@lastation" = home-manager.lib.homeManagerConfiguration {
-				extraSpecialArs = { inherit inputs; };
-				modules = [ ./home.nix ];
-			};
+	      	homeConfigurations."noire" = home-manager.lib.homeManagerConfiguration {
+			pkgs = nixpkgs.legacyPackages.x86_64-linux;
+			extraSpecialArgs = { inherit inputs; };
+			modules = [ ./home.nix ];
 		};
 	};
 }
