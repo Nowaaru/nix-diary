@@ -3,13 +3,16 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
+let 
+	system-imports = import ./Modules/System/init.nix; 
+in
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./xwayland.nix
-    ];
+	  imports =
+	    with system-imports; [ # Include the results of the hardware scan.
+	      ./hardware-configuration.nix
+	      # XWayland patches.
+	      ./Shims/XWayland/xwayland.nix
+	    ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -122,6 +125,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
      home-manager
+     libsForQt5.kio-admin
 
      gh
      git
@@ -144,6 +148,8 @@
      htop
      nvtop
 
+     dotnet-runtime
+
      (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono" ]; })
   #  wget
   ];
@@ -162,8 +168,16 @@
      enableSSHSupport = true;
   };
 
-  # Fish shell.
-  programs.fish.enable = true;
+  # Hyprland!
+  environment.sessionVariables = {
+	WLR_NO_HARDWARE_CURSORS = "1";
+  	NIX_OZONE_WL = "1";
+  };
+
+  programs.hyprland = { 
+  	enable = true;
+	enableNvidiaPatches = true;
+  };
 
   # List services that you want to enable:
 

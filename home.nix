@@ -1,6 +1,14 @@
-{ config, pkgs, ... }:
-
+{builtins, config, pkgs, lib, ... }:
+let
+	user-init = import ./Modules/User/init-user.nix {
+		inherit config pkgs lib;
+	};
+in
 {
+	imports = [
+		user-init
+	];
+	
 	# Home Manager needs a bit of information about you and the paths it should
 	# manage.
 	home.username = "noire";
@@ -37,12 +45,18 @@
 		neofetch
 		notcurses
 		glow
-		vimPlugins.glow-nvim
 		kitty-themes
 		ranger
 		neovim
 		page
 		steam
+		tldr
+		mangohud
+		fuzzel
+		waybar
+		hyprpaper
+		dunst
+		font-awesome
 	];
 
 
@@ -59,6 +73,8 @@
 		#	 org.gradle.console=verbose
 		#	 org.gradle.daemon.idletimeout=3600000
 		# '';
+		".config/hypr/hyprland.conf".text = ''
+		'';
 	};
 
 	# You can also manage environment variables but you will have to manually
@@ -73,10 +89,20 @@
 	# if you don't want to manage your shell through Home Manager.
 	home.sessionVariables = {
 		# EDITOR = "emacs";
-	};
+		EDITOR = "nvim";
+	}; 
 
 	# Let Home Manager install and manage itself.
 	programs = {
+		fuzzel = {
+			enable = true;
+		};
+
+		waybar = {
+			enable = true;
+			systemd.enable = true;
+		};
+
 		kitty = {
 			enable = true;
 			theme = "Everforest Dark Medium";
@@ -98,6 +124,7 @@
 			interactiveShellInit = ''
 				set -U fish_greeting
 				ncneofetch
+				fish_vi_key_bindings
 			'';
 		};
 
