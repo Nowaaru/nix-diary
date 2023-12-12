@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./xwayland.nix
     ];
 
   # Bootloader.
@@ -107,7 +108,6 @@
       discordo
       firefox
       kate
-      starship
     #  thunderbird
     ];
   };
@@ -121,21 +121,30 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+     home-manager
+
      gh
      git
      lazygit
+
      kitty
-     neovim
+     kitty-img
+
+     grc
+     fzf
+     zip
+     unzip
+
      fishPlugins.done
      fishPlugins.fzf-fish
      fishPlugins.forgit
      fishPlugins.hydro
-     fzf
      fishPlugins.grc
-     grc
-     home-manager
 
-     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" ]; })
+     htop
+     nvtop
+
+     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono" ]; })
   #  wget
   ];
 
