@@ -12,10 +12,9 @@
 
 
 	outputs = { self, home-manager, nixpkgs, ... } @inputs: let
-		system = "x86_86-linux";
+		system = "x86_64-linux";
 		lib = nixpkgs.lib;
-		# pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; }; };
-		pkgs = nixpkgs.legacyPackages.${system};
+		pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; }; };
 	in {
       		nixosConfigurations = {
 			lastation = lib.nixosSystem {
@@ -32,7 +31,7 @@
 
 	      	homeConfigurations."lastation" = home-manager.lib.homeManagerConfiguration {
 			inherit pkgs;
-			# extraSpecialArgs = { inherit inputs pkgs; };
+			extraSpecialArgs = { inherit inputs pkgs; };
 			modules = [ ./home.nix ];
 		};
 	};
