@@ -101,6 +101,7 @@
     isNormalUser = true;
     description = "noire";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell=pkgs.fish;
     packages = with pkgs; [
       discord
       discordo
@@ -109,6 +110,9 @@
     #  thunderbird
     ];
   };
+
+  # Enable flakes.
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -137,7 +141,6 @@
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [
     konsole
   ];
-
 
 
   # Some programs need SUID wrappers, can be configured further or are
