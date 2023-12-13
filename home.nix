@@ -23,6 +23,16 @@ in
 	# release notes.
 	home.stateVersion = "23.05"; # Please read the comment before changing.
 
+# Manage the nixpkgs config for home-manager
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "electron-25.9.0"
+      ]; 
+    };
+  };
+
 	# The home.packages option allows you to install Nix packages into your
 	# environment.
 	home.packages = with pkgs; [
@@ -73,8 +83,10 @@ in
 		#	 org.gradle.console=verbose
 		#	 org.gradle.daemon.idletimeout=3600000
 		# '';
-		".config/hypr/hyprland.conf".text = ''
-		'';
+
+    # This was writing a blank file to your hyprland.conf file
+		# ".config/hypr/hyprland.conf".text = ''
+		# '';
 	};
 
 	# You can also manage environment variables but you will have to manually
