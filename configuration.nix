@@ -124,33 +124,33 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     home-manager
-     libsForQt5.kio-admin
+    home-manager
+    libsForQt5.kio-admin
 
-     gh
-     git
-     lazygit
+    gh
+    git
+    lazygit
 
-     kitty
-     kitty-img
+    kitty
+    kitty-img
 
-     grc
-     fzf
-     zip
-     unzip
+    grc
+    fzf
+    zip
+    unzip
 
-     fishPlugins.done
-     fishPlugins.fzf-fish
-     fishPlugins.forgit
-     fishPlugins.hydro
-     fishPlugins.grc
+    fishPlugins.done
+    fishPlugins.fzf-fish
+    fishPlugins.forgit
+    fishPlugins.hydro
+    fishPlugins.grc
 
-     htop
-     nvtop
+    htop
+    nvtop
 
-     dotnet-runtime
+    dotnet-runtime
 
-     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono" ]; })
+    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono" ]; })
   #  wget
   ];
 
@@ -164,19 +164,19 @@ in
   # started in user sessions.
   # programs.mtr.enable = true;
   programs.gnupg.agent = {
-     enable = true;
-     enableSSHSupport = true;
+    enable = true;
+    enableSSHSupport = true;
   };
 
   # Hyprland!
   environment.sessionVariables = {
-	WLR_NO_HARDWARE_CURSORS = "1";
+	  WLR_NO_HARDWARE_CURSORS = "1";
   	NIX_OZONE_WL = "1";
   };
 
   programs.hyprland = { 
   	enable = true;
-	enableNvidiaPatches = true;
+	  enableNvidiaPatches = true;
   };
 
   # List services that you want to enable:
