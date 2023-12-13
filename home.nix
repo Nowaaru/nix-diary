@@ -148,10 +148,10 @@ in
 			settings = {
 				add_newline = true;
 				format = ''
-[┌───────────────────>](bold green)
-[│](bold green)$directory$rust$package
-[└─>](bold green) 
-'';
+          [┌───────────────────>](bold green)
+          [│](bold green)$directory$rust$package
+          [└─>](bold green) 
+        '';
 
 				character = {
 					success_symbol = "[➜](bold green)";
