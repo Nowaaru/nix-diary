@@ -1,7 +1,9 @@
 { config, pkgs, lib, ...}: 
-let 
-	import-list = lib.filterAttrs (path: path != "init-user.nix") (lib.importDir { inherit (lib) importDir; dir = ./.; });
-in
 {
-	imports = import-list;
+	imports = [
+		./Hyprland/init.nix
+		./Fish/init.nix
+		./discord.nix
+		./clip.nix
+	];
 }

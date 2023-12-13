@@ -23,15 +23,15 @@ in
 	# release notes.
 	home.stateVersion = "23.05"; # Please read the comment before changing.
 
-# Manage the nixpkgs config for home-manager
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [
-        "electron-25.9.0"
-      ]; 
-    };
-  };
+	# Manage the nixpkgs config for home-manager
+	nixpkgs = {
+		config = {
+			allowUnfree = true;
+			permittedInsecurePackages = [
+				"electron-25.9.0"
+			]; 
+		};
+	  };
 
 	# The home.packages option allows you to install Nix packages into your
 	# environment.
@@ -129,15 +129,6 @@ in
 
 		home-manager = {
 			enable = true;
-		};
-
-		fish = {
-			enable = true;
-			interactiveShellInit = ''
-				set -U fish_greeting
-				ncneofetch
-				fish_vi_key_bindings
-			'';
 		};
 
 		starship = {

@@ -1,14 +1,16 @@
 { pkgs, ...}:
 {
-	let wrapped-discord = pkgs.writeShellScriptBun "discord" ''
-		exec ${pkgs.discord}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland
-	'' in {
-		pkgs.symlinkJoin {
-			name = "discord"
-			paths = [
-				wrapped
-				pkgs.discord
-			];
-		};
-	};
+	home.packages = with pkgs; 
+	let
+		discord-wayland = pkgs.discord.overrideAttrs ( old: rec {
+			commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
+	  	});
+		obsidian-wayland = pkgs.obsidian.overrideAttrs ( old: rec {
+			commandLineArgs = "--disable-gpu=true";
+	  	});
+	in
+	[
+	  discord-wayland
+	  obsidian-wayland
+	];
 }

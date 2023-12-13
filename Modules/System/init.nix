@@ -1,6 +1,9 @@
-{ lib, ... }:
-lib.importDir {
-	inherit (lib) importDir;
-	dir = ./Modules/.;
+{ pkgs, ... }:
+{
+	imports = [
+		./Shell/init.nix
+		./Git/init.nix
+		./electron.nix
+	];
 }
 
