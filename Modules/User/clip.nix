@@ -1,7 +1,8 @@
 { pkgs, ... }:
 {
 	home.packages = with pkgs; [
-		cliphist
+		copyq
+		wl-clipboard
 		wl-clip-persist
 	];
 }

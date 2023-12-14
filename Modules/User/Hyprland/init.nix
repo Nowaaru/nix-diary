@@ -6,4 +6,9 @@
 			text = "source=~/.diary/Config/Hyprland/startup.conf";
 		};
 	};
+
+	home.packages = with pkgs; [
+		xdg-desktop-portal-hyprland
+		xwaylandvideobridge
+	];
 }
