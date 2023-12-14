@@ -10,7 +10,8 @@
 	  	});
 	in
 	[
-	  discord-wayland
+	  # discord-wayland
+	  vesktop
 	  obsidian-wayland
 	];
 }
