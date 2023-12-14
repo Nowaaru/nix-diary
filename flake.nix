@@ -1,5 +1,5 @@
 {
-  	description = "A very basic flake";
+	description = "Noire's personalized user flake.";
 
 	inputs = {
 		nixpkgs.url = "github:nixos/nixpkgs/release-23.11";
@@ -16,18 +16,18 @@
 		lib = nixpkgs.lib;
 		pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; }; };
 	in {
-    nixosConfigurations = {
+		nixosConfigurations = {
 			lastation = lib.nixosSystem {
-	  		specialArgs = { inherit inputs; };
-	  		modules = [ 
-				  ./configuration.nix
-				  home-manager.nixosModules.home-manager 
-			  	{ home-manager.useGlobalPkgs = true; }
-		    ];
+				specialArgs = { inherit inputs; };
+				modules = [ 
+					./configuration.nix
+					home-manager.nixosModules.home-manager 
+					{ home-manager.useGlobalPkgs = true; }
+				];
 			};
 		};
 
-	  homeConfigurations."lastation" = home-manager.lib.homeManagerConfiguration {
+		homeConfigurations."lastation" = home-manager.lib.homeManagerConfiguration {
 			inherit pkgs;
 			extraSpecialArgs = { inherit inputs pkgs; };
 			modules = [ ./home.nix ];
