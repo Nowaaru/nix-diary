@@ -9,5 +9,6 @@
 		./discord.nix
 		./clip.nix
 		./git.nix
+		./dir.nix
 	];
 }
