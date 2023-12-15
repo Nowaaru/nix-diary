@@ -129,6 +129,24 @@
 	# Allow unfree packages
 	# nixpkgs.config.allowUnfree = true;
 
+	# Session variables for gaming/gamescope.
+	environment.sessionVariables = {
+		# Hyprland!
+		WLR_NO_HARDWARE_CURSORS = "1";
+		NIX_OZONE_WL = "1";
+
+		# Gamescope.
+		WLR_RENDERER = "vulkan";
+		__GL_GSYNC_ALLOWED = "1";
+		__GL_VRR_ALLOWED = "0";
+		__GLX_VENDOR_LIBRARY_NAME = "nvidia";
+		LIBVA_DRIVER_NAME = "nvidia";
+		WLR_RENDERER_ALLOW_SOFTWARE = "1";
+		PROTON_ENABLE_NGX_UPDATER = "1";
+		WLR_USE_LIBINPUT = "1";
+		ENABLE_VKBASALT = "1";
+		GBM_BACKEND = "nvidia-drm";
+	};
 	# List packages installed in system profile. To search, run:
 	# $ nix search wget
 	environment.systemPackages = with pkgs; [
@@ -170,12 +188,6 @@
 	programs.gnupg.agent = {
 		enable = true;
 		enableSSHSupport = true;
-	};
-
-	# Hyprland!
-	environment.sessionVariables = {
-		WLR_NO_HARDWARE_CURSORS = "1";
-		NIX_OZONE_WL = "1";
 	};
 
 	programs.hyprland = { 
