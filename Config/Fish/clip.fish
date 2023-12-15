@@ -72,7 +72,7 @@ end
 
 # set -l slurp_output (slurp -d) # -d for only print dimensions
 # echo (wl-paste -p)
-set slurp_out (slurp -odf "%x,%y %wx%h")
+set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"')
 set window_at_pos (window_at_pos)
 set class $window_at_pos[2]
 set title $window_at_pos[3]
