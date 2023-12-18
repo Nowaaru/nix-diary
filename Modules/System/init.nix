@@ -5,6 +5,7 @@
 		./Git/init.nix
 
 		./Utility/electron.nix
+		./Utility/Wine/init.nix
 	];
 }
 

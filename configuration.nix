@@ -107,15 +107,6 @@
 		#media-session.enable = true;
 	};
 
-	nixpkgs = {
-		config = {
-			allowUnfree = true;
-			permittedInsecurePackages = [
-				"electron-25.9.0"
-			]; 
-		};
-	};
-
 	# Enable touchpad support (enabled default in most desktopManager).
 	# services.xserver.libinput.enable = true;
 
@@ -138,7 +129,7 @@
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 	# Allow unfree packages
-	# nixpkgs.config.allowUnfree = true;
+	nixpkgs.config.allowUnfree = true;
 
 	# Session variables for gaming/gamescope.
 	environment.sessionVariables = {
@@ -184,6 +175,7 @@
 		dotnet-runtime
 
 		(nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono" ]; })
+		wine64
 	#	wget
 	];
 
