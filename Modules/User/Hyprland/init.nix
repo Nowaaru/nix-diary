@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+	imports = [
+		./sys.nix
+	];
+
 	home.file = {
 		".config/hypr/hyprland.conf" = {
 			enable = true;
@@ -10,5 +14,6 @@
 	home.packages = with pkgs; [
 		xdg-desktop-portal-hyprland
 		xwaylandvideobridge
+		wlr-randr
 	];
 }
