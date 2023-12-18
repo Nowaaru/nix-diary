@@ -3,7 +3,8 @@
 	imports = [
 		./Shell/init.nix
 		./Git/init.nix
-		./electron.nix
+
+		./Utility/electron.nix
 	];
 }
 
