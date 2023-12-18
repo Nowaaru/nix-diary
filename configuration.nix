@@ -2,7 +2,7 @@
 # your system.	Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
 	imports =
 		[ # Include the results of the hardware scan.
@@ -14,8 +14,19 @@
 		];
 
 	# Bootloader.
-	boot.loader.systemd-boot.enable = true;
-	boot.loader.efi.canTouchEfiVariables = true;
+	boot = {
+		bootspec.enable = true;
+
+		loader = {
+			systemd-boot.enable = lib.mkForce false;
+			efi.canTouchEfiVariables = true;
+		};
+
+		lanzaboote = {
+			enable = true;
+			pkiBundle = "/etc/secureboot";
+		};
+	};
 
 	networking.hostName = "lastation"; # Define your hostname.
 	# networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
