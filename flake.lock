@@ -121,11 +121,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1702676849,
-        "narHash": "sha256-XqcREaTS38/QOsN8fk8PP325/UXHyF9enbP5ZPw5aiA=",
+        "lastModified": 1702814678,
+        "narHash": "sha256-zDtO0jV2QLoddUJinLlTQrQqCUW3dPiIWOSYgg98T7E=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "aa99c2f4e9847cbb7e46fac0844ea1eb164b3b3a",
+        "rev": "1488651d02c1a7a15e284210f0d380a62d8d8cef",
         "type": "github"
       },
       "original": {
@@ -227,17 +227,32 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1702682804,
-        "narHash": "sha256-OmLBqssY08BqwSce2MpnGQxDpzQDMzPuZj8D0zFIKkg=",
+        "lastModified": 1703004097,
+        "narHash": "sha256-KCHoCrXfZ5LkwBZBbVly4jIUX5RO3L2ybqr5c1mxBgU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6ddf6a21fb3d30a6cc808c5c4e68318bfaa2cbc8",
+        "rev": "093cffd33371b29257a4302206c214e87a0297ac",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
         "ref": "release-23.11",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nur": {
+      "locked": {
+        "lastModified": 1703015152,
+        "narHash": "sha256-5HnPYQRcnMd4YK5qfNciXQXAkEyBKokOeHtei6ZqiAg=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "0b435607a86979ec23cbc6db39a1f7be5aad2276",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
         "type": "github"
       }
     },
@@ -277,7 +292,8 @@
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nix-colors": "nix-colors",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "nur": "nur"
       }
     },
     "rust-overlay": {

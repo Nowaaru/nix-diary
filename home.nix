@@ -1,4 +1,4 @@
-{builtins, config, pkgs, lib, ... }:
+{builtins, inputs, config, pkgs, lib, ... }:
 let
 	user-init = import ./Modules/User/init-user.nix {
 		inherit config pkgs lib;

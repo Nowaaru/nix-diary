@@ -18,9 +18,10 @@
 		./Programming/roblox.nix
 
 		# General things, auxiliary functionalities.
+		./Miscellaneous/Firefox/init.nix
+
 		./Miscellaneous/print-screen.nix
 		./Miscellaneous/electron.nix
-		./Miscellaneous/firefox.nix
 		./Miscellaneous/term.nix
 		./Miscellaneous/clip.nix
 		./Miscellaneous/disk.nix
