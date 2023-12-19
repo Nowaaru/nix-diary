@@ -51,22 +51,8 @@ in
 		# (pkgs.writeShellScriptBin "my-hello" ''
 		#	 echo "Hello, ${config.home.username}!"
 		# '')
-		neofetch
-		notcurses
-		glow
-		kitty-themes
-		ranger
-		neovim
-		page
-		steam
-		tldr
-		mangohud
-		fuzzel
-		waybar
-		hyprpaper
-		dunst
-		font-awesome
 	];
+
 
 
 	# Home Manager is pretty good at managing dotfiles. The primary way to manage

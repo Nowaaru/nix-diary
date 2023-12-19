@@ -116,13 +116,7 @@
 		description = "noire";
 		shell=pkgs.fish;
 		extraGroups = [ "networkmanager" "wheel" ];
-		packages = with pkgs; [
-			discord
-			discordo
-			firefox
-			kate
-		#	thunderbird
-		];
+		packages = with pkgs; []; # managed via home-manager
 	};
 
 	# Enable flakes.
@@ -175,7 +169,6 @@
 		dotnet-runtime
 
 		(nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono" ]; })
-		wine64
 	#	wget
 	];
 

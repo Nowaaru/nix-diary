@@ -2,13 +2,22 @@
 { pkgs, ... }:
 {
 	home.packages = with pkgs; [
-		wlogout
-
+		# hypr
 		hyprpaper
 		hyprdim
+		swww
 
+		# sway
 		swayidle
 		swaylock-effects
-		swww
+
+		# eyecandy
+		fuzzel
+		waybar
+		dunst
+
+		# utilities
+		font-awesome
+		wlogout
 	];
 }
