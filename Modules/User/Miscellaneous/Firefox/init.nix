@@ -6,7 +6,8 @@
 
 	programs.firefox = {
 		enable = true;
-		package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+		package = pkgs.wrapFirefox pkgs.firefox-unwrapped 
+		{
 			extraPolicies = import ./policies.nix {
 				inherit config inputs pkgs;
 			};

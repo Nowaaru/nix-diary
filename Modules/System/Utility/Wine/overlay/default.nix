@@ -8,7 +8,7 @@ let
 	};
 in
 {
-	wine64 = super.wine64.overrideAttrs (old: fetched_url);
+	# wine64 = super.wine64.overrideAttrs (old: fetched_url);
 	wine = super.wine.overrideAttrs (old: fetched_url);
 }
 

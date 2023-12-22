@@ -186,11 +186,6 @@
 		enableSSHSupport = true;
 	};
 
-	programs.hyprland = { 
-		enable = true;
-		enableNvidiaPatches = true;
-	};
-
 	# List services that you want to enable:
 
 	# Enable the OpenSSH daemon.

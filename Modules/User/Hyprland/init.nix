@@ -4,6 +4,11 @@
 		./sys.nix
 	];
 
+	programs.hyprland = { 
+		enable = true;
+		enableNvidiaPatches = true;
+	};
+
 	home.file = {
 		".config/hypr/hyprland.conf" = {
 			enable = true;

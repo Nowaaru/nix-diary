@@ -30,4 +30,10 @@
 				}
 			];
 		}
+		{ 
+			name = "Proton";
+			url = "https://mail.proton.me/u/0/inbox";
+			tags = [ "proton"  "mail"  "email" ];
+			keyword = "proton";
+		}
 	]

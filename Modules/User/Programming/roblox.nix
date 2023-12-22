@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, unstable, ... }:
 {
-	home.packages = with pkgs; [
-		grapejuice
+	home.packages = with unstable; [
+		vinegar
 	];
 }

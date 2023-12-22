@@ -20,11 +20,12 @@ function set_wine -a arch_str
 			end
 	end
 
-	set -Ux WINEARCH win$arch;
-	set -Ux WINEPREFIX ~/.wine$arch;
-	alias wine="command wine$arch";
+	set -gx WINEARCH win$arch;
+	set -gx WINEPREFIX ~/.wine$arch;
+	# alias wine="command wine$arch";
+	# alias winecfg="wine$arch winecfg";
 
 	return 0;
 end
-alias wine32="set_wine win32; command wine"
-alias wine64="set_wine win64; command wine"
+# alias wine32="set_wine win32; wine"
+# alias wine64="set_wine win64; wine"
