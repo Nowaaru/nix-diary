@@ -4,7 +4,7 @@
 { pkgs, ... }:
 {
 	home.file = {
-		"~/.config/user-dirs.dirs".text = ''
+		".config/user-dirs.dirs".text = ''
 			XDG_DESKTOP_DIR="$HOME/Desktop"
 			XDG_DOCUMENTS_DIR="$HOME/Documents"
 			XDG_DOWNLOAD_DIR="$HOME/Downloads"
