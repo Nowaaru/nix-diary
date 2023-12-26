@@ -1,19 +1,21 @@
 { pkgs, ... }:
 {
 	environment = {
+		sessionVariables = {
+			WINEESYNC="1";
+		};
+
 		systemPackages = with pkgs; [
 			mono
 
 			winetricks
-			wine64
-			wine
+			wineWowPackages.stagingFull
 		];
-		
 	};
 
 	nixpkgs = {
-		overlays = [
-			(import ./overlay)
-		];
+		# overlays = [
+		# 	(import ./overlay)
+		# ];
 	};
 }

@@ -5,10 +5,9 @@
 { config, pkgs, lib, ... }:
 {
 	imports =
-		[ # Include the results of the hardware scan.
+		[ 
+			# Include the results of the hardware scan.
 			./hardware-configuration.nix
-			# XWayland patches.
-			./Shims/XWayland/xwayland.nix
 			# System configuration loader.
 			./Modules/System/init.nix
 		];
@@ -16,6 +15,8 @@
 	# Bootloader.
 	boot = {
 		bootspec.enable = true;
+		initrd.kernelModules = [ "nvidia" ];
+		blacklistedKernelModules = ["noveau"];
 
 		loader = {
 			systemd-boot.enable = lib.mkForce false;
@@ -64,7 +65,7 @@
 
 		open = false;
 		nvidiaSettings = true;
-		package = config.boot.kernelPackages.nvidiaPackages.stable;
+		package = config.boot.kernelPackages.nvidiaPackages.beta;
 	};
 
 	hardware.opengl = {
@@ -171,6 +172,11 @@
 		(nerdfonts.override { fonts = [ "JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono" ]; })
 	#	wget
 	];
+
+	# Hyprland !
+	programs.hyprland = { 
+		enable=true;
+	};
 
 	# Remove unnecessary packages from Plasma 5.
 	environment.plasma5.excludePackages = with pkgs.libsForQt5; [

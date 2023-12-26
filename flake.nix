@@ -2,25 +2,26 @@
 	description = "Noire's personalized user flake.";
 
 	inputs = {
-		nixpkgs.url = "github:nixos/nixpkgs/release-23.11";
-		nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-		lanzaboote.url = "github:nix-community/lanzaboote";
+		nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 		nix-colors.url = "github:misterio77/nix-colors";
-		nur.url = "github:nix-community/NUR";
+    lanzaboote.url = "github:nix-community/lanzaboote";
+    nur.url = "github:nix-community/NUR";
+
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
 		home-manager = {
-			url = "github:nix-community/home-manager/release-23.11";
+			url = "github:nix-community/home-manager/master";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};
 
 
-	outputs = { self, home-manager, nixpkgs, nixpkgs-unstable, lanzaboote, nur, ... } @inputs: let
+	outputs = { self, home-manager, nixpkgs, lanzaboote, nur, ... } @inputs: let
 		system = "x86_64-linux";
 		lib = nixpkgs.lib;
-		unstable = import nixpkgs-unstable { 
-			inherit system;
-		};
 		pkgs = import nixpkgs { 
 			inherit system; 
 			config = { 
@@ -41,7 +42,7 @@
 
 		homeConfigurations."lastation" = home-manager.lib.homeManagerConfiguration {
 			inherit pkgs;
-			extraSpecialArgs = { inherit inputs unstable pkgs; };
+			extraSpecialArgs = { inherit inputs;};
 			modules = [ 
 				nur.nixosModules.nur
 				./home.nix 

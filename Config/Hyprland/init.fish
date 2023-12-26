@@ -9,3 +9,6 @@ set -Ux QT_QPA_PLATFORM "wayland;xcb copyq"
 # Initialize clipboard.
 copyq --start-server
 
+# Gamemode.
+gamemoded -d
+
