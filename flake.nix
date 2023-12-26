@@ -6,11 +6,7 @@
 		nix-colors.url = "github:misterio77/nix-colors";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nur.url = "github:nix-community/NUR";
-
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    rust-overlay.url = "github:oxalica/rust-overlay";
 
 		home-manager = {
 			url = "github:nix-community/home-manager/master";
@@ -19,7 +15,7 @@
 	};
 
 
-	outputs = { self, home-manager, nixpkgs, lanzaboote, nur, ... } @inputs: let
+	outputs = { self, rust-overlay, home-manager, nixpkgs, lanzaboote, nur, ... } @inputs: let
 		system = "x86_64-linux";
 		lib = nixpkgs.lib;
 		pkgs = import nixpkgs { 
@@ -30,7 +26,7 @@
 			};
 		}; 
 	in {
-		nixosConfigurations = {
+    nixosConfigurations = {
 			lastation = lib.nixosSystem {
 				specialArgs = { inherit inputs; };
 				modules = [ 
