@@ -9,7 +9,6 @@ what I was on about.
   - Dropped the idea to manage this purely from Nix
   because the documentation regarding Neovim's options are
   about as present as my father.
-
   Probably the most likely reason for me to not
   touch this repo for a few months.
 
