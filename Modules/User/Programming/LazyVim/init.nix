@@ -1,5 +1,7 @@
-{pkgs, lib, ...}:{
-	#Custom system activation script that runs whenever I use 'nix-rebuild'
+{ pkgs, lib, ... }:
+{
+	# Automatically clone LazyVim into configuration
+  # after a Home Manager rebuild run.
 	home.activation = {
 		lazyvim = lib.hm.dag.entryAfter ["writeBoundary"] '' 
 			#If the '~/.config/nvim' folder doesn't exist it'll clone, otherwise it won't
@@ -11,4 +13,11 @@
 			fi
 		'';
 	}; 
+
+  home.packages = with pkgs; [
+    nil
+  ];
+
+  
+  programs.neovim.plugins = import ./plugins.nix;
 }
