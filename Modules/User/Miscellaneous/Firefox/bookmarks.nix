@@ -12,7 +12,7 @@
 				}
 				{
 					name = "NixOS Package Search";
-					url = "https://www.search.nixos.org/packages";
+					url = "https://search.nixos.org/packages";
 					tags = [ "nix" "nixos" "packages" ];
 					keyword = "packages";
 				}
