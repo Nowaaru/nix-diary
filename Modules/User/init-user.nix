@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ...}: 
+{ ... }: 
 {
 	imports = [
 		# The specifics, baby!
@@ -16,8 +16,11 @@
 		# Programming utilities and goodies.
 		./Programming/git.nix
 		./Programming/lazyvim.nix
-		./Programming/roblox.nix
+
+		./Programming/node.nix
 		./Programming/rust.nix
+		./Programming/roblox.nix
+
 
 		# General things, auxiliary functionalities.
 		./Miscellaneous/Firefox/init.nix 
