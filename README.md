@@ -22,3 +22,10 @@ applications.
   - Supposedly "fixed" in Wine 9.0-rc2, but Vinegar uses a patched
   Wine 9.0-rc1. Could just up and yoink the patches from the source but
   laziness is a vice.
+
+- [ ] Personalize Waybar (or just use Eww)
+  - Unsure which one is nicer regarding workflow and looks; the former
+  probably being prioritized.
+
+- [ ] Personalize LazyVim 
+  - I am going to cry.
