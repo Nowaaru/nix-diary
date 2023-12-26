@@ -15,11 +15,12 @@
 		
 		# Programming utilities and goodies.
 		./Programming/git.nix
+		./Programming/lazyvim.nix
 		./Programming/roblox.nix
 		./Programming/rust.nix
 
 		# General things, auxiliary functionalities.
-		./Miscellaneous/Firefox/init.nix
+		./Miscellaneous/Firefox/init.nix 
 
 		./Miscellaneous/print-screen.nix
 		./Miscellaneous/electron.nix
