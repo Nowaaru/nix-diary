@@ -11,4 +11,3 @@ copyq --start-server
 
 # Gamemode.
 gamemoded -d
-
