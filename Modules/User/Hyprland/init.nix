@@ -2,6 +2,7 @@
 {
 	imports = [
 		./sys.nix
+		./waybar.nix
 	];
 
 	# wayland.windowManager.hyprland.enable = true;
