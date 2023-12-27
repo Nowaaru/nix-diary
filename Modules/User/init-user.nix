@@ -15,7 +15,7 @@
 		
 		# Programming utilities and goodies.
 		./Programming/LazyVim/init.nix
-		./Programming/git.nix
+		./Programming/Git/init.nix
 
 		./Programming/node.nix
 		./Programming/rust.nix
