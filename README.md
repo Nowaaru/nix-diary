@@ -12,7 +12,12 @@ what I was on about.
   Probably the most likely reason for me to not
   touch this repo for a few months.
 
-- [ ] Add window rules to enable tearing on full-screen
+- [ ] Implement a screen recording solution.
+  - 'Nuff said. Might look into asciinema for
+  terminal solutions and gpu-screen-recorder
+  for desktop.
+
+- [x] Add window rules to enable tearing on full-screen
 applications.
   - Turns out that tearing with double buffering is a feat
   that Linux doesn't like. Seems like it's a "deal with it and 
@@ -22,6 +27,9 @@ applications.
   - Supposedly "fixed" in Wine 9.0-rc2, but Vinegar uses a patched
   Wine 9.0-rc1. Could just up and yoink the patches from the source but
   laziness is a vice.
+
+- [ ] Install Rojo.
+  - Need this for Roblox development. Probably.
 
 - [ ] Personalize Waybar (or just use Eww)
   - Unsure which one is nicer regarding workflow and looks; the former
