@@ -22,6 +22,7 @@ in {
 			autoResize = false;
 			mountPoint = "/mnt/windows";
 		};
+		/*
 		"${miscellaneousFS}" = {
 			label = miscellaneousFS;
 			device = devices.hdd;
@@ -36,6 +37,7 @@ in {
 			autoResize = false;
 			mountPoint = "/mnt/miscellaneous";
 		};
+		*/
 	};
 	
 }
