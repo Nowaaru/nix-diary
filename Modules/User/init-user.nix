@@ -28,6 +28,8 @@
 
 		./Miscellaneous/print-screen.nix
 		./Miscellaneous/electron.nix
+		./Miscellaneous/audio.nix
+		./Miscellaneous/delta.nix
 		./Miscellaneous/term.nix
 		./Miscellaneous/clip.nix
 		./Miscellaneous/disk.nix
