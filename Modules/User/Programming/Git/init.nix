@@ -1,7 +1,7 @@
 { pkgs, ... }: 
 {
 	home.packages = with pkgs; [
-		lazygit	
+		lazygit
 	];
 
   programs.git = let extraConfig = import ./config.nix; in {
