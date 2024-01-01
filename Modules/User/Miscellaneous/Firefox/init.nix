@@ -2,12 +2,16 @@
 {
 	home.packages = with pkgs; [
 		firefox
+    librewolf
 	];
 
 	programs.firefox = {
 		enable = true;
 		package = pkgs.wrapFirefox pkgs.firefox-unwrapped 
 		{
+      # preferences = import ./preferences.nix {
+      #  inherit config inputs pkgs;
+      # };
 			extraPolicies = import ./policies.nix {
 				inherit config inputs pkgs;
 			};
