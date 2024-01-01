@@ -7,18 +7,17 @@ let
 		hdd="/dev/sda3";
 	};
   options = [
-        "UUID=84D6B99BD6B98E44"
-        "uid=1000"
-        "gid=100"
-        "rw"
-        "user"
-        "exec"
-        "umask=000"
+  #      "uid=1000"
+  #      "gid=100"
+  #      "rw"
+  #      "user"
+  #      "exec"
+  #	"remount"
+  #     "umask=000"
   ];
 in {
 	fileSystems = {
 		"${windowsFS}" = {
-      inherit options;
 			label = windowsFS;
 			device = devices.nvme;
 			fsType = "ntfs";
@@ -30,10 +29,12 @@ in {
 			autoFormat = false;
 			autoResize = false;
 			mountPoint = "/mnt/windows";
+
+       # options = [ "UUID=12A0C545A0C52FD1" ] ++ options;
 		};
 		
+		/*
 		"${miscellaneousFS}" = {
-      inherit options;
 			label = miscellaneousFS;
 			device = devices.hdd;
 			fsType = "ntfs";
@@ -46,6 +47,9 @@ in {
 			autoFormat = false;
 			autoResize = false;
 			mountPoint = "/mnt/miscellaneous";
+      # options = [ "UUID=84D6B99BD6B98E44" ] ++ options;
 		};
+		*/
 	};
+
 }
