@@ -19,6 +19,7 @@
 
 		./Programming/node.nix
 		./Programming/rust.nix
+		./Programming/dotnet.nix
 		./Programming/roblox.nix
 
 		./Programming/formatters.nix
@@ -28,6 +29,7 @@
 
 		./Miscellaneous/print-screen.nix
 		./Miscellaneous/electron.nix
+		./Miscellaneous/hydrus.nix
 		./Miscellaneous/audio.nix
 		./Miscellaneous/delta.nix
 		./Miscellaneous/term.nix
