@@ -11,3 +11,6 @@ abbr -a --position command conf "cd $CONFIG"
 
 # Aliases.
 source $CONFIG/Fish/alias.fish
+
+# Git.
+source $CONFIG/Fish/alias.fish
