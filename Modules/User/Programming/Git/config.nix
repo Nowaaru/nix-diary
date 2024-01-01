@@ -15,6 +15,9 @@ let private = import ./private.nix; in {
   };
 
   init = {
-    defaultBranch = "main";
+    defaultBranch = "master";
   };
+
+  web.browser = "firefox";
+  push.autoSetupRemote = true;
 }
