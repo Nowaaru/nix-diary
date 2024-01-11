@@ -25,10 +25,22 @@ in
 	}; 
 
   home.packages = with pkgs; [
+    luajitPackages.magick
+    # lua54Packages.jsregexp
+    # lua54Packages.lua
+    luau
+    lua
+
     nil
+    imagemagickBig
+    ueberzugpp
   ];
 
-  
-  programs.neovim.plugins = import ./plugins.nix;
+  programs.neovim = {
+    enable = true;
+    /* package = pkgs.neovim-nightly;
+    extraLuaPackages = ps: [ ps.magick ];
+    */
+  };
 }
 
