@@ -14,8 +14,8 @@
 	};
 
 	nixpkgs = {
-		# overlays = [
-		# 	(import ./overlay)
-		# ];
+		overlays = [
+			# (import ./overlay)
+		];
 	};
 }
