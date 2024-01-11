@@ -25,6 +25,7 @@
 		./Programming/formatters.nix
 
 		# General things, auxiliary functionalities.
+		./Miscellaneous/Terminal/init.nix 
 		./Miscellaneous/Firefox/init.nix 
 
 		./Miscellaneous/print-screen.nix
