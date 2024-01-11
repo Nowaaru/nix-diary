@@ -29,6 +29,7 @@
 
 		./Miscellaneous/print-screen.nix
 		./Miscellaneous/electron.nix
+		./Miscellaneous/music.nix
 		./Miscellaneous/hydrus.nix
 		./Miscellaneous/audio.nix
 		./Miscellaneous/delta.nix
