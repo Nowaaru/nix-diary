@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
     imports = [
         # Directory initializers.
@@ -14,6 +14,22 @@
 
         # Don't ever use this.
 		    ./Utility/electron.nix
+
+        # Kitty terminal.
+		    ./Utility/kitty.nix
+        
+        # Various performance metrics.
+		    ./Utility/status.nix
     ];
+    
+    # Dependencies and things.
+    environment.systemPackages = with pkgs; [
+      libsForQt5.kio-admin
+      dotnet-runtime
+      grc
+      fzf
+      zip
+      unzip
+    ] ++ [ home-manager ]; # do not remove home-manager.
 }
 
