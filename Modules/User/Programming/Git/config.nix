@@ -20,5 +20,6 @@ let private = import ./private.nix; in {
   };
 
   web.browser = "firefox";
+  gpg.format = "ssh";
   push.autoSetupRemote = true;
 }
