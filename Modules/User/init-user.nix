@@ -34,7 +34,7 @@
 		./Miscellaneous/hydrus.nix
 		./Miscellaneous/audio.nix
 		./Miscellaneous/delta.nix
-		./Miscellaneous/term.nix
+		./Miscellaneous/font.nix
 		./Miscellaneous/clip.nix
 		./Miscellaneous/disk.nix
 		./Miscellaneous/dir.nix
