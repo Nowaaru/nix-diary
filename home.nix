@@ -1,4 +1,4 @@
-{builtins, inputs, config, pkgs, lib, ... }:
+{config, pkgs, lib, ... }:
 let
 	user-init = import ./Modules/User/init-user.nix {
 		inherit config pkgs lib;
@@ -90,52 +90,14 @@ in
 	}; 
 
 	# Let Home Manager install and manage itself.
+    # TODO: what the fuck is this doing here please delete this
 	programs = {
 		fuzzel = {
 			enable = true;
 		};
 
-		waybar = {
-			enable = true;
-			systemd.enable = true;
-		};
-
-		kitty = {
-			enable = true;
-			theme = "Everforest Dark Medium";
-			shellIntegration.enableFishIntegration = true;
-
-			font = {
-				name = "SpaceMono";
-				package = (pkgs.nerdfonts.override { fonts = [ "SpaceMono" ]; });
-			};
-			
-		};
-
 		home-manager = {
 			enable = true;
-		};
-
-		starship = {
-			enable = true;
-			enableTransience = true;
-			enableFishIntegration = true;
-
-			settings = {
-				add_newline = true;
-				format = ''
-          [┌───────────────────>](bold green)
-          [│](bold green)$directory$rust$package
-          [└─>](bold green) 
-        '';
-
-				character = {
-					success_symbol = "[➜](bold green)";
-					error_symbol = "[➜](bold red)";
-				};
-
-				# package.disabled = true;
-			};
 		};
 	};
 }
