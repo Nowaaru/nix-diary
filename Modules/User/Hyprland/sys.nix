@@ -20,4 +20,8 @@
 		font-awesome
 		wlogout
 	];
+
+    imports = [
+        ./fuzzel.nix
+    ];
 }
