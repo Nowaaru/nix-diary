@@ -20,7 +20,7 @@
 	};
 
 
-	outputs = { self, rust-overlay, home-manager, nixpkgs, lanzaboote, nur, ... } @inputs: let
+	outputs = { self, rust-overlay, nix-colors, home-manager, nixpkgs, lanzaboote, nur, ... } @inputs: let
 		system = "x86_64-linux";
 		lib = nixpkgs.lib;
 		pkgs = import nixpkgs { 
@@ -43,7 +43,7 @@
 
 		homeConfigurations."lastation" = home-manager.lib.homeManagerConfiguration {
 			inherit pkgs;
-			extraSpecialArgs = { inherit inputs;};
+			extraSpecialArgs = { inherit inputs nix-colors; };
 			modules = [ 
 				nur.nixosModules.nur
 				./home.nix 

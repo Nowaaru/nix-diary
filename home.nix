@@ -87,7 +87,7 @@ in
 	home.sessionVariables = {
 		# EDITOR = "emacs";
 		EDITOR = "nvim";
-	}; 
+	};
 
 	# Let Home Manager install and manage itself.
     # TODO: what the fuck is this doing here please delete this
