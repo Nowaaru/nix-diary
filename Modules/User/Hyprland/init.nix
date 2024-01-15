@@ -1,11 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 	imports = [
 		./sys.nix
 		./waybar.nix
 	];
 
-	# wayland.windowManager.hyprland.enable = true;
+	wayland.windowManager.hyprland = {
+        enable = false;
+        settings = import ./conf { 
+            inherit lib; 
+        };
+    };
 
 	home.file = {
 		".config/hypr/hyprland.conf" = {
