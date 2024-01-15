@@ -1,4 +1,10 @@
-{ pkgs, nix-colors, ... }:
+{ pkgs, lib, nix-colors, ... }:
+let
+    config = import ./conf { 
+        inherit pkgs;
+        nix-colors = nix-colors;
+    };
+in
 {
 	imports = [
 		./sys.nix
@@ -6,10 +12,13 @@
 
 	wayland.windowManager.hyprland = {
         enable = true;
-        settings = import ./conf { 
-            inherit pkgs;
-            nix-colors = nix-colors;
-        };
+        settings = config.hypr;
+    };
+
+    home.activation = {
+        apply_theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+            ${pkgs.swww}/bin/swww img ${config.theme.background}
+        '';
     };
 
     /*
