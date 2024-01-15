@@ -29,13 +29,13 @@ in
      * inactive_border - 595959aa
      * shadow - 1a1a1aee
      */
-    general = {
+    general = with util.color; with theme; {
         # See https://wiki.hyprland.org/Configuring/Variables/ for more
         gaps_in = 5;
         gaps_out = 20;
         border_size = 2;
-        "col.active_border" = util.log.self-trace (util.color.gradient theme.colors.base09 theme.colors.base0B 0); # "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = util.color.convertRgb ("1a1a1a");
+        "col.active_border" = gradient colors.base09 colors.base0B 0; # "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = convertRgb ("1a1a1a");
 
         layout = "dwindle";
 
@@ -43,7 +43,7 @@ in
         allow_tearing = true;
     };
 
-    decoration = {
+    decoration = with theme; with util.color; {
         rounding = 10;
 
         blur = {
@@ -58,7 +58,7 @@ in
         shadow_range = 4;
         shadow_render_power = 3;
         
-        "col.shadow" = util.color.convertRgb theme.colors.base08;
+        "col.shadow" = convertRgb colors.base08;
     };
 
     animations = 
