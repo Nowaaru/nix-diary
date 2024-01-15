@@ -66,9 +66,17 @@ in {
         ", F11, fullscreen, 0"
         "${mainMod}, equal, fullscreen, 1"
 
-        # Example special workspace (scratchpad).
+        # Special workspace (scratchpad).
         "${mainMod}, S, togglespecialworkspace, magic"
         "${mainMod} SHIFT, S, movetoworkspace, special:magic"
+    
+        # Discord workspace.
+        "${mainMod}, D, togglespecialworkspace, discord"
+        "${mainMod} SHIFT, D, movetoworkspace, special:discord"
+
+        # Game overlays.
+        "${mainMod}, O, togglespecialworkspace, overlay"
+        "${mainMod} SHIFT, O, movetoworkspace, special:overlay"
 
         # Scroll through existing workspaces with mainMod + scroll.
         "${mainMod}, mouse_down, workspace, e+1"
