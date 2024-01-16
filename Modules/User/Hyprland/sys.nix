@@ -2,6 +2,11 @@
 # #
 { pkgs, ... }:
 {
+    imports = [
+        ./fuzzel.nix
+        ./eww.nix
+    ];
+
 	home.packages = with pkgs; [
 		# hypr
 		hyprpaper
@@ -13,16 +18,10 @@
 		swaylock-effects
 
 		# eyecandy
-		fuzzel
-		waybar
 		dunst
 
 		# utilities
 		font-awesome
 		wlogout
 	];
-
-    imports = [
-        ./fuzzel.nix
-    ];
 }

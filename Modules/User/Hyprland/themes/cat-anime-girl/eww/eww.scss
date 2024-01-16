@@ -1,0 +1,69 @@
+$base-00-dark: #252532;
+$base-01-dark: #4a4553;
+$base-02-dark: #6e6575;
+$base-03-dark: #928497;
+$base-04-dark: #b7a4b9;
+$base-05-dark: #dbc4da;
+$base-06-dark: #e1cde0;
+$base-07-dark: #e6d6e5;
+$base-08-dark: #b147d8;
+$base-09-dark: #c74b82;
+$base-0A-dark: #80776d;
+$base-0B-dark: #7c6db9;
+$base-0C-dark: #7373ab;
+$base-0D-dark: #8569be;
+$base-0E-dark: #6a6ae3;
+$base-0F-dark: #fbb383;
+
+* { all: unset; }
+
+.main {
+}
+
+.inner {
+    border-radius: 8px;
+    background: $base-06-dark;
+    box-shadow: 0px 0px 3px $base-07-dark;
+}
+
+.poweroption button {
+    background: transparent;
+    color: black;
+}
+
+.poweroption button:hover {
+    background: $base-03-dark;
+}
+
+.poweroption.power button {
+    border-radius: 8px 0px 0px 8px;
+}
+
+.poweroption.power button:hover {
+    box-shadow: 2px 0px 3px $base-03-dark;
+}
+
+.poweroption.restart button {
+    border-radius: 0px;
+}
+
+.poweroption.restart button:hover {
+    box-shadow: 0px 0px 3px $base-03-dark;
+}
+
+.poweroption.logout button {
+    border-radius: 0px 8px 8px 0px;
+}
+
+.poweroption.logout button:hover {
+    box-shadow: -2px 0px 3px $base-03-dark;
+}
+
+.poweroption button:hover box .label {
+    transition: color 0.2s ease-out;
+    color: $base-0D-dark;
+}
+
+.background {
+    padding: 6px;
+}

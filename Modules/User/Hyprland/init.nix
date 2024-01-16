@@ -16,7 +16,7 @@ in
     };
 
     home.activation = {
-        apply_theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        hyprland_apply_sww_theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
             ${pkgs.swww}/bin/swww img ${config.theme.background}
         '';
     };

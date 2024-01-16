@@ -1,4 +1,4 @@
-{ lib }: rec {
+{ lib }:{
     color = rec {
         isConverted =
             what:
@@ -29,7 +29,7 @@
             );
     };
 
-    log = rec {
+    log = {
         self-trace = what:
             builtins.trace what what;
     };

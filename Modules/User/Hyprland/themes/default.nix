@@ -1,15 +1,25 @@
-{ pkgs, nix-colors, ... }:  with pkgs.lib; 
-    attrsets.concatMapAttrs (
-            name: value: 
-            if (value == "directory") then
-            {
-                "${name}" = import ./${name} {
-                    nix-colors = nix-colors;
-                    colors-lib = nix-colors.lib.contrib {
-                            inherit pkgs;
+{ pkgs, nix-colors, ... }: with pkgs.lib; 
+    # first, verify if the /default
+    # directory exists. 
+    #
+    # don't want to implement 
+    # some goofy stuff when
+    # i can just error out early lol
+
+    if (asserts.assertMsg (builtins.pathExists ./default) "directory '${builtins.toString ./.}default/' does not exist") then
+        attrsets.concatMapAttrs (
+                name: value: 
+                if (value == "directory") then
+                {
+                    "${name}" = import ./${name} {
+                        nix-colors = nix-colors;
+                        colors-lib = nix-colors.lib.contrib {
+                                inherit pkgs;
+                        };
                     };
-                };
-            }
-            else ({})
-        ) (builtins.readDir ./.)
+                }
+                else ({})
+            ) (builtins.readDir ./.)
+    else {}
+
 

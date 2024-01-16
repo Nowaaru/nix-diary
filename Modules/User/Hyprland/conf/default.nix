@@ -3,12 +3,14 @@
 
         theme = (import ../themes {
             inherit pkgs nix-colors;
-        }).ocean;
+        }).cat-anime-girl;
 
         ###############################################
 
         workspaces = import ./workspaces.nix;
-        bindings = import ./bindings.nix;
+        bindings = import ./bindings.nix {
+            inherit theme;
+        };
         monitors = import ./monitors.nix;
         tearing = import ./tearing.nix;
         vars = import ./vars.nix { 
@@ -39,6 +41,11 @@
 
                 # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
             ] ++ tearing.windowrulev2;
+
+            layerrule = [
+                "blur, eww-blur"
+                "ignorealpha 0.3, eww-blur"
+            ];
 
             # Background manager.
             exec-once = [

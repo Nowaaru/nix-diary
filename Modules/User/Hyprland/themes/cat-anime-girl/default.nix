@@ -1,4 +1,4 @@
-{ nix-colors, colors-lib, kind ? "light", ... }:
+{ colors-lib, kind ? "light", ... }:
     rec {
         name = "Cat Anime Girl";
         author = "Nowaaru";
