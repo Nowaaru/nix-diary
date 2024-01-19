@@ -20,6 +20,7 @@
         
         # Various performance metrics.
 		    ./Utility/status.nix
+		    ./loopback.nix
     ];
     
     # Dependencies and things.
