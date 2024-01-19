@@ -78,9 +78,14 @@
 	services.xserver.enable = true;
 	services.xserver.videoDrivers = ["nvidia"];
 
-	# Enable the KDE Plasma Desktop Environment.
-	services.xserver.displayManager.sddm.enable = true;
-	services.xserver.desktopManager.plasma5.enable = true;
+	services.xserver.displayManager.sddm = {
+        enable = true;
+        wayland.enable = true;
+    };
+
+	# Enable the Cinnamon and Hypr for X11.
+	services.xserver.desktopManager.cinnamon.enable = true;
+    services.xserver.windowManager.hypr.enable = true;
 
 	# Configure keymap in X11
 	services.xserver = {
@@ -90,6 +95,9 @@
 
 	# Enable CUPS to print documents.
 	services.printing.enable = true;
+
+    # Enable OpenTabletDriver.
+    hardware.opentabletdriver.enable = true;
 
 	# Enable sound with pipewire.
 	sound.enable = true;
