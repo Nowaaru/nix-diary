@@ -17,6 +17,36 @@ $base-0F: #fbb383;
 
 * { all: unset; }
 
+/* topbar */
+.topbar .main {
+  background-color: rgba($base-0B, 0.35);
+  box-shadow: 0px -2px 4px rgba($base-0D, 0.1);
+  margin: 8px;
+  padding: 11px 8px;
+  border-radius: 16px;
+}
+
+.section {
+  background-color: rgba($base-01, 0.5);
+  border-radius: 16px;
+  padding: 4px 12px;
+  margin: 0px 8px;
+}
+
+.section.silent {
+  background-color: transparent;
+}
+
+.time label {
+  font-weight: 200;
+  font-size: 24px;
+  color: $base-07;
+}
+
+.time {
+}
+
+
 /* ~ just window things ~ */
 
 .main {}

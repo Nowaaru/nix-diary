@@ -35,18 +35,37 @@
                                                                 :justify "center"
                                                                 :yalign 0.72))))))
 
-(defwindow example
+(defwidget topbar_time []
+           (box :class "time"
+                :width 15
+                (label 
+                      :width 15
+                      :text "${formattime(EWW_TIME, "%I:%M %P", "America/Phoenix")}")))
+
+(defwidget topbar_section [id ?silent]
+           (box :class "section ${id} ${silent != "" ? "silent" : ""}"
+                (children)))
+
+
+(defwindow topbar 
            :monitor 0
+           :stacking "fg"
+           :namespace "eww-blur"
+           :exclusive true
            :geometry (geometry :x "0%"
                                :y "20px"
-                               :width "90%"
-                               :height "30px"
-                               :anchor "top center")
-           :stacking "fg"
-           :reserve (struts :distance "40px" :side "top")
-           :windowtype "dock"
-           :wm-ignore false
-  "example content")
+                               :width "85%"
+                               :height "64px"
+                               :anchor "center top") 
+           (centerbox :class "main"
+                (topbar_section :id "left"
+                                :silent true
+                                (label :text ""))
+                (topbar_section :id "center"
+                                (topbar_time))
+                (topbar_section :id "right"
+                                :silent true
+                                (label :text ""))))
 
 (defwindow blur 
            :monitor 0
@@ -84,9 +103,6 @@
                     :halign "center"
                     :width 320
                     :height 160
-                    ; TODO: make all of these have their own independent rounded box
-                    ; instead of being all interconnected. maybe have each appear one after another
-                    ; e.g. 1-2-3?
                     (box :class "inner ${closing ? "closing" : ""}"
                         (literal :content "
                         (${selected == "" ? "box" : "overlay"} :class 'items'
