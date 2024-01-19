@@ -4,35 +4,40 @@
         terminal = "kitty";
         browser = "firefox";
         mainMod = "SUPER";
-        # supermenu = "eww --config-dir ..."
         menu = "fuzzel -D no";
 
-        eww =
-            cmd:
-                "eww -c ${theme.background + "/../eww"} " + cmd;
+        print_screen = "fish ~/.diary/Config/Fish/clip.fish";
+        themeDir = theme.background + "/..";
     in {
         bind = [
-            "${mainMod}, Q, exec, ${terminal}"
-            "${mainMod}, C, killactive,"
-            "${mainMod}, M, exit,"
-            "${mainMod}, F, exec, ${browser}"
-            "${mainMod}, E, exec, ${fileManager}"
-            "${mainMod} SHIFT, SPACE, togglefloating,"
-            # "${mainMod}, R, exec, ${supermenu}" TODO: make logout menu with eww
-            # "${mainMod}, P, pseudo," # dwindle
-            "${mainMod}, P, exec, ${eww "open poweropts"}"
-            "${mainMod} SHIFT, P, exec, ${eww "close-all"}"
-            "${mainMod}, J, togglesplit," # dwindle"
+            ############################### 
+            # Program keybinds.
+            "${mainMod}, Q, exec, ${terminal}" # Open terminal.
+            "${mainMod}, F, exec, ${browser}" # Open browser.
+            "${mainMod}, E, exec, ${fileManager}" # Open the file manager.
 
-            # Fuzzel.
-            "${mainMod}, SPACE, exec, ${menu}"
+            ############################### 
+            # Administrative keybinds.
+            "${mainMod}, M, exit," # Logout.
+            "${mainMod}, C, killactive," # Kill selected window.
+            "${mainMod} SHIFT, SPACE, togglefloating," # Make the active window float.
 
-            # Clipboard.
-            "${mainMod}, V, exec, copyq menu"
+            ############################### 
+            # ElKowar's Wacky Widgets!
+            "${mainMod}, F4, exec, eww open --screen 1 poweropts" # System power menu.
+            "${mainMod} ALT, E, exec, eww kill"
+            
+            "${mainMod}, J, togglesplit," # ???
 
-            # Print screen.
-            "${mainMod} SHIFT, C, exec, fish  ~/.diary/Config/Fish/clip.fish"
+            "${mainMod}, SPACE, exec, ${menu}" # Fuzzel.
+            
+            "${mainMod}, V, exec, copyq menu" # Clipboard.
 
+            "${mainMod} SHIFT, C, exec, ${print_screen}" # Print screen.
+
+            ############################### 
+            # Window controls.
+            
             # Move focus with mainMod + arrow keys.
             "${mainMod}, left, movefocus, l"
             "${mainMod}, right, movefocus, r"
@@ -68,26 +73,25 @@
             "${mainMod} SHIFT, 8, movetoworkspace, 8"
             "${mainMod} SHIFT, 9, movetoworkspace, 9"
             "${mainMod} SHIFT, 0, movetoworkspace, 10"
+            
+            # Scroll through existing workspaces with mainMod + scroll.
+            "${mainMod}, mouse_down, workspace, e+1"
+            "${mainMod}, mouse_up, workspace, e-1"
 
             # Maximizing, minimizing, and fullscreening.
             ", F11, fullscreen, 0"
             "${mainMod}, equal, fullscreen, 1"
 
-            # Special workspace (scratchpad).
-            "${mainMod}, S, togglespecialworkspace, magic"
+            ############################### 
+            # Workspaces.
+            "${mainMod}, S, togglespecialworkspace, magic" # Special workspace (scratchpad).
             "${mainMod} SHIFT, S, movetoworkspace, special:magic"
         
-            # Discord workspace.
-            "${mainMod}, D, togglespecialworkspace, discord"
+            "${mainMod}, D, togglespecialworkspace, discord" # Discord workspace.
             "${mainMod} SHIFT, D, movetoworkspace, special:discord"
 
-            # Game overlays.
-            "${mainMod}, O, togglespecialworkspace, overlay"
+            "${mainMod}, O, togglespecialworkspace, overlay" # Game overlays.
             "${mainMod} SHIFT, O, movetoworkspace, special:overlay"
-
-            # Scroll through existing workspaces with mainMod + scroll.
-            "${mainMod}, mouse_down, workspace, e+1"
-            "${mainMod}, mouse_up, workspace, e-1"
         ];
 
         bindm = [

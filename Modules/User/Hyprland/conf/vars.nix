@@ -1,8 +1,9 @@
 # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
-{ lib, theme, ... }: 
+{ pkgs, theme, ... }: 
 let
+    inherit (pkgs) lib;
     util = import ./util.nix {
-            inherit lib;
+            inherit pkgs lib;
     };
 in
 {
@@ -21,6 +22,7 @@ in
         };
 
         sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+        numlock_by_default = true; # Should probably enable if using a TKL keyboard.
     };
 
     /* 
@@ -49,9 +51,11 @@ in
         blur = {
             enabled = true;
             size = 3;
-            passes = 1;
+            passes = 4;
 
             vibrancy = 0.1696;
+            special = true;
+            popups = true;
         };
 
         drop_shadow = true;

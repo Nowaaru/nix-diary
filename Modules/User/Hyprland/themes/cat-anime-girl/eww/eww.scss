@@ -1,69 +1,136 @@
-$base-00-dark: #252532;
-$base-01-dark: #4a4553;
-$base-02-dark: #6e6575;
-$base-03-dark: #928497;
-$base-04-dark: #b7a4b9;
-$base-05-dark: #dbc4da;
-$base-06-dark: #e1cde0;
-$base-07-dark: #e6d6e5;
-$base-08-dark: #b147d8;
-$base-09-dark: #c74b82;
-$base-0A-dark: #80776d;
-$base-0B-dark: #7c6db9;
-$base-0C-dark: #7373ab;
-$base-0D-dark: #8569be;
-$base-0E-dark: #6a6ae3;
-$base-0F-dark: #fbb383;
+$base-00: #252532;
+$base-01: #4a4553;
+$base-02: #6e6575;
+$base-03: #928497;
+$base-04: #b7a4b9;
+$base-05: #dbc4da;
+$base-06: #e1cde0;
+$base-07: #e6d6e5;
+$base-08: #b147d8;
+$base-09: #c74b82;
+$base-0A: #80776d;
+$base-0B: #7c6db9;
+$base-0C: #7373ab;
+$base-0D: #8569be;
+$base-0E: #6a6ae3;
+$base-0F: #fbb383;
 
 * { all: unset; }
 
-.main {
+/* ~ just window things ~ */
+
+.main {}
+
+.overlay {
+  background-color: rgba(darken($base-01, 75), 0.7);
+}
+
+.blur {
+  background-color: darken($base-01, 75);
+  opacity: 0.6;
+}
+
+.blur:active, .blur.closing {
+  background-color: $base-01;
+}
+
+.blur.closing {
+  transition: background-color 0.8s ease-in 0.1s;
+  transition: opacity 0.8s ease-in 0.2s;
+  background-color: $base-01;
+
+  opacity: 0;
 }
 
 .inner {
+    background-color: rgba($base-01, 0.8);
+    box-shadow: 0px 0px 4px rgba($base-07, 0.4);
     border-radius: 8px;
-    background: $base-06-dark;
-    box-shadow: 0px 0px 3px $base-07-dark;
 }
 
-.poweroption button {
-    background: transparent;
-    color: black;
+.inner.closing {
+    box-shadow: 0px 0px 4px $base-01;
 }
 
-.poweroption button:hover {
-    background: $base-03-dark;
+/* poweroption */
+
+.poweroption {
+  color: $base-0A;
 }
 
-.poweroption.power button {
-    border-radius: 8px 0px 0px 8px;
+.poweroption-background {
+  background: rgba(white, 0.25);
 }
 
-.poweroption.power button:hover {
-    box-shadow: 2px 0px 3px $base-03-dark;
+.poweroption label.icon {
+  transition: text-shadow 0.1s ease-in;
+  font-size: 24px;
 }
 
-.poweroption.restart button {
-    border-radius: 0px;
+.poweroption:hover label {
+  color: $base-07;
+  text-shadow: 0px 0px 2px $base-07;
 }
 
-.poweroption.restart button:hover {
-    box-shadow: 0px 0px 3px $base-03-dark;
+.poweroption:active label {
+  transition: font-weight 0.05s ease-in;
+  font-weight: bold;
 }
 
-.poweroption.logout button {
-    border-radius: 0px 8px 8px 0px;
+.poweroption.closing label {
+  color: $base-0A;
 }
 
-.poweroption.logout button:hover {
-    box-shadow: -2px 0px 3px $base-03-dark;
+.poweroption.power:hover label.icon,
+.poweroption.power.selected label.icon {
+  color: $base-09;
+  text-shadow: 1px 1px 2px $base-09;
 }
 
-.poweroption button:hover box .label {
-    transition: color 0.2s ease-out;
-    color: $base-0D-dark;
+.poweroption.restart:hover label.icon,
+.poweroption.restart.selected label.icon {
+  color: $base-0B;
+  text-shadow: 1px 1px 2px $base-0B;
 }
 
-.background {
+.poweroption.logout:hover label.icon,
+.poweroption.logout.selected label.icon
+{
+  color: $base-0F;
+  text-shadow: 1px 1px 2px $base-0F;
+}
+
+/* power options, on close */
+
+.poweroption.power.closing:hover label,
+.poweroption.power.selected.closing label,
+
+.poweroption.restart.closing:hover label,
+.poweroption.restart.selected.closing label,
+
+.poweroption.logout.closing:hover label,
+.poweroption.logout.selected.closing label
+{
+  transition: color 0.1s ease-in;
+  transition: text-shadow 0.05s ease-in;
+
+  color: unset;
+  text-shadow: 1px 1px 2px $base-01;
+}
+
+/* other */
+.end-text {
+  text-shadow: 1px 1px 8px $base-07;
+  font-weight: bold;
+  color: $base-07;
+}
+
+.balls {
+  background: white;
+  padding: 8px;
+  border-radius: 50%
+}
+
+.window {
     padding: 6px;
 }

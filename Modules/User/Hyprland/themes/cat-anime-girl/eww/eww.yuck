@@ -1,3 +1,40 @@
+;(defvar IS_TESTING "-c ~/.diary/Modules/User/Hyprland/themes/cat-anime-girl/eww/")
+(defvar IS_TESTING "")
+(defvar selected "")
+(defvar flavor_text "")
+(defvar closing false)
+
+(defwidget poweropt [name icon text ?onclick_before ?onclick_after ?onclick_during ?doclosing ?timeout ?artificial_closing_duration ?exitduration ?onclick_text ?height ?tooltip]
+           (button :class "poweroption ${name} ${selected == name ? "selected" : ""} ${closing ? "closing" : ""}"
+                   :height {height != "" ? height : 160}
+                   :tooltip {tooltip}
+                   :timeout {timeout != "" ? timeout : "2s"}
+                   :onclick "
+                            eww ${IS_TESTING} update flavor_text='${onclick_text}';
+                            eww ${IS_TESTING} update selected='${name}'
+                            ${onclick_before} 
+                            ${doclosing != "" ? "fish -c '${artificial_closing_duration != "" ? "sleep ${artificial_closing_duration}; wait $last_pid;" : ""} ${onclick_during}; eww ${IS_TESTING} update closing=true'" : "${onclick_during}"};
+                            ${exitduration != "" ? "fish -c 'sleep ${exitduration}; wait $last_pid';" : ""}
+                            ${onclick_after}
+                            eww ${IS_TESTING} close poweropts;
+                            eww ${IS_TESTING} update closing=false
+                            eww ${IS_TESTING} update flavor_text=''
+                            eww ${IS_TESTING} update selected=''
+                            "
+                            (revealer :class "revealer"
+                                      :transition "crossfade"
+                                      :reveal {selected == "" || selected == name ? true : false}
+                                      (overlay :width 160
+                                              (label :class "icon ${name}_icon"
+                                                      :text "${icon}"
+                                                      :justify "center"
+                                                      :yalign 0.5)
+                                              (revealer :reveal {selected != name}
+                                                        (label :class "label ${name}_label ${selected == name ? "invis" : ""}"
+                                                                :text "${text}"
+                                                                :justify "center"
+                                                                :yalign 0.72))))))
+
 (defwindow example
            :monitor 0
            :geometry (geometry :x "0%"
@@ -11,77 +48,85 @@
            :wm-ignore false
   "example content")
 
+(defwindow blur 
+           :monitor 0
+           :stacking "fg"
+           :namespace "eww-blur"
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :width "100%"
+                               :height "100%"
+                               :anchor "center center")
+           (overlay (button :class "blur"
+                            :onclick "eww ${IS_TESTING} close-all")))
+
 (defwindow poweropts
            :monitor 1
            :stacking "fg"
            :namespace "eww-blur"
            :geometry (geometry :x "0%"
                                :y "0%"
-                               :width "25%"
-                               :height "120px"
+                               :width "100%"
+                               :height "100%"
                                :anchor "center center")
-    (box :class "background"
-         :width "100%"
-         :height "100%"
-         (box :class "inner"
-              :width "60%"
-              :height "80px"
-              (box :class "items"
-                         :width "100%"
-                         :height "100%"
-                         :spacing 2
-                         :orientation "h"
-                         ; todo: transparent text that says poweroff/restart/logout in lowercase
-                         ; underneath the icons
-                         (box :class "poweroption power"
-                                 (button :width "100%"
-                                         :height "100%"
-                                       (box 
-                                            :orientation "v" 
-                                            (label :class "icon poweroff_icon"
-                                                   :text "󰤆"
-                                                   :height "16px"
-                                                   :yalign 1)
-                                            (label :class "label poweroff_label"
-                                                   :text "poweroff"
-                                                   :height "16px"
-                                                   :yalign 0.2)
-                                        )
-                                 )
-                         )
-                         (box :class "poweroption restart"
-                                 (button :width "100%"
-                                         :height "100%"
-                                       (box 
-                                            :orientation "v" 
-                                            (label :class "icon restart_icon"
-                                                   :text "󰜉"
-                                                   :height "16px"
-                                                   :yalign 1)
-                                            (label :class "label restart_label"
-                                                   :text "restart"
-                                                   :height "16px"
-                                                   :yalign 0.2)
-                                        )
-                                 )
-                         )
-                         (box :class "poweroption logout"
-                                 (button :width "100%"
-                                         :height "100%"
-                                       (box 
-                                            :orientation "v" 
-                                            (label :class "icon logout_icon"
-                                                   :text "󰍃"
-                                                   :height "16px"
-                                                   :yalign 1)
-                                            (label :class "label logout_label"
-                                                   :text "logout"
-                                                   :height "16px"
-                                                   :yalign 0.2)
-                                        )
-                                 )
-                         )
-              )
-         )
-    )
-)
+           (overlay 
+              (revealer
+                        :reveal {flavor_text != ""}
+                        :transition "fade"
+                        (label :class "end-text" 
+                                :yalign 0.6
+                                :text "${flavor_text}"))
+              (button :class "blur ${closing && selected == "" ? "closing" : ""}"
+                      :onclick "eww -c . update closing=true; sleep 0.5; wait $last_pid; eww -c . close poweropts; eww -c . update closing=false;"
+                      :timeout "1s")
+              (box :class "window"
+                    :valign "center"
+                    :halign "center"
+                    :width 320
+                    :height 160
+                    ; TODO: make all of these have their own independent rounded box
+                    ; instead of being all interconnected. maybe have each appear one after another
+                    ; e.g. 1-2-3?
+                    (box :class "inner ${closing ? "closing" : ""}"
+                        (literal :content "
+                        (${selected == "" ? "box" : "overlay"} :class 'items'
+                              ${selected == "" ? ":spacing 8" : ""}
+                              ${selected == "" ? ":orientation 'h'" : ""}
+                              (poweropt :name 'power'
+                                        :icon '󰤆'
+
+                                        :onclick_text 'shutting down...'
+                                        :timeout '4s'
+                                        :text 'poweroff'
+
+                                        :artificial_closing_duration '1s'
+                                        :exitduration '2s'
+
+                                        :onclick_before 'dunstify \"I would have shutdown.\"'
+                                        :doclosing true)
+                              (poweropt :name 'restart'
+                                        :icon '󰜉'
+
+                                        :onclick_text 'rebooting...'
+                                        :timeout '4s'
+                                        :text 'restart'
+
+                                        :artificial_closing_duration '1s'
+                                        :exitduration '2s'
+
+                                        :onclick_during 'dunstify \"I would have restarted.\"'
+                                        :doclosing true)
+                              (poweropt :name 'logout'
+                                        :icon '󰍃'
+
+                                        :onclick_text \"logging out.\"
+                                        :timeout '4s'
+                                        :text 'logout'
+
+                                        :artificial_closing_duration '1s'
+                                        :exitduration '2s'
+
+                                        :onclick_after 'dunstify \"I would have logged out\"'
+                                        :doclosing true))")))
+                              
+             ))

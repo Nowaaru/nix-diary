@@ -1,9 +1,22 @@
 { pkgs, lib, nix-colors, ... }:
 let
-    config = import ./conf { 
+    hypr-config = import ./conf { 
         inherit pkgs;
         nix-colors = nix-colors;
     };
+
+    util = import ./conf/util.nix {
+            inherit lib pkgs;
+    };
+
+    applySwayTheme = ''
+    if [ -n "$(printenv HYPRLAND_INSTANCE_SIGNATURE)" ]; then
+        $DRY_RUN_CMD ${selfTrace (util.str.applySwayTheme hypr-config.theme)}
+    fi
+    '';
+
+    selfTrace = t:
+        builtins.trace t t;
 in
 {
 	imports = [
@@ -12,27 +25,26 @@ in
 
 	wayland.windowManager.hyprland = {
         enable = true;
-        settings = config.hypr;
+        settings = hypr-config.hypr;
     };
-
-    home.activation = {
-        hyprland_apply_sww_theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
-            ${pkgs.swww}/bin/swww img ${config.theme.background}
-        '';
-    };
-
-    /*
-	home.file = {
-		".config/hypr/hyprland.conf" = {
-			enable = true;
-			text = "source=~/.diary/Config/Hyprland/startup.conf";
-		};
-	};
-    */
 
 	home.packages = with pkgs; [
 		xdg-desktop-portal-hyprland
 		xwaylandvideobridge
 		wlr-randr
+
+        ps
 	];
+
+    home.activation = {
+        hyprland_apply_sww_theme = 
+            lib.hm.dag.entryAfter ["writeBoundary"] applySwayTheme;
+    };
+
+    home.file =  {
+        ".config/eww" = {
+            enable = selfTrace (lib.attrsets.hasAttrByPath ["theme" "widgets"] hypr-config);
+            source = hypr-config.theme.widgets;
+        };
+    };
 }

@@ -1,4 +1,4 @@
-{ lib }:{
+{ lib, pkgs }: rec {
     color = rec {
         isConverted =
             what:
@@ -27,6 +27,11 @@
                     "${builtins.toString deg}deg"
                 else "0deg"
             );
+    };
+
+    str = {
+        applySwayTheme = theme: 
+            "${pkgs.swww}/bin/swww img ${theme.background}";
     };
 
     log = {

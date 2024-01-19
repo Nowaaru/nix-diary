@@ -1,4 +1,4 @@
-{ pkgs, nix-colors, ... }: with pkgs.lib; 
+{ pkgs, nix-colors, kind ? "light", ... }: with pkgs.lib; 
     # first, verify if the /default
     # directory exists. 
     #
@@ -12,6 +12,7 @@
                 if (value == "directory") then
                 {
                     "${name}" = import ./${name} {
+                        inherit kind;
                         nix-colors = nix-colors;
                         colors-lib = nix-colors.lib.contrib {
                                 inherit pkgs;

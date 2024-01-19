@@ -1,8 +1,11 @@
 { pkgs, nix-colors, ... }: 
     let
+        inherit (pkgs) lib;
 
+        mode = "dark";
         theme = (import ../themes {
             inherit pkgs nix-colors;
+            kind = mode;
         }).cat-anime-girl;
 
         ###############################################
@@ -13,9 +16,9 @@
         };
         monitors = import ./monitors.nix;
         tearing = import ./tearing.nix;
+        util = import ./util.nix { inherit pkgs lib; };
         vars = import ./vars.nix { 
-            inherit (pkgs) lib;
-            inherit theme;
+            inherit theme pkgs;
         };
     in {
         inherit theme;
@@ -47,12 +50,18 @@
                 "ignorealpha 0.3, eww-blur"
             ];
 
+            # Stuff to run every reload.
+            exec = [
+                "eww daemon"
+            ];
+
             # Background manager.
             exec-once = [
                 "swww init"
                 "hyprdim"
                 "xrandr --output XWAYLAND0"
                 "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+                (util.str.applySwayTheme theme)
             ] ++ [
                 "dunst"
             ];

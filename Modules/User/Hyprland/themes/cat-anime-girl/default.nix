@@ -4,6 +4,8 @@
         author = "Nowaaru";
 
         background = ./cat-anime-girl.png;
+        widgets = ./eww;
+
         inherit (colors-lib.colorSchemeFromPicture {
             path = background;
             inherit kind;
