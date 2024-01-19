@@ -1,6 +1,7 @@
-{ pkgs, lib, ... }:
+{ pkgs, inputs, lib, ... }:
 let
   nvim_target = "~/.config/nvim";
+  nvim_origin = "~/.diary/Config/LazyVim/";
   branch = "main";
   git = "${pkgs.git}/bin/git";
 in
@@ -15,7 +16,8 @@ in
       
 			if [ ! -d ${nvim_target} ];
 			then
-				${git} clone https://github.com/Nowaaru/vim ${nvim_target}
+				#${git} clone https://github.com/Nowaaru/vim ${nvim_target}
+				${git} clone ${nvim_origin} ${nvim_target}
       else
         cd ${nvim_target}
         ${git} fetch origin ${branch}
@@ -36,11 +38,13 @@ in
     ueberzugpp
   ];
 
-  programs.neovim = {
-    enable = true;
-    /* package = pkgs.neovim-nightly;
-    extraLuaPackages = ps: [ ps.magick ];
-    */
-  };
+    nixpkgs.overlays = [
+        inputs.neovim-images-overlay.overlay
+    ];
+    programs.neovim = {
+        enable = true;
+        package = pkgs.neovim-nightly;
+        extraLuaPackages = ps: [ ps.magick ];
+    };
 }
 
