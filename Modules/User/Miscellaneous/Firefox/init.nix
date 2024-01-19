@@ -1,17 +1,13 @@
 { inputs, config, pkgs, ... }:
 {
 	home.packages = with pkgs; [
-		firefox
-    librewolf
+        librewolf
 	];
 
 	programs.firefox = {
 		enable = true;
 		package = pkgs.wrapFirefox pkgs.firefox-unwrapped 
 		{
-      # preferences = import ./preferences.nix {
-      #  inherit config inputs pkgs;
-      # };
 			extraPolicies = import ./policies.nix {
 				inherit config inputs pkgs;
 			};
@@ -23,6 +19,9 @@
 				isDefault = true;
 
 				path = "~/.firefox";
+                settings = import ./preferences.nix {
+                    inherit config inputs pkgs;
+                };
 				bookmarks = import ./bookmarks.nix {
 					inherit config inputs pkgs;
 				};
