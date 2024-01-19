@@ -6,6 +6,7 @@
 		./Fish/init.nix
 		
 		# Gaming and the like.
+		./Gaming/standalone.nix
 		./Gaming/launcher.nix
 		./Gaming/mod.nix
 		./Gaming/monitor.nix
@@ -37,6 +38,7 @@
 		./Miscellaneous/font.nix
 		./Miscellaneous/clip.nix
 		./Miscellaneous/disk.nix
+		./Miscellaneous/obs.nix
 		./Miscellaneous/dir.nix
 	];
 }
