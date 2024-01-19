@@ -13,6 +13,8 @@
         nur.url = "github:nix-community/NUR";
         rust-overlay.url = "github:oxalica/rust-overlay";
 
+        neovim-images-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
 		home-manager = {
 			url = "github:nix-community/home-manager/master";
 			inputs.nixpkgs.follows = "nixpkgs";
