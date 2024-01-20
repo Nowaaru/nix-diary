@@ -33,11 +33,11 @@ in
      */
     general = with util.color; with theme; {
         # See https://wiki.hyprland.org/Configuring/Variables/ for more
-        gaps_in = 5;
+        gaps_in = 10;
         gaps_out = 20;
         border_size = 2;
-        "col.active_border" = gradient colors.base09 colors.base0B 0; # "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = convertRgb ("1a1a1a");
+        "col.active_border" = gradient colors.base0F colors.base09 45; # "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = convertRgb (colors.base01);
 
         layout = "dwindle";
 
@@ -46,7 +46,7 @@ in
     };
 
     decoration = with theme; with util.color; {
-        rounding = 10;
+        rounding = 0;
 
         blur = {
             enabled = true;
@@ -62,7 +62,7 @@ in
         shadow_range = 4;
         shadow_render_power = 3;
         
-        "col.shadow" = convertRgb colors.base08;
+        "col.shadow" = convertRgb colors.base01;
     };
 
     animations = 

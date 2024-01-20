@@ -4,6 +4,48 @@
 (defvar flavor_text "")
 (defvar closing false)
 
+(defvar ico_afternoon "󰖙")
+(defvar ico_morning "󰖙")
+(defvar ico_moonset "")
+(defvar ico_sunset "󰖚")
+(defvar ico_witching "󱇫")
+(defvar ico_night "")
+
+(defvar poll_cpu true)
+(defpoll cpu_arch :interval "1s"
+                  :initial "x86_64"
+                  :run-while poll_cpu
+                  `fish -c "set arch (lscpu | grep Architecture | string split \":\" | string trim | string match -ir '(x.*)'); echo \\$arch[1]"`)
+
+(defvar poll_hour true)
+(defpoll hour :interval "1s"
+              :initial "night"
+              :run-while poll_hour
+              `
+              CURDATE=$(date +%H)
+              if [ $CURDATE -ge 20 ]; then # late night
+                  echo "night"
+              elif [ $CURDATE -ge 18 ]; then # evening
+                  echo "moonset"
+              elif [ $CURDATE -ge 12 ]; then # afternoon
+                  echo "afternoon"
+              elif [ $CURDATE -ge 7 ]; then # morning
+                  echo "morning"
+              elif [ $CURDATE -ge 4 ]; then # early morning
+                  echo "sunset"
+              elif [ $CURDATE -ge 3 ]; then # witching hour
+                  echo "witching"
+              elif [ $CURDATE -ge 0 ]; then # midnight
+                  echo "night"
+              fi
+              `)
+
+(defvar poll_workspace true)
+(defpoll workspace_special :initial ""
+                           :interval "100ms" 
+                           :run-while poll_workspace
+                           `hyprctl monitors | grep special | awk 'gsub(/special:|\\(|\\)/, "", $4) {print $4}'`)
+
 (defwidget poweropt [name icon text ?onclick_before ?onclick_after ?onclick_during ?doclosing ?timeout ?artificial_closing_duration ?exitduration ?onclick_text ?height ?tooltip]
            (button :class "poweroption ${name} ${selected == name ? "selected" : ""} ${closing ? "closing" : ""}"
                    :height {height != "" ? height : 160}
@@ -35,37 +77,122 @@
                                                                 :justify "center"
                                                                 :yalign 0.72))))))
 
-(defwidget topbar_time []
-           (box :class "time"
-                :width 15
-                (label 
-                      :width 15
-                      :text "${formattime(EWW_TIME, "%I:%M %P", "America/Phoenix")}")))
+(defwidget topbar_item [?halign ?width ?tooltip ?space-evenly]
+           (eventbox :class "topbar_hoverbox"
+                     (box :class "topbar_container"
+                          :halign {halign != ""  ? halign : "end"}
+                          :width {width != "" ? width : 96}
+                          :spacing 8
+                          :space-evenly {space-evenly != "" ? space-evenly : true}
+                          :tooltip {tooltip}
+                          (children))))
 
-(defwidget topbar_section [id ?silent]
-           (box :class "section ${id} ${silent != "" ? "silent" : ""}"
+(defwidget __unique_topbar_time []
+           (box :class "time_container"
+                (box :class "time"
+                      :spacing 12
+                      :space-evenly false
+                      (literal :content '(label
+                      :class "icon ${hour}"
+                      :width 16
+                      :halign "start"
+                      :hexpand true
+                      :text "\$\{ico_${hour}\}\")')
+                      (label 
+                            :class "time ${hour}"
+                            :width 15
+                            :text "${formattime(EWW_TIME, "%I:%M", "America/Phoenix")}"))
+             ))
+
+(defwidget topbar_cpu []
+           (topbar_item :tooltip {cpu_arch == "x86_64" ? "64-bit CPU" : "32-bit CPU"}
+                        (box :class "cpu_container"
+                              :halign "center"
+                              :spacing 16
+                              :space-evenly false
+                              (label :class "cpu"
+                                    :text "${cpu_arch == "x86_64" ? "󰻠": "${cpu_arch}"}")
+                              (label :class "cpu usage"
+                                    :text "${round(EWW_CPU.avg, 0)}%"))))
+
+(defwidget topbar_network []
+           (topbar_item 
+                        :space-evenly false
+                        (label :class "network_up ${EWW_NET.enp5s0.NET_UP > 0 ? "in-use" : ""}"
+                               :halign "center"
+                               :width 32
+                               :text "")
+                        (label 
+                               :halign "center"
+                               :text {
+                                        round(
+                                              EWW_NET.enp5s0.NET_UP * "1e-06", 
+                                              round(EWW_NET.enp5s0.NET_UP * "1e-06", 3) != "0" ? 3 : 0
+                                        )
+                               })))
+
+                    
+
+(defwidget topbar_workspace [workspace]
+           (box :class "topbar_container silent"
+                :valign "start"
+                :orientation "v"
+                (revealer :transition "slidedown"
+                          :duration "1s"
+                          :reveal {workspace != ""}
+                          (label :class "workspace"
+                                 :text "${workspace}"))))
+
+(defwidget topbar_section [class ?silent ?halign ?space-evenly]
+           (box :class "${class} section ${silent != "" ? "silent" : ""}"
+                :halign {halign != "" ? halign : "baseline"}
+                :space-evenly {space-evenly != "" ? space-evenly : true}
                 (children)))
 
 
+(defwidget volume_slider []
+      (box :class "volume"
+           :halign "end"
+           :vexpand false
+           (label :text "world")
+           (scale :class "slider"
+                  :width 120
+
+                  :min 0
+                  :max 100
+                  :draw-value true
+
+                  :orientation "h"
+                  )))
+
+; TODO: Hyprland current-workspace label that only appears when in a
+; special workspace.
+
 (defwindow topbar 
-           :monitor 0
+           :monitor 1
            :stacking "fg"
            :namespace "eww-blur"
            :exclusive true
            :geometry (geometry :x "0%"
-                               :y "20px"
+                               :y "8px"
                                :width "85%"
                                :height "64px"
                                :anchor "center top") 
-           (centerbox :class "main"
-                (topbar_section :id "left"
-                                :silent true
-                                (label :text ""))
-                (topbar_section :id "center"
-                                (topbar_time))
-                (topbar_section :id "right"
-                                :silent true
-                                (label :text ""))))
+           (box :class "topbar_main"
+                :spacing -16
+                :space-evenly false
+                :orientation "v"
+                    (centerbox :class "main silent"
+                          (topbar_section :class "left"
+                                          :space-evenly false
+                                          :halign "end"
+                                          (topbar_cpu)
+                                          (topbar_network))
+                          (topbar_section :class "center"
+                                          (__unique_topbar_time))
+                          (topbar_section :class "right"
+                                          (label :text "")))
+                    (topbar_workspace :workspace {workspace_special})))
 
 (defwindow blur 
            :monitor 0
@@ -81,7 +208,7 @@
 
 (defwindow poweropts
            :monitor 1
-           :stacking "fg"
+           :stacking "overlay"
            :namespace "eww-blur"
            :geometry (geometry :x "0%"
                                :y "0%"
@@ -118,7 +245,7 @@
                                         :artificial_closing_duration '1s'
                                         :exitduration '2s'
 
-                                        :onclick_before 'dunstify \"I would have shutdown.\"'
+                                        :onclick_before 'dunstify \"systemctl poweroff\"'
                                         :doclosing true)
                               (poweropt :name 'restart'
                                         :icon '󰜉'
@@ -130,7 +257,7 @@
                                         :artificial_closing_duration '1s'
                                         :exitduration '2s'
 
-                                        :onclick_during 'dunstify \"I would have restarted.\"'
+                                        :onclick_during 'dunstify \"systemctl reboot\"'
                                         :doclosing true)
                               (poweropt :name 'logout'
                                         :icon '󰍃'
@@ -142,7 +269,7 @@
                                         :artificial_closing_duration '1s'
                                         :exitduration '2s'
 
-                                        :onclick_after 'dunstify \"I would have logged out\"'
+                                        :onclick_after 'dunstify \"hyprctl dispatch exit\"'
                                         :doclosing true))")))
                               
              ))

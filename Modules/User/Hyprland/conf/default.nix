@@ -57,10 +57,11 @@
 
             # Background manager.
             exec-once = [
+                "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
                 "swww init"
                 "hyprdim"
                 "xrandr --output XWAYLAND0"
-                "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+                "wl-paste -p --watch wl-copy -p ''" # disable primary buffer
                 (util.str.applySwayTheme theme)
             ] ++ [
                 "dunst"

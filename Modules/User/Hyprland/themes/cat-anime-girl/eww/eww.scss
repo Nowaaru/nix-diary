@@ -15,35 +15,178 @@ $base-0D: #8569be;
 $base-0E: #6a6ae3;
 $base-0F: #fbb383;
 
-* { all: unset; }
+
+* {
+  all: unset;
+  color: $base-07;
+}
+
+.cpu_container {
+  font-size: 24px;
+}
+
+box {
+  background: transparent;
+}
 
 /* topbar */
 .topbar .main {
-  background-color: rgba($base-0B, 0.35);
-  box-shadow: 0px -2px 4px rgba($base-0D, 0.1);
+  background-color: rgba($base-0F, 0.35);
+  box-shadow: 0px 4px 2px rgba($base-0F, 0.5);
   margin: 8px;
   padding: 11px 8px;
   border-radius: 16px;
 }
 
+.topbar .main.silent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.silent .center {
+  background: rgba($base-01,0.35);
+}
+
+.section.silent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.topbar_container.silent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.topbar_container {
+  margin: 6px;
+  padding: 0px 12px;
+  background-color: $base-02;
+  border-radius: 16px;
+}
+
+.topbar_hoverbox:hover .topbar_container {
+  box-shadow: 0px 0px 3px rgba($base-04, 0.5);
+}
+
+.topbar_hoverbox .topbar_container label {
+  transition: color 0.1s ease-in-out;
+}
+
+.topbar_hoverbox:hover .topbar_container label {
+  transition: color 0.2s ease-in-out;
+  color: $base-0F;
+}
+
 .section {
   background-color: rgba($base-01, 0.5);
+  box-shadow: 0px 4px 2px rgba($base-04, 0.25);
   border-radius: 16px;
-  padding: 4px 12px;
+  padding: 3px 12px;
   margin: 0px 8px;
+}
+
+.network_up {
+  color: $base-03;
+  text-shadow: none;
+}
+
+.network_up.in-use {
+  color: $base-0F;
+  text-shadow: 0px 2px 4px rgba($base-0F, 0.5);
 }
 
 .section.silent {
   background-color: transparent;
 }
 
-.time label {
+label {
+  color: $base-07;
+  text-shadow: 0px 0px 2px $base-05;
+
   font-weight: 200;
   font-size: 24px;
-  color: $base-07;
+  font-family: "JetBrains Mono NF";
 }
 
-.time {
+tooltip label {
+  font-size: 12px;
+  color: $base-02;
+  text-shadow: none;
+  margin-top: -2px;
+
+  animation-duration: 3s;
+  animation-name: slidein;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+label.workspace {
+  margin-top: 12px;
+  font-size: 16px;
+  color: $base-05;
+  text-shadow: 0px -2px 2px $base-07;
+}
+
+label.workspace.teller {
+  color: $base-07;
+  text-shadow: 0px 0px 2px $base-07;
+}
+
+.time label.icon {
+  font-size: 32px;
+}
+
+label.icon.sunny, label.icon.afternoon {
+  color: $base-0F;
+  text-shadow: 0px 0px 2px $base-0F;
+}
+
+label.icon.morning, label.icon.night {
+  color: $base-0C;
+  text-shadow: 1px 1px 2px $base-0C;
+}
+
+label.icon.witching {
+  color: $base-09;
+  text-shadow: 0px 0px 2px $base-09;
+}
+
+label.icon.sunset, label.icon.moonset {
+  color: $base-03;
+  text-shadow: 1px 1px 2px $base-03;
+}
+
+label.icon.moonset {
+  font-size: 26px;
+  margin-left: 4px;
+}
+
+// .slider
+// .slider.value
+// .slider.contents
+// .slider.contents.trough
+// .slider.contents.trough.slider
+// .slider.contents.trough.highlight
+
+
+.slider value {
+  background: red;
+}
+
+.slider contents {
+  background: yellow;
+}
+
+.slider contents trough {
+  background: blue;
+}
+
+.slider contents trough highlight {
+  background: green;
+}
+
+.slider contents trough slider {
+  background: purple;
 }
 
 
@@ -164,3 +307,4 @@ $base-0F: #fbb383;
 .window {
     padding: 6px;
 }
+
