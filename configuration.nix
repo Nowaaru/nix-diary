@@ -2,7 +2,7 @@
 # your system.	Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
 	imports =
 		[ 
@@ -125,7 +125,7 @@
 		description = "noire";
 		shell=pkgs.fish;
 		extraGroups = [ "networkmanager" "wheel" ];
-		packages = with pkgs; []; # managed via home-manager
+		packages = []; # managed via home-manager
 	};
 
 	# Enable flakes.
@@ -181,10 +181,11 @@
 	#	wget
 	];
 
-	# Hyprland !
-	programs.hyprland = { 
-		enable=true;
-	};
+    # Hyprland!
+    programs.hyprland = {
+        enable = true;
+        portalPackage = inputs.xdg-desktop-portal-hyprland.packages."${pkgs.system}".xdg-desktop-portal-hyprland;
+    };
 
 	# Remove unnecessary packages from Plasma 5.
 	environment.plasma5.excludePackages = with pkgs.libsForQt5; [

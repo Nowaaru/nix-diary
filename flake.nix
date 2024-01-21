@@ -12,8 +12,10 @@
         lanzaboote.url = "github:nix-community/lanzaboote";
         nur.url = "github:nix-community/NUR";
         rust-overlay.url = "github:oxalica/rust-overlay";
-
         neovim-images-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
+        hyprland.url = "github:hyprwm/Hyprland";
+        xdg-desktop-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
 
 		home-manager = {
 			url = "github:nix-community/home-manager/master";
