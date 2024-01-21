@@ -85,14 +85,28 @@ box {
   margin: 0px 8px;
 }
 
-.network_up {
+.network {
   color: $base-03;
   text-shadow: none;
 }
 
-.network_up.in-use {
+.network.in-use {
   color: $base-0F;
   text-shadow: 0px 2px 4px rgba($base-0F, 0.5);
+}
+
+.network_down.in-use:hover {
+  text-shadow: 0px 2px 4px rgba($base-0D, 0.5);
+}
+
+.network_down.in-use {
+  color: $base-0D;
+  text-shadow: 0px 2px 4px rgba($base-0D, 0.5);
+}
+
+.topbar_hoverbox:hover .topbar_container label.network_down.in-use {
+  color: $base-0D;
+  text-shadow: 0px 2px 4px rgba($base-0D, 0.5);
 }
 
 .section.silent {
@@ -109,19 +123,23 @@ label {
 }
 
 tooltip label {
+  background: $base-00;
+  border-radius: 8px;
+  padding: 2px 4px;
   font-size: 12px;
   color: $base-02;
   text-shadow: none;
-  margin-top: -2px;
+  margin-top: 2px;
 
   animation-duration: 3s;
   animation-name: slidein;
   animation-iteration-count: infinite;
   animation-direction: alternate;
+  text-shadow: 0px 0px 2px $base-01;
 }
 
 label.workspace {
-  margin-top: 12px;
+  padding-top: 12px;
   font-size: 16px;
   color: $base-05;
   text-shadow: 0px -2px 2px $base-07;
@@ -157,8 +175,9 @@ label.icon.sunset, label.icon.moonset {
 }
 
 label.icon.moonset {
-  font-size: 26px;
+  font-size: 32px;
   margin-left: 4px;
+  margin-right: -4px;
 }
 
 // .slider

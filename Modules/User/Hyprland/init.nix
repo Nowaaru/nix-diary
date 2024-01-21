@@ -1,4 +1,4 @@
-{ pkgs, lib, nix-colors, ... }:
+{ pkgs, lib, nix-colors, inputs, ... }:
 let
     hypr-config = import ./conf { 
         inherit pkgs;
