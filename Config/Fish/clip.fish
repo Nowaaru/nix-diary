@@ -73,6 +73,21 @@ end
 # set -l slurp_output (slurp -d) # -d for only print dimensions
 # echo (wl-paste -p)
 set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"')
+set slurp_status $status
+
+string match -rg "(?<w>\d+)x(?<h>\d+)" $slurp_out
+
+echo "status:" $slurp_status
+if [ \( $slurp_status -eq 1 \) ]
+    dunstify "Selection was cancelled."
+    return 1;
+end
+
+if [ (math "$w * $h") -lt 25 ] 
+    dunstify "Selection was smaller than 25 pixels."
+    return 1;
+end
+
 set window_at_pos (window_at_pos)
 set class $window_at_pos[2]
 set title $window_at_pos[3]
@@ -90,5 +105,9 @@ set filename (printf "Screenshot [%s | %s] $date" $window_at_pos[3] $window_at_p
 set grim_out_dir "$SCREENSHOT_DIR/$filename.$ext"
 set grim_out (grim -g (echo -e $slurp_out) $grim_out_dir)
 wl-copy < $grim_out_dir
-dunstify -r $__dunst_screenshot_id "Screenshot saved." -i "$grim_out_dir"
+dunstify -a "Screenshot - $filename"\
+         -r $__dunst_screenshot_id "Screenshot saved." \
+         -i "$grim_out_dir" \
+                            \
+         --action "default,Dismiss" --action "delete,Delete"
 return 1
