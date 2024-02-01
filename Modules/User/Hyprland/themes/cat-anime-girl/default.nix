@@ -1,13 +1,27 @@
-{ colors-lib, kind ? "light", ... }:
-    rec {
-        name = "Cat Anime Girl";
-        author = "Nowaaru";
+{
+  lib,
+  colors-lib,
+  kind ? "light",
+  ...
+}: let
+  background = ./cat-anime-girl.png;
+  selfTrace = what:
+    builtins.trace what what;
+in {
+  name = "Cat Anime Girl";
+  author = "Nowaaru";
+  widgets = ./eww;
 
-        background = ./cat-anime-girl.png;
-        widgets = ./eww;
+  programs = {
+    dunst = lib.mkForce (import ./dunst.nix);
+  };
 
-        inherit (colors-lib.colorSchemeFromPicture {
-            path = background;
-            inherit kind;
-        }) colors;
-    }
+  colors =
+    (colors-lib.colorSchemeFromPicture {
+      path = background;
+      inherit kind;
+    })
+    .palette;
+
+  inherit background;
+}
