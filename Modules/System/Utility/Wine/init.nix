@@ -9,7 +9,7 @@
 			mono
 
 			winetricks
-			wineWowPackages.stagingFull
+			wineWowPackages.full
 		];
 	};
 
