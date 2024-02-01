@@ -9,7 +9,7 @@
 			# Include the results of the hardware scan.
 			./hardware-configuration.nix
 			# System configuration loader.
-			./Modules/System/init.nix
+			../Modules/System/init.nix
 		];
 
 	# Bootloader.
@@ -92,6 +92,22 @@
 		layout = "us";
 		xkbVariant = "";
 	};
+
+    # Configure keymap in Wayland.
+    services.keyd = {
+        enable = true;
+        keyboards = {
+            apex7 = {
+                ids = ["1038:1618"];
+                settings = {
+                    main = {
+                        "volumeup up" = "mwheelup";
+                        "volumedown up" = "mwheeldown";
+                    };
+                };
+            };
+        };
+    };
 
 	# Enable CUPS to print documents.
 	services.printing.enable = true;
