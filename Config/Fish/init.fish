@@ -13,4 +13,4 @@ abbr -a --position command conf "cd $CONFIG"
 source $CONFIG/Fish/alias.fish
 
 # Git.
-source $CONFIG/Fish/alias.fish
+source $CONFIG/Fish/git.fish
