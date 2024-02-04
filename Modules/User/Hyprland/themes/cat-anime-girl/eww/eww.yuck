@@ -106,7 +106,7 @@
              ))
 
 (defwidget topbar_cpu []
-           (topbar_item :tooltip {cpu_arch == "x86_64" ? "64-bit CPU" : "32-bit CPU"}
+           (topbar_item :tooltip {cpu_arch == "x86_64" ? "64-bit processor" : "32-bit processor"}
                         (box :class "cpu_container"
                               :halign "center"
                               :spacing 16
@@ -116,7 +116,7 @@
                               (label :class "cpu usage"
                                     :text "${round(EWW_CPU.avg, 0)}%"))))
 (defwidget topbar_mem []
-           (topbar_item :tooltip "Memory"
+           (topbar_item :tooltip "Memory Usage"
                         (box :class "mem_container"
                              :spacing 016
                              :space-evenly false
