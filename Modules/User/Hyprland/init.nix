@@ -53,9 +53,6 @@ in {
     ];
 
     activation = {
-      hyprland_apply_sww_theme =
-        lib.hm.dag.entryAfter ["writeBoundary"] (ifHyprland applySwayTheme);
-
       hyprland_reload =
         lib.hm.dag.entryAfter ["writeBoundary"] (ifHyprland "${pkgs.hyprland}/bin/hyprctl reload");
     };

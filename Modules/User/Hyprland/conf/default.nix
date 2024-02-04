@@ -61,18 +61,19 @@ in {
 
     # Stuff to run every reload.
     exec = [
-      "eww close topbar; eww open topbar --restart"
+      "eww open topbar --no-daemonize"
+      (util.str.applySwayTheme theme)
     ];
 
     # Background manager.
     exec-once =
       [
+        "eww daemon"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "sww kill; wait $!; swww init"
         "hyprdim"
         "xrandr --output XWAYLAND0"
         "wl-paste -p --watch wl-copy -p ''" # disable primary buffer
-        (util.str.applySwayTheme theme)
       ]
       ++ [
         "dunst"
