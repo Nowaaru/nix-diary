@@ -1,29 +1,25 @@
-{lib}: {
-  build.viAlias = true;
-  build.vimAlias = true;
+{lib}:
+with lib; {
+  build.viAlias = mkForce true;
+  build.vimAlias = mkForce true;
 
   vim = {
-    autoIndent = true;
-    autocomplete.enable = true;
+    autoIndent = mkForce true;
+    autocomplete.enable = mkForce true;
 
-    autopairs.enable = true;
-    autopairs.type = "nvim-autopairs";
+    autopairs.enable = mkForce true;
+    autopairs.type = mkForce "nvim-autopairs";
 
-    bell = "visual";
+    bell = mkForce "visual";
 
     filetree.nvimTreeLua = {
-      enable = true;
-      closeOnFileOpen = true;
-      closeOnLastWindow = true;
-      disableNetRW = true;
+      enable = mkForce true;
+      closeOnFileOpen = mkForce true;
+      closeOnLastWindow = mkForce true;
+      disableNetRW = mkForce true;
     };
 
-    keys.whichKey = {
-      enable = true;
-    };
-
-    theme = {
-      name = lib.mkForce "catppuccin";
-    };
+    keys.whichKey.enable = mkForce true;
+    theme.name = mkForce "dracula-nvim";
   };
 }

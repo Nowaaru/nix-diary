@@ -5,13 +5,9 @@
     inherit lib;
   };
 
+  # deadnix: skip
   selfTrace = a: builtins.trace (builtins.toJSON a) a;
 in
   with lib; {
-    config = selfTrace (mkMerge [config (attrsets.setAttrByPath ["vim"] (util.fn.parseKeyMap keys))]);
+    config = mkMerge [config (attrsets.setAttrByPath ["vim"] (util.fn.parseKeyMap keys))];
   }
-/*
-HEELP HELP ME PLEASE
-config = selfTrace (config // (attrsets.setAttrByPath ["vim"] (util.fn.parseKeyMap keys)));config = selfTrace (config // (attrsets.setAttrByPath ["vim"] (util.fn.parseKeyMap keys)));
-*/
-
