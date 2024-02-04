@@ -45,5 +45,6 @@
     ./Miscellaneous/obs.nix
     ./Miscellaneous/dir.nix
     ./Miscellaneous/qol.nix
+    ./Miscellaneous/qt.nix
   ];
 }
