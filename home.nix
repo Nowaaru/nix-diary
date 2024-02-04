@@ -91,6 +91,5 @@ in {
   };
 
   # Let Home Manager install and manage itself.
-  # TODO: what the fuck is this doing here please delete this
   programs.home-manager.enable = true;
 }

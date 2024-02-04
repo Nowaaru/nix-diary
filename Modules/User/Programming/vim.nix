@@ -1,11 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: let
-  selfTrace = a:
-    builtins.trace a a;
-in {
+{pkgs, ...}: {
   home.packages = [
     pkgs.neovim
   ];

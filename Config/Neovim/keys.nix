@@ -1,5 +1,5 @@
 {lib}:
 with (import ./util.nix {inherit lib;}).keys; [
-  (nnoremap "j" "gj")
-  (nnoremap "k" "gk")
+  (nmap "j" "gj")
+  (nmap "k" "gk")
 ]
