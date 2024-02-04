@@ -11,6 +11,12 @@
     nix-colors.url = "github:misterio77/nix-colors";
     rust-overlay.url = "github:oxalica/rust-overlay";
     nur.url = "github:nix-community/NUR";
+    /*
+    theme-flake-test = {
+      url = "path:/home/noire/Documents/nix-flakes/theme.nix";
+      flake = true;
+    };
+    */
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -35,7 +41,6 @@
 
   outputs = {
     self,
-    rust-overlay,
     neovim-flake,
     nix-colors,
     home-manager,
@@ -50,7 +55,8 @@
       inherit system;
       overlays = [
         (final: _: {
-          neovim = neovim-configured.extendConfiguration {
+          neovim = neovim-flake.packages.${system}.maximal.extendConfiguration {
+            modules = [(import ./Config/Neovim {inherit lib;})];
             pkgs = final;
           };
         })
@@ -60,19 +66,7 @@
         permittedInsecurePackages = ["electron-25.9.0"];
       };
     };
-
-    neovim = neovim-flake.packages.${system}.maximal;
-    neovim-configured = neovim.extendConfiguration {
-      inherit pkgs;
-      modules = [
-        {
-          inherit (import ./Config/Neovim {inherit lib;}) config;
-        }
-      ];
-    };
   in {
-    packages.${system}.neovim = neovim-configured;
-
     nixosConfigurations = {
       lastation = lib.nixosSystem {
         specialArgs = {inherit inputs;};
