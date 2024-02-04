@@ -167,9 +167,6 @@
                   :orientation "h"
                   )))
 
-; TODO: Hyprland current-workspace label that only appears when in a
-; special workspace.
-
 (defwindow topbar 
            :monitor 1
            :stacking "fg"
@@ -178,7 +175,7 @@
            :geometry (geometry :x "0%"
                                :y "8px"
                                :width "85%"
-                               :height "64px"
+                               :height "24px"
                                :anchor "center top") 
            (box :class "topbar_main"
                 :spacing -16
@@ -211,6 +208,9 @@
                                :anchor "center center")
            (overlay (button :class "blur"
                             :onclick "eww ${IS_TESTING} close-all")))
+
+; TODO: fix text size of poweropt labels
+; (they're a bit too big?)
 
 (defwindow poweropts
            :monitor 1

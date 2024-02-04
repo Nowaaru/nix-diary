@@ -61,7 +61,7 @@ in {
 
     # Stuff to run every reload.
     exec = [
-      "eww open topbar --restart"
+      "eww close topbar; eww open topbar --restart"
     ];
 
     # Background manager.

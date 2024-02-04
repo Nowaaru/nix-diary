@@ -1,3 +1,6 @@
+# TODO: holy shit just
+# remove all of these and start
+# using Folder/Default.nix
 {...}: {
   imports = [
     # The specifics, baby!
@@ -41,5 +44,6 @@
     ./Miscellaneous/disk.nix
     ./Miscellaneous/obs.nix
     ./Miscellaneous/dir.nix
+    ./Miscellaneous/qol.nix
   ];
 }
