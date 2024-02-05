@@ -31,7 +31,8 @@
     builtins.trace t t;
 in {
   imports = [
-    ./sys.nix
+    ./fuzzel.nix
+    ./eww.nix
   ];
 
   wayland.windowManager.hyprland = {
@@ -45,11 +46,27 @@ in {
 
   home = {
     packages = with pkgs; [
+      # dependencies 'n stuff.
       xdg-desktop-portal-hyprland
       xwaylandvideobridge
       wlr-randr
 
       ps
+
+      # hypr
+      hyprdim
+      swww
+
+      # sway
+      swayidle
+      swaylock-effects
+
+      # eyecandy
+      dunst
+
+      # utilities
+      font-awesome
+      wlogout
     ];
 
     activation = {
