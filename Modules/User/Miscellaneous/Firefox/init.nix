@@ -30,6 +30,7 @@ in {
         id = 0;
         name = "Noire";
 
+        /*
         search = {
           default = "Google";
         };
@@ -41,6 +42,7 @@ in {
             id = 1;
           };
         };
+        */
 
         isDefault = true;
         settings = import ./preferences.nix {
