@@ -70,15 +70,18 @@ if test "$XDG_SESSION_TYPE" != "wayland"
 	printf "ERROR: expected session type 'wayland', got '%s'" $XDG_SESSION_TYPE
 end
 
-# set -l slurp_output (slurp -d) # -d for only print dimensions
-# echo (wl-paste -p)
-set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"')
-set slurp_status $status
+# Freeze the screen on exec.
+set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"') & hyprpicker -z -r -n > /dev/null \
+    & set hyprpicker_pid $last_pid\
+    & disown $hyprpicker_pid\
 
+kill $hyprpicker_pid;
+
+set slurp_status $status
 string match -rg "(?<w>\d+)x(?<h>\d+)" $slurp_out
 
 echo "status:" $slurp_status
-if [ \( $slurp_status -eq 1 \) ]
+if [ \( -z "$w" -o -z "$h" \) -o \( $slurp_status -eq 1 \) ]
     dunstify "Selection was cancelled."
     return 1;
 end
@@ -109,5 +112,5 @@ dunstify -a "Screenshot - $filename"\
          -r $__dunst_screenshot_id "Screenshot saved." \
          -i "$grim_out_dir" \
                             \
-         --action "default,Dismiss" --action "delete,Delete"
-return 1
+         --action "default,Dismiss" --action "delete,Delete" & disown;
+return 0

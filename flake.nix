@@ -36,6 +36,7 @@
 
     lanzaboote.url = "github:nix-community/lanzaboote";
     hyprland.url = "github:hyprwm/Hyprland";
+    hyprpicker.url = "github:hyprwm/hyprpicker";
     xdg-desktop-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
   };
 
@@ -46,6 +47,7 @@
     home-manager,
     nixpkgs,
     lanzaboote,
+    hyprpicker,
     nur,
     ...
   } @ inputs: let
@@ -54,6 +56,7 @@
     pkgs = import nixpkgs {
       inherit system;
       overlays = [
+        hyprpicker.overlays.default
         (final: _: {
           neovim = neovim-flake.packages.${system}.maximal.extendConfiguration {
             modules = [(import ./Config/Neovim {inherit lib;})];

@@ -54,6 +54,7 @@ in {
       ps
 
       # hypr
+      hyprpicker
       hyprdim
       swww
 
