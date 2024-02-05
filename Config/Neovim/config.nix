@@ -20,6 +20,6 @@ with lib; {
     };
 
     keys.whichKey.enable = mkForce true;
-    theme.name = mkForce "dracula-nvim";
+    theme.name = mkForce "onedark";
   };
 }
