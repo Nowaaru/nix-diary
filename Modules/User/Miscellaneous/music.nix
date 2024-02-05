@@ -1,8 +1,7 @@
-{ pkgs, ... }:
-{
-    home.packages = with pkgs; [
-        spotify-player
-        pulsemixer
-        catnip
-    ];
+{pkgs, ...}: {
+  home.packages = with pkgs; [
+    pulsemixer
+    ncspot
+    catnip
+  ];
 }
