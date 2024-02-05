@@ -1,39 +1,62 @@
-Dear, Diary...
----
+## Dear, Diary...
 
 A repository for my Nix shenanigans.
 Need a to-do because I keep forgetting
 what I was on about.
 
-- [ ] (CURRENT) Manage LazyVim plugins.
-  - Dropped the idea to manage this purely from Nix
-  because the documentation regarding Neovim's options are
-  about as present as my father.
-  Probably the most likely reason for me to not
-  touch this repo for a few months.
+- [ ] Configure neovim flake.
+
+  - I decided against using the jank
+    LazyVim copy-to-share `~/.config`.
+    I wonder if this costs me in customizability though...
+
+- [ ] Configure default firefox profile
+
+  - [ ] Configure userchrome based off of
+        the theme
 
 - [ ] Implement a screen recording solution.
-  - 'Nuff said. Might look into asciinema for
-  terminal solutions and gpu-screen-recorder
-  for desktop.
 
-- [x] Add window rules to enable tearing on full-screen
-applications.
-  - Turns out that tearing with double buffering is a feat
-  that Linux doesn't like. Seems like it's a "deal with it and 
-  wait" problem.
+  - 'Nuff said. Might look into asciinema for
+    terminal solutions and gpu-screen-recorder
+    for desktop.
+
+- [ ] Extract theming system into a different
+      flake.
+
+  - Problem with such a fragmented configuration is that
+    Nix seemingly doesn't have a path shortcut for the
+    flake root.
+
+- [ ] Apply current theme to screenshot tool
 
 - [ ] Fix Roblox Studio + Wayland mouse acceleration problem.
-  - Supposedly "fixed" in Wine 9.0-rc2, but Vinegar uses a patched
-  Wine 9.0-rc1. Could just up and yoink the patches from the source but
-  laziness is a vice.
 
-- [ ] Install Rojo.
+  - Supposedly "fixed" in Wine 9.0-rc2, but Vinegar uses a patched
+    Wine 9.0-rc1. Could just up and yoink the patches from the source but
+    laziness is a vice.
+
+- [x] Install video editor
+
+  - Kdenlive will probably do.
+
+- [x] Make screenshot script freeze the screen
+
+- [x] Install [neovim-flake](https://github.com/jordanisaacs/neovim-flake)
+
+- [x] Add window rules to enable tearing on full-screen
+      applications.
+
+  - Turns out that tearing with double buffering is a feat
+    that Linux doesn't like. Seems like it's a "deal with it and
+    wait" problem.
+
+- [x] Install Rojo.
+
   - Need this for Roblox development. Probably.
 
-- [ ] Personalize Waybar (or just use Eww)
-  - Unsure which one is nicer regarding workflow and looks; the former
-  probably being prioritized.
+- [x] Personalize Waybar (or just use Eww)
 
-- [ ] Personalize LazyVim 
-  - I am going to cry.
+  - Ended up sticking with Eww because waybar has
+    layering problems and doesn't play well with follow-mouse
+    on hyprland. Siiiigh.
