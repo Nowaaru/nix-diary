@@ -18,6 +18,15 @@
     };
     */
 
+    /*
+    agenix
+    */
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.darwin.follows = ""; # please god i pray that not a single mac user sees this config option
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,12 +51,13 @@
 
   outputs = {
     self,
-    neovim-flake,
-    nix-colors,
-    home-manager,
     nixpkgs,
+    neovim-flake,
+    home-manager,
+    nix-colors,
     lanzaboote,
     hyprpicker,
+    agenix,
     nur,
     ...
   } @ inputs: let
@@ -75,13 +85,20 @@
         specialArgs = {inherit inputs;};
         modules = [
           lanzaboote.nixosModules.lanzaboote
+          agenix.nixosModules.default
+          {
+            environment.systemPackages = [agenix.packages.${system}.default];
+          }
           ./Core/configuration.nix
         ];
       };
 
       wslastation = lib.nixosSystem {
         specialArgs = {inherit inputs;};
-        modules = [./Core/configuration-wsl.nix];
+        modules = [
+          agenix.nixosModules.default
+          ./Core/configuration-wsl.nix
+        ];
       };
     };
 
