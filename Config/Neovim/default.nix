@@ -366,7 +366,7 @@ in {
     /*
     Cool notifications.
     */
-    notify.nvim-notify.enable = {
+    notify.nvim-notify = {
       enable = mkDefault true;
     };
 
