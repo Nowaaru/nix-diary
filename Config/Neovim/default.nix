@@ -278,7 +278,7 @@ in {
     visuals.indentBlankline = {
       enable = mkDefault true;
       fillChar = " ";
-      scope.enabled = true;
+      scope.enabled = mkDefault true;
     };
 
     /*
@@ -361,6 +361,17 @@ in {
     statusline.lualine = {
       enable = mkDefault true;
       icons.enable = mkDefault true;
+    };
+
+    /*
+    Cool notifications.
+    */
+    notify.nvim-notify.enable = {
+      enable = mkDefault true;
+    };
+
+    notes.todo-comments = {
+      enable = mkDefault true;
     };
 
     # Tabline, formally known as the
@@ -624,19 +635,22 @@ in {
     };
     maps = {
       normal = {
-        gk = {
+        # Swap gk & gj with k and j
+        # for easier navigation thru
+        # word-wrapped lines.
+        gk = mkDefault {
           silent = true;
           action = "k";
         };
-        gj = {
+        gj = mkDefault {
           silent = true;
           action = "j";
         };
-        k = {
+        k = mkDefault {
           silent = true;
           action = "gk";
         };
-        j = {
+        j = mkDefault {
           silent = true;
           action = "gj";
         };
