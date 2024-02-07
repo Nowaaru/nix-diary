@@ -10,6 +10,13 @@ what I was on about.
     LazyVim copy-to-share `~/.config`.
     I wonder if this costs me in customizability though...
 
+  - [ ] Implement Nix code action to change between `mkDefault` 
+    and `mkForce` options interchangeably.
+
+- [ ] Implement `agenix`.
+
+  - I am in despair.
+
 - [ ] Configure default firefox profile
 
   - [ ] Configure userchrome based off of
