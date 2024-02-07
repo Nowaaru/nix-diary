@@ -3,10 +3,7 @@
   config,
   pkgs,
   ...
-}: let
-  selfTrace = a:
-    builtins.trace (builtins.toJSON a) a;
-in {
+}: {
   home.packages = with pkgs; [
     librewolf
   ];
@@ -25,6 +22,7 @@ in {
           inherit config inputs pkgs;
         };
       };
+
     profiles = {
       noire = {
         id = 0;
@@ -56,5 +54,9 @@ in {
         };
       };
     };
+
+    nativeMessagingHosts = [
+      pkgs.tridactyl-native
+    ];
   };
 }
