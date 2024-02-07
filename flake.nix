@@ -11,6 +11,7 @@
     nix-colors.url = "github:misterio77/nix-colors";
     rust-overlay.url = "github:oxalica/rust-overlay";
     nur.url = "github:nix-community/NUR";
+
     /*
     theme-flake-test = {
       url = "path:/home/noire/Documents/nix-flakes/theme.nix";
@@ -36,8 +37,8 @@
     neovim
     */
 
-    neovim-images-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-flake.url = "github:jordanisaacs/neovim-flake";
+    neovim-flake.url = "github:NotAShelf/neovim-flake";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
     home computer things
@@ -67,12 +68,6 @@
       inherit system;
       overlays = [
         hyprpicker.overlays.default
-        (final: _: {
-          neovim = neovim-flake.packages.${system}.maximal.extendConfiguration {
-            modules = [(import ./Config/Neovim {inherit lib;})];
-            pkgs = final;
-          };
-        })
       ];
       config = {
         allowUnfree = true;
