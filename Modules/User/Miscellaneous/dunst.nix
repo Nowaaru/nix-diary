@@ -1,9 +1,11 @@
 {
   pkgs,
   nix-colors,
+  inputs,
   ...
 }: let
-  inherit (import ../Hyprland/conf {inherit pkgs nix-colors;}) theme;
+  inherit (inputs) self;
+  inherit (import "${self}/Config/Hyprland" {inherit pkgs nix-colors;}) theme;
   # dunstThemeSettings = pkgs.lib.attrsets.attrByPath ["programs" "dunst"] defaultDunstTheme theme;
   defaultDunstTheme = {
     global = {

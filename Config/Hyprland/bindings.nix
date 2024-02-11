@@ -3,8 +3,9 @@
   terminal = "kitty";
   browser = "firefox";
   mainMod = "SUPER";
-  menu = "fuzzel -D no";
 
+  menu = "fuzzel -D no";
+  dmenu = "fuzzel -D no --dmenu";
   print_screen = "fish ~/.diary/Config/Fish/clip.fish";
   themeDir = theme.background + "/..";
 in {
@@ -14,6 +15,7 @@ in {
     "${mainMod}, Q, exec, ${terminal}" # Open terminal.
     "${mainMod}, F, exec, ${browser}" # Open browser.
     "${mainMod}, E, exec, ${fileManager}" # Open the file manager.
+    "${mainMod}, V, exec, cliphist list | ${dmenu} | cliphist decode | wl-copy"
 
     "${mainMod}, R, exec, hyprctl reload"
 

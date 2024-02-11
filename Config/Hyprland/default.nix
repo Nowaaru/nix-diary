@@ -7,7 +7,7 @@
 
   mode = "dark";
   theme =
-    (import ../themes {
+    (import ../Themes {
       inherit pkgs nix-colors;
       kind = mode;
     })
@@ -62,6 +62,7 @@ in {
     # Stuff to run every reload.
     exec = [
       "eww open topbar --no-daemonize"
+
       (util.str.applySwayTheme theme)
     ];
 
@@ -73,7 +74,10 @@ in {
         "sww kill; wait $!; swww init"
         "hyprdim"
         "xrandr --output XWAYLAND0"
+
         "wl-paste -p --watch wl-copy -p ''" # disable primary buffer
+        "wl-paste --type text --watch cliphist store" # Stores only text data
+        "wl-paste --type image --watch cliphist store" # Stores only image data
       ]
       ++ [
         "dunst"

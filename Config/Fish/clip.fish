@@ -23,6 +23,10 @@ function window_at_pos
 		set history_id  (echo $window_info | string match -arg "focusHistoryID: (-?\d+)")
 		set position (echo $window_info | string match -arg "at: -?(\d+),-?(\d+)")
 		set dimensions (echo $window_info | string match -arg "size: (\d+),(\d+)")
+
+        # TODO: make this shit 
+        # work even when X and Y is negative
+        # (it doesnt work rn)
 		set window_x $position[1]
 		set window_y $position[2]
 		set window_width $dimensions[1]
@@ -81,6 +85,8 @@ set slurp_status $status
 string match -rg "(?<w>\d+)x(?<h>\d+)" $slurp_out
 
 echo "status:" $slurp_status
+echo "w: $w"
+echo "h: $h"
 if [ \( -z "$w" -o -z "$h" \) -o \( $slurp_status -eq 1 \) ]
     dunstify "Selection was cancelled."
     return 1;

@@ -5,11 +5,14 @@
   inputs,
   ...
 }: let
-  hypr-config = import ./conf {
+  flakeRoot = inputs.self;
+  configRoot = "${flakeRoot}/Config/Hyprland";
+
+  hypr-config = import configRoot {
     inherit pkgs nix-colors;
   };
 
-  util = import ./conf/util.nix {
+  util = import "${configRoot}/util.nix" {
     inherit pkgs lib;
   };
 

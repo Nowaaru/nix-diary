@@ -10,17 +10,26 @@ what I was on about.
     LazyVim copy-to-share `~/.config`.
     I wonder if this costs me in customizability though...
 
-  - [ ] Implement Nix code action to change between `mkDefault` 
-    and `mkForce` options interchangeably.
+  - [ ] Implement Nix code action to change between `mkDefault`
+        and `mkForce` options interchangeably.
+
+- [ ] Implement `wlsunset`-based nightlight widget
+      using [`eww`](elkowar/eww).
+
+- [ ] Create custom firefox option-set because
+      the home-manager configuration doesn't work.
 
 - [ ] Implement `agenix`.
 
   - I am in despair.
 
-- [ ] Configure default firefox profile
+- [ ] Configure default firefox profile.
 
   - [ ] Configure userchrome based off of
         the theme
+
+- [ ] Implement a clipboard manager using [`eww`](elkowar/eww)
+      and [`cliphist`](sentriz/cliphist).
 
 - [ ] Implement a screen recording solution.
 
@@ -34,6 +43,9 @@ what I was on about.
   - Problem with such a fragmented configuration is that
     Nix seemingly doesn't have a path shortcut for the
     flake root.
+
+    Today I also learned that `self` refers to the root
+    directory of the flake and not the flake attrset. Huh.
 
 - [ ] Apply current theme to screenshot tool
 

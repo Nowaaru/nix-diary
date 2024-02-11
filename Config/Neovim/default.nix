@@ -5,7 +5,7 @@
   ...
 }: let
   inherit (pkgs) lib;
-  inherit (lib) mkDefault mkForce hm;
+  inherit (lib) mkDefault mkForce;
 
   # read all folders in the ./Modules
   # path, put the filename (extension excluded)
@@ -51,7 +51,9 @@ in {
     mapLeaderSpace = mkDefault true;
 
     # Domain-based options.
-    autocomplete.enable = mkForce true; autocomplete.mappings = { close = mkDefault "<C-e>"; # Binding escape occasionally requires the user to press <Esc> twice. Oh well. complete = mkDefault "<C-Space>"; # Not actually to confirm, only open the autocomplete window.
+    autocomplete.enable = mkForce true;
+    autocomplete.mappings = {
+      close = mkDefault "<C-e>"; # Binding escape occasionally requires the user to press <Esc> twice. Oh well. complete = mkDefault "<C-Space>"; # Not actually to confirm, only open the autocomplete window.
       confirm = mkDefault "<Enter>"; # This one confirms.
 
       # previous = mkDefault "<Tab>";
@@ -277,7 +279,7 @@ in {
     */
     visuals.indentBlankline = {
       enable = mkDefault true;
-      fillChar = " ";
+      fillChar = mkDefault " ";
       scope.enabled = mkDefault true;
     };
 
@@ -335,23 +337,150 @@ in {
       enable = mkDefault true;
     };
 
+    git = {
+      enable = mkDefault true;
+      gitsigns = {
+        enable = mkDefault true;
+        codeActions = mkDefault true;
+
+        mappings = {
+          blameLine = mkDefault "<leader>gb";
+          diffProject = mkDefault "<leader>gD";
+          diffThis = mkDefault "<leader>gd";
+
+          previousHunk = mkDefault "[c";
+          previewHunk = mkDefault "<leader>gp";
+          nextHunk = mkDefault "]c";
+
+          resetHunk = mkDefault "<leader>gr";
+          resetBuffer = mkDefault "<leader>gR";
+
+          stageHunk = mkDefault "<leader>gs";
+          stageBuffer = mkDefault "<leader>gS";
+
+          undoStageHunk = mkDefault "<leader>gu";
+
+          toggleBlame = mkDefault "<leader>gtb";
+          toggleDeleted = mkDefault "<leader>gtd";
+        };
+      };
+    };
     /*
     Filetree.
     */
     filetree.nvimTree = {
       enable = mkForce true;
       disableNetrw = mkForce true;
-      diagnostics.enable = mkDefault true;
+      selectPrompts = mkForce true;
 
-      filesystemWatchers.enable = mkDefault true;
-      actions.useSystemClipboard = mkDefault true;
-      actions.openFile = {
-        eject = mkForce true;
-        quitOnOpen = mkForce true;
+      hijackUnnamedBufferWhenOpening = mkDefault true;
+      hijackCursor = mkDefault true;
+      hijackNetrw = mkDefault true;
+      hijackDirectories = {
+        enable = mkForce true;
+        autoOpen = mkDefault true;
       };
 
-      actions.removeFile = {
-        closeWindow = mkForce true;
+      # Options related to
+      # synchronization.
+      respectBufCwd = mkDefault true; # Automatically change `cwd` based on buffer location
+      updateFocusedFile = {
+        enable = mkDefault true; # Auto-expand folders to the target buffer location.
+        updateRoot = mkDefault true;
+      };
+
+      git = {
+        disableForDirs = mkDefault [];
+        showOnDirs = mkDefault true;
+        showOnOpenDirs = mkDefault true;
+      };
+
+      ui = {
+        confirm.remove = mkDefault true;
+        confirm.trash = mkDefault true;
+      };
+
+      sort.foldersFirst = mkDefault true;
+
+      tab.sync = {
+        open = mkDefault true;
+        close = mkDefault true;
+      };
+
+      diagnostics = {
+        enable = mkDefault true;
+        showOnDirs = mkDefault true;
+        showOnOpenDirs = mkDefault true;
+      };
+
+      filters = {
+        dotfiles = mkDefault true;
+        gitIgnored = mkDefault true;
+
+        exclude = mkDefault [];
+      };
+
+      mappings = {
+        toggle = mkDefault "<leader>e";
+        refresh = mkDefault "<leader>Er";
+        findFile = mkDefault "<leader>Ef";
+      };
+
+      modified = {
+        enable = mkDefault true;
+        showOnDirs = mkDefault false;
+      };
+
+      renderer = {
+        addTrailing = mkDefault true;
+        groupEmpty = mkDefault false;
+        highlightGit = mkDefault true;
+        highlightModified = mkDefault "icon";
+        highlightOpenedFiles = mkDefault "name";
+
+        indentMarkers.enable = mkDefault true;
+        icons = {
+          gitPlacement = mkDefault "signcolumn";
+          modifiedPlacement = mkDefault "signcolumn";
+
+          show = {
+            git = mkDefault true;
+            modified = mkDefault true;
+          };
+        };
+      };
+
+      filesystemWatchers.enable = mkDefault true;
+
+      actions = {
+        useSystemClipboard = mkDefault true;
+
+        openFile = {
+          eject = mkForce true;
+          quitOnOpen = mkForce true;
+        };
+
+        changeDir = {
+          enable = mkForce true;
+          global = mkForce false; # Could cause issues with the nvimTree.syncRootWithCwd option.
+        };
+
+        removeFile = {
+          closeWindow = mkForce true;
+        };
+      };
+    };
+
+    terminal = {
+      toggleterm = {
+        enable = mkDefault true;
+        enable_winbar = mkDefault false; # ...Why would you need this? o_ o
+
+        lazygit = {
+          enable = mkDefault true;
+          direction = mkDefault "float";
+          mappings.open = mkDefault "<leader>gg";
+        };
       };
     };
 
@@ -423,7 +552,7 @@ in {
       lspsaga = {
         enable = mkDefault true;
         mappings = {
-          previewDefinition = mkDefault "<leader>gd";
+          previewDefinition = mkDefault "<leader>cD";
           codeAction = mkDefault "null"; # disabled in favor of nvimCodeActionMenu.
           lspFinder = mkDefault "<leader>lF";
 
@@ -435,7 +564,7 @@ in {
           signatureHelp = mkDefault "<leader>cs";
           rename = mkDefault "<leader>cr";
 
-          renderHoveredDoc = mkDefault "<leader>K";
+          renderHoveredDoc = mkDefault "K";
         };
       };
 
@@ -638,21 +767,51 @@ in {
         # Swap gk & gj with k and j
         # for easier navigation thru
         # word-wrapped lines.
+        
+        /*
+        "<leader>C" = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault ":Cheatsheet";
+        };
+
+        "<C-h>" = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault "5<C-w>-";
+        };
+
+        "<C-l>" = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault "5<C-w>+";
+        };
+        */
+
+        /*
+        H = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault ":bp<cr>";
+        };
+
+        L = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault ":bn<cr>";
+        };
+        */
+
         gk = mkDefault {
-          silent = true;
-          action = "k";
+          silent = mkDefault true;
+          action = mkDefault "k";
         };
         gj = mkDefault {
-          silent = true;
-          action = "j";
+          silent = mkDefault true;
+          action = mkDefault "j";
         };
         k = mkDefault {
-          silent = true;
-          action = "gk";
+          silent = mkDefault true;
+          action = mkDefault "gk";
         };
         j = mkDefault {
-          silent = true;
-          action = "gj";
+          silent = mkDefault true;
+          action = mkDefault "gj";
         };
       };
     };
