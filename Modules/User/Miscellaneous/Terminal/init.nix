@@ -15,6 +15,7 @@
         page
         glow
 
+        lsd
     ];
 
     programs.starship = {

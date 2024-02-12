@@ -1,4 +1,8 @@
-_: {
+{ pkgs, ... }: {
+  home.shellAliases = {
+    ls = "${pkgs.lsd}/bin/lsd";
+  };
+
   programs.fish = {
     enable = true;
     # useBabelfish = true;
