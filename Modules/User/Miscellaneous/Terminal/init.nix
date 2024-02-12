@@ -12,6 +12,8 @@
 		page
 		glow
 	];
+        asciinema-agg
+        asciinema
 
     programs.starship = {
         settings = import ./starship.nix { inherit pkgs; };
