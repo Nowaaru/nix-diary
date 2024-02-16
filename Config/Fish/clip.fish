@@ -82,11 +82,11 @@ set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"') & hyprpicker -z -r -n
 kill $hyprpicker_pid;
 
 set slurp_status $status
-string match -rg "(?<w>\d+)x(?<h>\d+)" $slurp_out
+string match -rg "(?<w>\d+)x(?<h>\d+)" -- $slurp_out
 
-echo "status:" $slurp_status
-echo "w: $w"
-echo "h: $h"
+# echo "status:" $slurp_status
+# echo "w: $w"
+# echo "h: $h"
 if [ \( -z "$w" -o -z "$h" \) -o \( $slurp_status -eq 1 \) ]
     dunstify "Selection was cancelled."
     return 1;
