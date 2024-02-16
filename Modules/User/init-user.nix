@@ -25,6 +25,7 @@
     ./Programming/rust.nix
     ./Programming/dotnet.nix
     ./Programming/roblox.nix
+    ./Programming/lua.nix
 
     ./Programming/formatters.nix
 

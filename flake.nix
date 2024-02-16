@@ -102,6 +102,7 @@
       extraSpecialArgs = {inherit inputs nix-colors;};
       modules = [
         nur.nixosModules.nur
+        neovim-flake.homeManagerModules.default
         ./home.nix
       ];
     };

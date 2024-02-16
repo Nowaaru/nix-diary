@@ -2,34 +2,71 @@
   profile ? "default",
   inputs,
   pkgs,
+  lib,
   ...
 }: let
-  inherit (pkgs) lib;
   inherit (lib) mkDefault mkForce;
+  inherit (inputs.neovim-flake.lib.nvim) dag;
+
+  resizeHeight = 2;
+  no = ''<cmd>echo "You can't do that."<cr>'';
 
   # read all folders in the ./Modules
   # path, put the filename (extension excluded)
   # inside of the folder and merge to vim attrset
-  /*
-  modules = with lib; let
-        profilesDir = ./Profiles/${profile}.nix;
-    in
-        if trivial.warnIfNot (builtins.pathExists profilesDir) "directory '${profilesDir} does not exist." true then
-            attrsets.concatMapAttrs ()
-                (builtins.readDir ${profilesDir}/Modules)
-        else {};
-  */
-  selfTrace = a: builtins.trace a a;
+  st = w: builtins.trace w w;
   util = import ./util.nix {inherit lib;};
   keys = import ./keys.nix {inherit lib;};
   config = import ./config.nix {
     inherit inputs pkgs;
+  };
+  autocmds = import ./autocmds {
+    inherit lib dag;
   };
 in {
   vim = rec {
     # Aliases. You should probably keep these enabled.
     viAlias = mkForce true;
     vimAlias = mkForce true;
+
+    # RCs.
+    luaConfigRC = {} // autocmds;
+    configRC = {};
+
+    # plugins.
+    extraPlugins = with pkgs.vimPlugins; {
+      smart-splits = {
+        package = smart-splits-nvim;
+        setup = ''
+          require('smart-splits').setup {
+            resize_mode = {
+              hooks = {
+                on_leave = require('bufresize').register;
+              };
+            };
+          };
+        '';
+      };
+
+      legendary = {
+        package = legendary-nvim;
+        setup = ''
+          require('legendary').setup {};
+        '';
+      };
+
+      consistent-buffer-size = {
+        package = pkgs.fetchFromGitHub {
+          owner = "kwkarlwang";
+          repo = "bufresize.nvim";
+          rev = "3b19527ab936d6910484dcc20fb59bdb12322d8b";
+          sha256 = "sha256-6jqlKe8Ekm+3dvlgFCpJnI0BZzWC3KDYoOb88/itH+g=";
+        };
+        setup = ''
+          require('bufresize').setup();
+        '';
+      };
+    };
 
     # Generic options.
     autoIndent = mkDefault true;
@@ -457,7 +494,7 @@ in {
 
         openFile = {
           eject = mkForce true;
-          quitOnOpen = mkForce true;
+          # quitOnOpen = mkForce true; /* ends up being more of a hassle than one would think... */
         };
 
         changeDir = {
@@ -532,7 +569,7 @@ in {
         goToDefinition = mkDefault "gd";
         goToType = mkDefault "gt";
 
-        hover = mkDefault "null";
+        hover = mkDefault "<Nop>";
       };
 
       null-ls = {
@@ -553,7 +590,7 @@ in {
         enable = mkDefault true;
         mappings = {
           previewDefinition = mkDefault "<leader>cD";
-          codeAction = mkDefault "null"; # disabled in favor of nvimCodeActionMenu.
+          codeAction = mkDefault "<Nop>"; # disabled in favor of nvimCodeActionMenu.
           lspFinder = mkDefault "<leader>lF";
 
           previousDiagnostic = mkDefault "[";
@@ -652,7 +689,7 @@ in {
     binds = {
       # Show a cheatsheet. Very, very good and
       # highly recommended for beginners.
-      cheatsheet.enable = mkDefault true;
+      # cheatsheet.enable = mkDefault true;
 
       # Show key guide on <leader>.
       whichKey.enable = mkDefault true;
@@ -763,57 +800,111 @@ in {
       };
     };
     maps = {
-      normal = {
-        # Swap gk & gj with k and j
-        # for easier navigation thru
-        # word-wrapped lines.
-        
-        /*
-        "<leader>C" = mkDefault {
+      insert = {
+        "<esc>" = {
           silent = mkDefault true;
-          action = mkDefault ":Cheatsheet";
-        };
-
-        "<C-h>" = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault "5<C-w>-";
-        };
-
-        "<C-l>" = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault "5<C-w>+";
-        };
-        */
-
-        /*
-        H = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault ":bp<cr>";
-        };
-
-        L = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault ":bn<cr>";
-        };
-        */
-
-        gk = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault "k";
-        };
-        gj = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault "j";
-        };
-        k = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault "gk";
-        };
-        j = mkDefault {
-          silent = mkDefault true;
-          action = mkDefault "gj";
+          action = "<esc>:noh<cr><esc>";
         };
       };
+
+      normal = let
+        require = what: index: "require('${what}').${index}";
+        resize = direction: ''
+          function()
+            ${require "smart-splits" "resize_${direction}(${builtins.toString resizeHeight})"}
+          end
+        '';
+
+        mkLuaBinding = key: action: desc:
+          lib.mkIf (key != null) {
+            "${key}" = {
+              inherit action desc;
+              lua = true;
+              silent = true;
+            };
+          };
+      in
+        lib.mkMerge [
+          (mkLuaBinding "<C-k>" (resize "up") "Resize up.")
+          (mkLuaBinding "<C-j>" (resize "down") "Resize down.")
+          (mkLuaBinding "<C-h>" (resize "left") "Resize left.")
+          (mkLuaBinding "<C-l>" (resize "right") "Resize right.")
+
+          {
+            "<Up>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault no;
+            };
+
+            "<Down>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault no;
+            };
+
+            "<Left>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault no;
+            };
+
+            "<Right>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault no;
+            };
+
+            "<leader>L" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault ":Legendary<cr>";
+              desc = "Open Legendary";
+            };
+
+            "<C-Left>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault ":wincmd h<cr>";
+            };
+
+            "<C-Right>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault ":wincmd l<cr>";
+            };
+
+            "<C-Up>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault ":wincmd k<cr>";
+            };
+
+            "<C-Down>" = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault ":wincmd j<cr>";
+            };
+
+            H = mkDefault {
+              silent = mkDefault true;
+              action = "<cmd>BufferLineCyclePrev<cr>";
+            };
+
+            L = mkDefault {
+              silent = mkDefault true;
+              action = "<cmd>BufferLineCycleNext<cr>";
+            };
+
+            gk = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault "k";
+            };
+            gj = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault "j";
+            };
+            k = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault "gk";
+            };
+            j = mkDefault {
+              silent = mkDefault true;
+              action = mkDefault "gj";
+            };
+          }
+        ];
     };
   };
 }

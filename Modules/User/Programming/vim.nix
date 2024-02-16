@@ -1,17 +1,21 @@
 {
   pkgs,
   inputs,
-  home-manager,
+  lib,
+  # home-manager,
   ...
 }: let
   selfTrace = what:
     builtins.trace what what;
 in {
-  imports = [inputs.neovim-flake.homeManagerModules.default];
+ home.packages = with pkgs; [
+  lua
+ ];
+
   programs.neovim-flake = {
     enable = true;
     settings = import (inputs.self + /Config/Neovim) {
-      inherit pkgs inputs;
+      inherit pkgs lib inputs;
     }; # bruh?
   };
 
