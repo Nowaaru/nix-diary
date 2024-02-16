@@ -4,7 +4,7 @@ A repository for my Nix shenanigans.
 Need a to-do because I keep forgetting
 what I was on about.
 
-- [ ] Configure neovim flake.
+- [x] Configure neovim flake.
 
   - I decided against using the jank
     LazyVim copy-to-share `~/.config`.
@@ -12,6 +12,12 @@ what I was on about.
 
   - [ ] Implement Nix code action to change between `mkDefault`
         and `mkForce` options interchangeably.
+
+  - [ ] Make keybind setting system less stinky.
+
+    - Maybe I can try a `folder` function, e.g.
+      `(folder "Miscellaneous" (nnoremap [...]))` or `(folder "Telescope" (folder "Git" (nnoremap [...])))`.
+      Yeah. That sounds good.
 
 - [ ] Implement `wlsunset`-based nightlight widget
       using [`eww`](elkowar/eww).
@@ -49,6 +55,8 @@ what I was on about.
 
 - [ ] Apply current theme to screenshot tool
 
+- [ ] Implement right-click to cancel screenshot tool.
+
 - [ ] Fix Roblox Studio + Wayland mouse acceleration problem.
 
   - Supposedly "fixed" in Wine 9.0-rc2, but Vinegar uses a patched
@@ -61,7 +69,7 @@ what I was on about.
 
 - [x] Make screenshot script freeze the screen
 
-- [x] Install [neovim-flake](https://github.com/jordanisaacs/neovim-flake)
+- [x] Install [neovim-flake](https://github.om/jordanisaacs/neovim-flake)
 
 - [x] Add window rules to enable tearing on full-screen
       applications.
