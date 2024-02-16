@@ -648,6 +648,35 @@ in {
     */
     telescope = {
       enable = mkForce true;
+      mappings = {
+        open = mkDefault "<leader>tt";
+        buffers = mkDefault "<leader>tb";
+        diagnostics = mkDefault "<leader>tld";
+
+        findFiles = mkDefault "<leader>ff";
+        findProjects = mkDefault "<leader>fp";
+
+        gitBranches = mkDefault "<leader>GB";
+        gitBufferCommits = mkDefault "<leader>Gc";
+
+        gitCommits = mkDefault "<leader>GC";
+        gitStash = mkDefault "<leader>GS";
+
+        gitStatus = mkDefault "<leader>Gs";
+        helpTags = mkDefault "<leader>Gt";
+        liveGrep = mkDefault "<leader>Gg";
+
+        lspTypeDefinitions = mkDefault "<leader>Ld";
+        lspDefinitions = mkDefault "<leader>LD";
+
+        lspReferences = mkDefault "<leader>Lr";
+        lspImplementations = mkDefault "<leader>Li";
+
+        lspDocumentSymbols = mkDefault "<leader>Ls";
+        lspWorkspaceSymbols = mkDefault "<leader>LS";
+
+        treesitter = mkDefault "<leader><leader>t";
+      };
     };
 
     /*
@@ -799,13 +828,41 @@ in {
         enable = mkDefault true;
       };
     };
-    maps = {
+    maps = let
+      windowMovementCommands = {
+        "<C-Left>" = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault "<cmd>wincmd h<cr>";
+        };
+
+        "<C-Right>" = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault "<cmd>wincmd l<cr>";
+        };
+
+        "<C-Up>" = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault "<cmd>wincmd k<cr>";
+        };
+
+        "<C-Down>" = mkDefault {
+          silent = mkDefault true;
+          action = mkDefault "<cmd>wincmd j<cr>";
+        };
+      };
+    in {
       insert = {
-        "<esc>" = {
+        "<esc>" = mkDefault {
           silent = mkDefault true;
           action = "<esc>:noh<cr><esc>";
         };
       };
+
+      terminal = lib.mkMerge [
+        windowMovementCommands
+        {
+        }
+      ];
 
       normal = let
         require = what: index: "require('${what}').${index}";
@@ -814,7 +871,6 @@ in {
             ${require "smart-splits" "resize_${direction}(${builtins.toString resizeHeight})"}
           end
         '';
-
         mkLuaBinding = key: action: desc:
           lib.mkIf (key != null) {
             "${key}" = {
@@ -825,11 +881,41 @@ in {
           };
       in
         lib.mkMerge [
+          windowMovementCommands
+
           (mkLuaBinding "<C-k>" (resize "up") "Resize up.")
           (mkLuaBinding "<C-j>" (resize "down") "Resize down.")
           (mkLuaBinding "<C-h>" (resize "left") "Resize left.")
           (mkLuaBinding "<C-l>" (resize "right") "Resize right.")
+          {
+            "<leader>f" = mkDefault {
+              action = "<Nop>";
+              desc = mkDefault "File";
+            };
 
+            "<leader>fs" = mkDefault {
+              action = "<cmd>w<cr>";
+              desc = mkDefault "Save File";
+            };
+
+            "<leader>fc" = mkDefault {
+              action = "<cmd>bd<cr>";
+              silent = mkDefault true;
+              desc = mkDefault "Close File";
+            };
+
+            "<leader>ft" = mkDefault {
+              action = mkDefault ''<cmd>ToggleTerm direction="float"<cr>'';
+              silent = mkDefault true;
+              desc = mkDefault "Open Floating Terminal";
+            };
+
+            "<leader>fT" = mkDefault {
+              action = mkDefault ''<cmd>ToggleTerm<cr>'';
+              silent = mkDefault true;
+              desc = mkDefault "Open Terminal";
+            };
+          }
           {
             "<Up>" = mkDefault {
               silent = mkDefault true;
@@ -850,33 +936,19 @@ in {
               silent = mkDefault true;
               action = mkDefault no;
             };
-
-            "<leader>L" = mkDefault {
+          }
+          {
+            "<leader><leader>" = mkDefault {
+              action = "<Nop>";
+              desc = "Miscellaneous";
+            };
+            "<leader><leader>L" = mkDefault {
               silent = mkDefault true;
-              action = mkDefault ":Legendary<cr>";
+              action = mkDefault "<cmd>Legendary<cr>";
               desc = "Open Legendary";
             };
-
-            "<C-Left>" = mkDefault {
-              silent = mkDefault true;
-              action = mkDefault ":wincmd h<cr>";
-            };
-
-            "<C-Right>" = mkDefault {
-              silent = mkDefault true;
-              action = mkDefault ":wincmd l<cr>";
-            };
-
-            "<C-Up>" = mkDefault {
-              silent = mkDefault true;
-              action = mkDefault ":wincmd k<cr>";
-            };
-
-            "<C-Down>" = mkDefault {
-              silent = mkDefault true;
-              action = mkDefault ":wincmd j<cr>";
-            };
-
+          }
+          {
             H = mkDefault {
               silent = mkDefault true;
               action = "<cmd>BufferLineCyclePrev<cr>";
@@ -886,7 +958,8 @@ in {
               silent = mkDefault true;
               action = "<cmd>BufferLineCycleNext<cr>";
             };
-
+          }
+          {
             gk = mkDefault {
               silent = mkDefault true;
               action = mkDefault "k";
