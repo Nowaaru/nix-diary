@@ -2,13 +2,10 @@
   lib,
   dag,
 }: let
-  selfTrace = w:
-    builtins.trace (builtins.toJSON w) w;
-
   autocmdsDir = ./.;
 in
   with lib.attrsets;
-    selfTrace (foldlAttrs (
+   (foldlAttrs (
         a: k: v:
           if (hasAttrByPath [k] a)
           then abort "autocommand ${k} already exists"
