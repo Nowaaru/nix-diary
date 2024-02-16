@@ -472,7 +472,7 @@ in {
         addTrailing = mkDefault true;
         groupEmpty = mkDefault false;
         highlightGit = mkDefault true;
-        highlightModified = mkDefault "icon";
+        # highlightModified = "icon";
         highlightOpenedFiles = mkDefault "name";
 
         indentMarkers.enable = mkDefault true;
