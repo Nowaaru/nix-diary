@@ -8,10 +8,6 @@
   selfTrace = what:
     builtins.trace what what;
 in {
- home.packages = with pkgs; [
-  lua
- ];
-
   programs.neovim-flake = {
     enable = true;
     settings = import (inputs.self + /Config/Neovim) {

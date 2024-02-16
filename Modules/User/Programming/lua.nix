@@ -1,6 +1,6 @@
 {pkgs, ...}: let
   luaPackages = with pkgs.luajitPackages; [
-    image-nvim-
+    image-nvim
     luarocks
     magick
   ];
