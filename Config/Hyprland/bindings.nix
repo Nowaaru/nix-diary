@@ -8,6 +8,7 @@
   dmenu = "fuzzel -D no --dmenu";
   print_screen = "fish ~/.diary/Config/Fish/clip.fish";
   themeDir = theme.background + "/..";
+
 in {
   bind = [
     ###############################
@@ -15,7 +16,9 @@ in {
     "${mainMod}, Q, exec, ${terminal}" # Open terminal.
     "${mainMod}, F, exec, ${browser}" # Open browser.
     "${mainMod}, E, exec, ${fileManager}" # Open the file manager.
+
     "${mainMod}, V, exec, cliphist list | ${dmenu} | cliphist decode | wl-copy"
+    "${mainMod} SHIFT, V, exec, cliphist wipe & dunstify 'Clipboard cleared.'"
 
     "${mainMod}, R, exec, hyprctl reload"
 
