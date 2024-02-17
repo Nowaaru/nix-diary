@@ -1,10 +1,12 @@
-# do not write this file
-#
-# you will break it more
-# than it is already broken now
-# will deny any PRs made to this file
+# please no unnecessary PRs
+
+# at this point you probably wont even break it
+# but LORD i don't want to deal with the confusion
+# if it does break
+
+# Pain
 {
-  description = "Noire's nonfunctional user flake.";
+  description = "noire's nonfunctional user flake.";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -13,11 +15,9 @@
     nur.url = "github:nix-community/NUR";
 
     /*
-    theme-flake-test = {
-      url = "path:/home/noire/Documents/nix-flakes/theme.nix";
-      flake = true;
-    };
+    stylix
     */
+    stylix.url = "github:danth/stylix";
 
     /*
     agenix
@@ -28,6 +28,9 @@
       inputs.darwin.follows = ""; # please god i pray that not a single mac user sees this config option
     };
 
+    /*
+    home-manager 
+    */
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,14 +39,12 @@
     /*
     neovim
     */
-
     neovim-flake.url = "github:NotAShelf/neovim-flake";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
     home computer things
     */
-
     lanzaboote.url = "github:nix-community/lanzaboote";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprpicker.url = "github:hyprwm/hyprpicker";
