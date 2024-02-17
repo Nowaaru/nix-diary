@@ -1,5 +1,6 @@
 set -Ux SCREENSHOT_DIR $XDG_PICTURES_DIR/Screenshots
 set -Ux SCREENSHOT_TOOL "slurp"
+set -Ux IS_CLIPPING 0
 
 # Returns: title, initialTitle, initialClass
 function window_at_pos
@@ -59,64 +60,110 @@ function window_at_pos
 	echo -e (string join "\n" $passlist[2..(count $passlist)])
 end
 
-set -Ux __dunst_screenshot_id 85612
-set date (date "+%Y.%m.%d - %R %Z")
-if test ! -e $SCREENSHOT_DIR
-	echo "error: screenshot directory [$SCREENSHOT_DIR] does not exist"
-	return 1
+function kill_screenshot
+    if [ -n "$IS_CLIPPING" ]
+        if [ $IS_CLIPPING -gt 0 ]
+            killall -q $SCREENSHOT_TOOL;
+            return 0
+        end
+    end
+
+    return 1
 end
 
-if test ! -d $SCREENSHOT_DIR
-	echo "error: screenshot directory [$SCREENSHOT_DIR] is not a directory"
-	return 1
+function start_screenshot
+    if [ -z "$__dunst_screenshot_id" ]
+        set -Ux __dunst_screenshot_id 85612
+    end
+
+    if [ -n "$IS_CLIPPING" ]
+        if [ $IS_CLIPPING -gt 0 ]
+            set errormsg "Already in screen-capture mode."
+            status --is-interactive; and echo $errormsg; or dunstify $errormsg & disown;
+
+            return 1
+        end
+    else
+        set -Ux IS_CLIPPING 1
+    end
+
+    set date (date "+%Y.%m.%d - %R %Z")
+    if test ! -e $SCREENSHOT_DIR
+        echo "error: screenshot directory [$SCREENSHOT_DIR] does not exist"
+        return 1
+    end
+
+    if test ! -d $SCREENSHOT_DIR
+        echo "error: screenshot directory [$SCREENSHOT_DIR] is not a directory"
+        return 1
+    end
+    if test "$XDG_SESSION_TYPE" != "wayland"
+        printf "ERROR: expected session type 'wayland', got '%s'" $XDG_SESSION_TYPE
+    end
+
+    # Freeze the screen on exec.
+    hyprpicker -zrn > /dev/null \
+        & set -Ux hyprpicker_pid $last_pid\
+        & disown $hyprpicker_pid
+
+    # this seems to work? :thonk:
+    wait & sleep 0.25 & wait;
+    set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"') & wait;
+
+    kill $hyprpicker_pid
+    set -Ue $hyprpicker_pid
+
+    set slurp_status $status
+    string match -rg "(?<w>\d+)x(?<h>\d+)" -- $slurp_out
+
+    # echo "status:" $slurp_status
+    # echo "w: $w"
+    # echo "h: $h"
+    if [ \( -z "$w" -o -z "$h" \) -o \( $slurp_status -eq 1 \) ]
+        dunstify "Selection was cancelled." & kill_screenshot;
+        return 1
+    end
+
+    if [ (math "$w * $h") -lt 25 ] 
+        dunstify "Selection was smaller than 25 pixels." & kill_screenshot;
+        return 1
+    end
+
+    set window_at_pos (window_at_pos)
+    set class $window_at_pos[2]
+    set title $window_at_pos[3]
+    if test -z "$title"
+        set title "unknown"
+    end
+    if test -z "$class"
+        set class "unknown"
+    end
+
+    kill_screenshot;
+    set ext "png"
+    # echo $slurp_out | grim -
+    set filename (printf "Screenshot [%s | %s] $date" $window_at_pos[3] $window_at_pos[2])
+    # echo $filename
+    set grim_out_dir "$SCREENSHOT_DIR/$filename.$ext"
+    set grim_out (grim -g (echo -e $slurp_out) $grim_out_dir)
+    wl-copy < $grim_out_dir
+    dunstify -a "Screenshot - $filename"\
+             -r $__dunst_screenshot_id "Screenshot saved." \
+             -i "$grim_out_dir" \
+                                \
+             --action "default,Dismiss" --action "delete,Delete" & disown
+    return 0
 end
-if test "$XDG_SESSION_TYPE" != "wayland"
-	printf "ERROR: expected session type 'wayland', got '%s'" $XDG_SESSION_TYPE
+
+if ! status --is-interactive
+    if [ -n "$argv" ]
+        if [ $argv[0] = "--kill" ]
+            kill_screenshot
+            return 0;
+        end
+
+        return 1;
+    else
+        start_screenshot
+    end
 end
-
-# Freeze the screen on exec.
-set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"') & hyprpicker -z -r -n > /dev/null \
-    & set hyprpicker_pid $last_pid\
-    & disown $hyprpicker_pid\
-
-kill $hyprpicker_pid;
-
-set slurp_status $status
-string match -rg "(?<w>\d+)x(?<h>\d+)" -- $slurp_out
-
-# echo "status:" $slurp_status
-# echo "w: $w"
-# echo "h: $h"
-if [ \( -z "$w" -o -z "$h" \) -o \( $slurp_status -eq 1 \) ]
-    dunstify "Selection was cancelled."
-    return 1;
-end
-
-if [ (math "$w * $h") -lt 25 ] 
-    dunstify "Selection was smaller than 25 pixels."
-    return 1;
-end
-
-set window_at_pos (window_at_pos)
-set class $window_at_pos[2]
-set title $window_at_pos[3]
-if test -z "$title"
-	set title "unknown"
-end
-if test -z "$class"
-	set class "unknown"
-end
-
-set ext "png"
-# echo $slurp_out | grim -
-set filename (printf "Screenshot [%s | %s] $date" $window_at_pos[3] $window_at_pos[2])
-# echo $filename
-set grim_out_dir "$SCREENSHOT_DIR/$filename.$ext"
-set grim_out (grim -g (echo -e $slurp_out) $grim_out_dir)
-wl-copy < $grim_out_dir
-dunstify -a "Screenshot - $filename"\
-         -r $__dunst_screenshot_id "Screenshot saved." \
-         -i "$grim_out_dir" \
-                            \
-         --action "default,Dismiss" --action "delete,Delete" & disown;
-return 0

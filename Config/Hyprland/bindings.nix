@@ -30,6 +30,8 @@ in {
     "${mainMod}, F4, exec, eww open --screen 1 poweropts" # System power menu.
     "${mainMod} ALT, E, exec, eww kill"
 
+    ###############################
+    # Global functionality 'n things.
     "${mainMod}, J, togglesplit," # ???
 
     "${mainMod}, SPACE, exec, ${menu}" # Fuzzel.
@@ -37,7 +39,7 @@ in {
     "${mainMod}, V, exec, copyq menu" # Clipboard.
 
     "${mainMod} SHIFT, C, exec, ${print_screen}" # Print screen.
-
+    # ",mouse:273, exec, ${print_screen} --kill,^(slurp)"
     ###############################
     # Window controls.
 
