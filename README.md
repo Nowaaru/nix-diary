@@ -14,7 +14,6 @@ what I was on about.
         and `mkForce` options interchangeably.
 
   - [ ] Make keybind setting system less stinky.
-
     - Maybe I can try a `folder` function, e.g.
       `(folder "Miscellaneous" (nnoremap [...]))` or `(folder "Telescope" (folder "Git" (nnoremap [...])))`.
       Yeah. That sounds good.
