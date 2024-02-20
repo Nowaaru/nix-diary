@@ -5,7 +5,7 @@
   lib,
   ...
 }: let
-  inherit (lib) mkDefault mkForce;
+  inherit (lib) mkDefault mkForce mkOverride;
   inherit (inputs.neovim-flake.lib.nvim) dag;
 
   resizeHeight = 2;
@@ -888,32 +888,32 @@ in {
           (mkLuaBinding "<C-h>" (resize "left") "Resize left.")
           (mkLuaBinding "<C-l>" (resize "right") "Resize right.")
           {
-            "<leader>f" = mkDefault {
-              action = "<Nop>";
-              desc = mkDefault "File";
+            "<leader>f" = mkForce {
+              action = mkForce "<Nop>";
+              desc = mkForce "File";
             };
 
-            "<leader>fs" = mkDefault {
-              action = "<cmd>w<cr>";
-              desc = mkDefault "Save File";
+            "<leader>fs" = mkForce {
+              action = mkForce "<cmd>w<cr>";
+              desc = mkForce "Save File";
             };
 
-            "<leader>fc" = mkDefault {
-              action = "<cmd>bd<cr>";
-              silent = mkDefault true;
-              desc = mkDefault "Close File";
+            "<leader>fc" = mkForce {
+              action = mkForce "<cmd>bd<cr>";
+              silent = mkForce true;
+              desc = mkForce "Close File";
             };
 
-            "<leader>ft" = mkDefault {
-              action = mkDefault ''<cmd>ToggleTerm direction="float"<cr>'';
-              silent = mkDefault true;
-              desc = mkDefault "Open Floating Terminal";
+            "<leader>ft" = mkForce {
+              action = mkForce ''<cmd>ToggleTerm direction="float"<cr>'';
+              silent = mkForce true;
+              desc = mkForce "Open Floating Terminal";
             };
 
-            "<leader>fT" = mkDefault {
-              action = mkDefault ''<cmd>ToggleTerm<cr>'';
-              silent = mkDefault true;
-              desc = mkDefault "Open Terminal";
+            "<leader>fT" = {
+              action = mkForce ''<cmd>ToggleTerm<cr>'';
+              silent = mkForce true;
+              desc = mkForce "Open Terminal";
             };
           }
           {
