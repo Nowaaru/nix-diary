@@ -17,14 +17,13 @@
     ./Social/discord.nix
 
     # Programming utilities and goodies.
-    # ./Programming/LazyVim/init.nix
     ./Programming/Git/init.nix
     ./Programming/vim.nix
+    ./Programming/roblox
 
     ./Programming/node.nix
     ./Programming/rust.nix
     ./Programming/dotnet.nix
-    ./Programming/roblox.nix
     ./Programming/lua.nix
 
     ./Programming/formatters.nix

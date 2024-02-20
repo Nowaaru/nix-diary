@@ -8,7 +8,7 @@
   inputs,
   ...
 }: let
-  kernelPackages = let
+  kernelPackages = /* let
     linux_6_7_1_pkg = {
       fetchurl,
       buildLinux,
@@ -34,8 +34,9 @@
         }
         // (args.argsOverride or {}));
     linux_6_7_1 = pkgs.callPackage linux_6_7_1_pkg {};
+    
   in
-    pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_6_7_1);
+    pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_6_7_1);*/ [];
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -44,9 +45,23 @@ in {
     ../Modules/System/init.nix
   ];
 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16*1024; # 1024mb * 16 = 16gb
+    }
+  ];
+
+  /*
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+  */
+
   # Bootloader.
   boot = {
-    inherit kernelPackages;
+    # inherit kernelPackages;
     bootspec.enable = true;
     initrd.kernelModules = ["nvidia"];
     blacklistedKernelModules = ["noveau"];
