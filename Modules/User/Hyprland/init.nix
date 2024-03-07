@@ -50,7 +50,6 @@ in {
   home = {
     packages = with pkgs; [
       # dependencies 'n stuff.
-      xdg-desktop-portal-hyprland
       xwaylandvideobridge
       wlr-randr
 
