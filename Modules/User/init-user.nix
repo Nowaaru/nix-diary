@@ -34,6 +34,7 @@
 
     ./Miscellaneous/print-screen.nix
     ./Miscellaneous/electron.nix
+    ./Miscellaneous/portals.nix
     ./Miscellaneous/music.nix
     ./Miscellaneous/hydrus.nix
     ./Miscellaneous/audio.nix
