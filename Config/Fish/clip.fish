@@ -101,13 +101,6 @@ function start_screenshot
         printf "ERROR: expected session type 'wayland', got '%s'" $XDG_SESSION_TYPE
     end
 
-    # Freeze the screen on exec.
-    hyprpicker -zrn > /dev/null \
-        & set -Ux hyprpicker_pid $last_pid\
-        & disown $hyprpicker_pid
-
-    # this seems to work? :thonk:
-    wait & sleep 0.25 & wait;
     set slurp_out (eval '$SCREENSHOT_TOOL -odf "%x,%y %wx%h"') & wait;
 
     kill $hyprpicker_pid
