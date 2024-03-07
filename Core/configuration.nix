@@ -45,12 +45,12 @@ in {
     ../Modules/System/init.nix
   ];
 
-  swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 16*1024; # 1024mb * 16 = 16gb
-    }
-  ];
+  # swapDevices = [
+  #   {
+  #     device = "/var/lib/swapfile";
+  #     size = 16*1024; # 1024mb * 16 = 16gb
+  #   }
+  # ];
 
   /*
   zramSwap = {
@@ -143,6 +143,7 @@ in {
 
       # Enable the Cinnamon and Hypr for X11.
       desktopManager.cinnamon.enable = true;
+      desktopManager.xterm.enable = false;
       windowManager.hypr.enable = true;
 
       # Configure keymap in X11
@@ -236,6 +237,8 @@ in {
       WLR_USE_LIBINPUT = "1";
       ENABLE_VKBASALT = "1";
       GBM_BACKEND = "nvidia-drm";
+
+      TERMINAL = "kitty";
     };
     # List packages installed in system profile. To search, run:
     # $ nix search wget
