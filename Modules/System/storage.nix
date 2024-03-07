@@ -17,6 +17,7 @@ let
 in {
 	fileSystems = {
 		"${windowsFS}" = {
+      inherit options;
 			label = windowsFS;
 			device = devices.nvme;
 			fsType = "ntfs";
