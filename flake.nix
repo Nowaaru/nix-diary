@@ -1,9 +1,7 @@
 # please no unnecessary PRs
-
 # at this point you probably wont even break it
 # but LORD i don't want to deal with the confusion
 # if it does break
-
 # Pain
 {
   description = "noire's nonfunctional user flake.";
@@ -18,6 +16,14 @@
     stylix
     */
     stylix.url = "github:danth/stylix";
+    # power-mode-nvim-test = {
+    #   url = "path:/home/noire/Documents/power-mode.nvim";
+    #   flake = true;
+    # };
+
+    hyprrpc = {
+      url = "github:nowaaru/hyprrpc";
+    };
 
     /*
     agenix
@@ -29,7 +35,7 @@
     };
 
     /*
-    home-manager 
+    home-manager
     */
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -56,6 +62,7 @@
     nixpkgs,
     neovim-flake,
     home-manager,
+    # power-mode-nvim-test,
     nix-colors,
     lanzaboote,
     hyprpicker,
@@ -68,6 +75,7 @@
     pkgs = import nixpkgs {
       inherit system;
       overlays = [
+        # power-mode-nvim-test.overlays.default
         hyprpicker.overlays.default
       ];
       config = {
@@ -84,6 +92,13 @@
           agenix.nixosModules.default
           {
             environment.systemPackages = [agenix.packages.${system}.default];
+          }
+          {
+            nixpkgs.overlays = [
+              (import ./Shims/wlroots-explicit-sync-overlay {
+                inherit pkgs lib;
+              })
+            ];
           }
           ./Core/configuration.nix
         ];
