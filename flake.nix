@@ -12,10 +12,6 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     nur.url = "github:nix-community/NUR";
 
-    /*
-    stylix
-    */
-    stylix.url = "github:danth/stylix";
     # power-mode-nvim-test = {
     #   url = "path:/home/noire/Documents/power-mode.nvim";
     #   flake = true;
