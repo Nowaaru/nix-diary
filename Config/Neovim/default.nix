@@ -25,16 +25,44 @@
   };
 in {
   vim = rec {
+    cursorlineOpt = "number";
+
     # Aliases. You should probably keep these enabled.
     viAlias = mkForce true;
     vimAlias = mkForce true;
 
     # RCs.
-    luaConfigRC = {} // autocmds;
-    configRC = {};
+    luaConfigRC =
+      {
+        csharpls-extended-lsp = dag.entryAnywhere ''
+          local pid = vim.fn.getpid()
+          -- On linux/darwin if using a release build, otherwise under scripts/OmniSharp(.Core)(.cmd)
+          -- on Windows
+          -- local omnisharp_bin = "/path/to/omnisharp/OmniSharp.exe"
+
+          local config = {
+            handlers = {
+              ["textDocument/definition"] = require('csharpls_extended').handler,
+              ["textDocument/typeDefinition"] = require('csharpls_extended').handler,
+            },
+            cmd = { "${pkgs.csharp-ls}/bin/csharp-ls" },
+            -- rest of your settings
+          }
+
+          require'lspconfig'.csharp_ls.setup(config)
+
+        '';
+      }
+      // autocmds;
+    configRC = with pkgs.vimPlugins; {
+    };
 
     # plugins.
     extraPlugins = with pkgs.vimPlugins; {
+      csharpls-extended = {
+        package = csharpls-extended-lsp-nvim;
+      };
+
       smart-splits = {
         package = smart-splits-nvim;
         setup = ''
@@ -721,7 +749,9 @@ in {
       # cheatsheet.enable = mkDefault true;
 
       # Show key guide on <leader>.
-      whichKey.enable = mkDefault true;
+      whichKey = {
+        enable = mkDefault true;
+      };
     };
 
     languages =
@@ -880,7 +910,7 @@ in {
             };
           };
       in
-        lib.mkMerge [
+        mkForce (lib.mkMerge [
           windowMovementCommands
 
           (mkLuaBinding "<C-k>" (resize "up") "Resize up.")
@@ -977,7 +1007,7 @@ in {
               action = mkDefault "gj";
             };
           }
-        ];
+        ]);
     };
   };
 }
