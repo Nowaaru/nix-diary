@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  gtk.font.size = 8;
   qt = {
     enable = true;
     platformTheme = "gtk";
