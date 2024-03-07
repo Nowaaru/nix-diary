@@ -91,9 +91,9 @@
           }
           {
             nixpkgs.overlays = [
-              (import ./Shims/wlroots-explicit-sync-overlay {
-                inherit pkgs lib;
-              })
+              # (import ./Shims/wlroots-explicit-sync-overlay {
+              #   inherit pkgs lib;
+              # })
             ];
           }
           ./Core/configuration.nix
