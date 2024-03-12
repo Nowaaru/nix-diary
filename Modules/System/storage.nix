@@ -1,22 +1,21 @@
-{ ... }:
-let
-	windowsFS = "Windows (C:)";
-	miscellaneousFS = "Miscellaneous (D:)";
-	globalFS = "Global (G:)";
+{...}: let
+  windowsFS = "Windows (C:)";
+  miscellaneousFS = "Miscellaneous (D:)";
+  globalFS = "Global (G:)";
 
-	devices = {
-		ssd="/dev/disk/by-uuid/0E2058022057EF69";
-		hdd="/dev/disk/by-uuid/84D6B99BD6B98E44";
-    global="/dev/disk/by-label/Global";
-	};
+  devices = {
+    ssd = "/dev/disk/by-uuid/0E2058022057EF69";
+    hdd = "/dev/disk/by-uuid/84D6B99BD6B98E44";
+    global = "/dev/disk/by-label/Global";
+  };
 
-	options = [
-		"uid=1000"
-		"gid=100"
-		"umask=000"
-		"exec"
-		"rw"
-	];
+  options = [
+    "uid=1000"
+    "gid=100"
+    "umask=000"
+    "exec"
+    "rw"
+  ];
 in {
   swapDevices = [
     {
@@ -24,51 +23,48 @@ in {
     }
   ];
 
-	fileSystems = {
-		"${windowsFS}" = {
+  fileSystems = {
+    "${windowsFS}" = {
       inherit options;
-			label = windowsFS;
-			device = devices.ssd;
-			fsType = "ntfs";
+      label = windowsFS;
+      device = devices.ssd;
+      fsType = "ntfs";
 
-			# If this is enabled, say goodbye
-			# to Windows if something.. goes wrong.
-			#
-			# Please don't enable this.
-			autoFormat = false;
-			autoResize = false;
-			mountPoint = "/mnt/windows";
-		};
+      # If this is enabled, say goodbye
+      # to Windows if something.. goes wrong.
+      #
+      # Please don't enable this.
+      autoFormat = false;
+      autoResize = false;
+      mountPoint = "/mnt/windows";
+    };
 
-		"${globalFS}" = {
+    "${globalFS}" = {
       inherit options;
-			label = globalFS;
-			device = devices.global;
-			fsType = "exfat";
+      label = globalFS;
+      device = devices.global;
+      fsType = "exfat";
 
-			# See above.
-			autoFormat = false;
-			autoResize = false;
-			mountPoint = "/mnt/global";
-		};
-		
-		
-		"${miscellaneousFS}" = {
-			inherit options;
-			label = miscellaneousFS;
-			device = devices.hdd;
-			fsType = "ntfs";
+      # See above.
+      autoFormat = false;
+      autoResize = false;
+      mountPoint = "/mnt/global";
+    };
 
-			depends = [
-				"/mnt/windows"
-			];
+    "${miscellaneousFS}" = {
+      inherit options;
+      label = miscellaneousFS;
+      device = devices.hdd;
+      fsType = "ntfs";
 
-			# See above.
-			autoFormat = false;
-			autoResize = false;
-			mountPoint = "/mnt/miscellaneous";
-		};
-		
-	};
+      depends = [
+        "/mnt/windows"
+      ];
 
+      # See above.
+      autoFormat = false;
+      autoResize = false;
+      mountPoint = "/mnt/miscellaneous";
+    };
+  };
 }
