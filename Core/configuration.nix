@@ -8,35 +8,39 @@
   inputs,
   ...
 }: let
-  kernelPackages = /* let
-    linux_6_7_1_pkg = {
-      fetchurl,
-      buildLinux,
-      ...
-    } @ args:
-      buildLinux (args
-        // rec {
-          version = "6.7.1";
-          modDirVersion = version;
+  kernelPackages =
+    /*
+                          let
+      linux_6_7_1_pkg = {
+        fetchurl,
+        buildLinux,
+        ...
+      } @ args:
+        buildLinux (args
+          // rec {
+            version = "6.7.1";
+            modDirVersion = version;
 
-          # Latest kernel from Linus' github mirror
-          src = fetchurl {
-            url = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.7.1.tar.xz";
-            hash = "sha256-Hs/6Vo6GoiArpVM62QNLwmOpqhThiVl6lPCbOFStaMM=";
-          };
+            # Latest kernel from Linus' github mirror
+            src = fetchurl {
+              url = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.7.1.tar.xz";
+              hash = "sha256-Hs/6Vo6GoiArpVM62QNLwmOpqhThiVl6lPCbOFStaMM=";
+            };
 
-          kernelPatches = [];
+            kernelPatches = [];
 
-          # extraConfig = ''
-          # '';
+            # extraConfig = ''
+            # '';
 
-          extraMeta.branch = "6.7.1";
-        }
-        // (args.argsOverride or {}));
-    linux_6_7_1 = pkgs.callPackage linux_6_7_1_pkg {};
-    
-  in
-    pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_6_7_1);*/ [];
+            extraMeta.branch = "6.7.1";
+          }
+          // (args.argsOverride or {}));
+      linux_6_7_1 = pkgs.callPackage linux_6_7_1_pkg {};
+
+    in
+      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_6_7_1);
+    */
+    [];
 in {
   imports = [
     # Include the results of the hardware scan.
