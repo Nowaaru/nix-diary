@@ -27,4 +27,5 @@ in {
   web.browser = "firefox";
   gpg.format = "ssh";
   push.autoSetupRemote = true;
+  commit.gpgsign = true;
 }
