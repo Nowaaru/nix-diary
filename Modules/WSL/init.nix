@@ -10,10 +10,6 @@
     ./Terminal/init.nix
   ];
 
-  home.packages = with pkgs; [
-    lazygit
-  ];
-
   home.shellAliases = {
     ls = "${pkgs.lsd}/bin/lsd";
   };
@@ -38,6 +34,13 @@
         ${pkgs.neofetch}/bin/neofetch
         fish_vi_key_bindings
       '';
+    };
+
+    lazygit = {
+      enable = true;
+      settings = {
+        # git.commit.signOff = true;
+      };
     };
 
     home-manager.enable = true;
