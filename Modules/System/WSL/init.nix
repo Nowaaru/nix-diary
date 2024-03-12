@@ -1,10 +1,14 @@
-{ pkgs, ...}: {
-	environment.systemPackages = with pkgs; [
-		home-manager
-		git
-	];
+{pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    home-manager
+    pinentry
+    gnupg
+    git
+  ];
 
-	programs.fish = {
-		enable = true;
-	};
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryFlavor = "curses";
+  };
 }
