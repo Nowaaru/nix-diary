@@ -9,6 +9,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
     nur.url = "github:nix-community/NUR";
 
@@ -58,6 +59,7 @@
     nixpkgs,
     neovim-flake,
     home-manager,
+    nixos-wsl,
     # power-mode-nvim-test,
     nix-colors,
     lanzaboote,
@@ -100,7 +102,7 @@
         ];
       };
 
-      wslastation = lib.nixosSystem {
+      leanbox = lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
           agenix.nixosModules.default
@@ -120,10 +122,13 @@
     };
 
     /*
-    bare-bones neovim config
+    bare-bones wsl config
     */
-    homeConfigurations."planeptune" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."leanbox" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
+      modules = [
+        ./home-wsl.nix
+      ];
       extraSpecialArgs = {inherit inputs nix-colors;};
     };
   };

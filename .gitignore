@@ -1,1 +1,2 @@
 **/*.orig
+Core/hardware-configuration*.nix
