@@ -616,7 +616,7 @@ in {
       lspsaga = {
         enable = mkDefault true;
         mappings = {
-          previewDefinition = mkDefault "<leader>cD";
+          previewDefinition = mkDefault "<leader>cp";
           codeAction = mkDefault "<Nop>"; # disabled in favor of nvimCodeActionMenu.
           lspFinder = mkDefault "<leader>lF";
 
@@ -624,7 +624,7 @@ in {
           nextDiagnostic = mkDefault "]";
 
           showCursorDiagnostics = mkDefault "<leader>cd";
-          showLineDiagnostics = mkDefault "<leader>cl";
+          showLineDiagnostics = mkDefault "<leader>cD";
           signatureHelp = mkDefault "<leader>cs";
           rename = mkDefault "<leader>cr";
 
@@ -678,29 +678,29 @@ in {
       mappings = {
         open = mkDefault "<leader>tt";
         buffers = mkDefault "<leader>tb";
-        diagnostics = mkDefault "<leader>tld";
+        diagnostics = mkDefault "<leader>td";
 
         findFiles = mkDefault "<leader>ff";
         findProjects = mkDefault "<leader>fp";
 
-        gitBranches = mkDefault "<leader>GB";
-        gitBufferCommits = mkDefault "<leader>Gc";
+        gitBranches = mkDefault "<leader>tGB";
+        gitBufferCommits = mkDefault "<leader>tGc";
 
-        gitCommits = mkDefault "<leader>GC";
-        gitStash = mkDefault "<leader>GS";
+        gitCommits = mkDefault "<leader>tGC";
+        gitStash = mkDefault "<leader>tGS";
 
-        gitStatus = mkDefault "<leader>Gs";
-        helpTags = mkDefault "<leader>Gt";
-        liveGrep = mkDefault "<leader>Gg";
+        gitStatus = mkDefault "<leader>tGs";
+        helpTags = mkDefault "<leader>tGt";
+        liveGrep = mkDefault "<leader>tGg";
 
-        lspTypeDefinitions = mkDefault "<leader>Ld";
-        lspDefinitions = mkDefault "<leader>LD";
+        lspTypeDefinitions = mkDefault "<leader>tLd";
+        lspDefinitions = mkDefault "<leader>tLD";
 
-        lspReferences = mkDefault "<leader>Lr";
-        lspImplementations = mkDefault "<leader>Li";
+        lspReferences = mkDefault "<leader>tLr";
+        lspImplementations = mkDefault "<leader>tLi";
 
-        lspDocumentSymbols = mkDefault "<leader>Ls";
-        lspWorkspaceSymbols = mkDefault "<leader>LS";
+        lspDocumentSymbols = mkDefault "<leader>tLs";
+        lspWorkspaceSymbols = mkDefault "<leader>tLS";
 
         treesitter = mkDefault "<leader><leader>t";
       };
@@ -751,9 +751,55 @@ in {
       whichKey = {
         enable = mkDefault true;
         register = {
-          "<leader>f" = "File";
+          "<leader><leader>" = "[] Miscellaneous";
+
+          "<leader>l" = "[] LSP";
+          "<leader>g" = "[] Git";
+
+          "<leader>f" = "[] File";
           "<leader>ff" = "Find Files [Telescope]";
           "<leader>fp" = "Find Projects [Telescope]";
+
+          "<leader>b" = "[] Buffer";
+          "<leader>bm" = "Move";
+          "<leader>bc" = "Pick";
+          "<leader>bs" = "Sort";
+          "<leader>bn" = "Next";
+          "<leader>bp" = "Previous";
+          "<leader>bN" = "Move Next";
+          "<leader>bP" = "Move Previous";
+
+          "<leader>d" = "[] Debug";
+          "<leader>ds" = "[] Step";
+          "<leader>dv" = "[] Stacktrace";
+
+          "<leader>c" = "[] Code";
+          "<leader>ca" = "Code Actions";
+          "<leader>cd" = "Show Cursor Diagnostics";
+          "<leader>cD" = "Show Line Diagnostics";
+          "<leader>cp" = "Preview Symbol Definition";
+          "<leader>cr" = "Rename Symbol Occurrence";
+          "<leader>cs" = "Signature Help";
+          "<leader>cf" = "Format";
+
+          "<leader>x" = "[] Trouble";
+          "<leader>xx" = "Toggle Trouble";
+          "<leader>xq" = "Open QuickFix";
+          "<leader>xl" = "Open LOC List";
+
+          "<leader>E" = "[] Neovim Tree";
+          "<leader>Er" = "Refresh Tree";
+          "<leader>Ef" = "Focus Tree";
+          "<leader>e" = "Open Tree";
+
+          "<leader>t" = "[] Telescope";
+          "<leader>tL" = "[] LSP [Telescope]";
+          "<leader>tG" = "[] Git [Telescope]";
+          "<leader>tt" = "Open Telescope";
+          "<leader>td" = "Open Diagnostics";
+          "<leader>tb" = "List Open Buffers";
+
+          "<leader>h" = "Hop";
         };
       };
     };
