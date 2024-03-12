@@ -1,4 +1,7 @@
 {
-  user.name = "Nowaaru";
-  user.email = "nowaaru@proton.me";
+  user = {
+    name = "Nowaaru";
+    email = "nowaaru@proton.me";
+    signingkey = "~/.ssh/id_ed25519.pub";
+  };
 }
