@@ -42,7 +42,7 @@
     /*
     neovim
     */
-    neovim-flake.url = "github:NotAShelf/neovim-flake";
+    neovim-flake.url = "github:NotAShelf/neovim-flake/v0.6";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*

@@ -321,8 +321,7 @@ in {
     */
     visuals.fidget-nvim = {
       enable = mkDefault true;
-      align.bottom = mkDefault true;
-      align.right = mkDefault true;
+      setupOpts.notification.window.align = mkDefault "bottom";
     };
 
     /*
@@ -751,6 +750,11 @@ in {
       # Show key guide on <leader>.
       whichKey = {
         enable = mkDefault true;
+        register = {
+          "<leader>f" = "File";
+          "<leader>ff" = "Find Files [Telescope]";
+          "<leader>fp" = "Find Projects [Telescope]";
+        };
       };
     };
 
