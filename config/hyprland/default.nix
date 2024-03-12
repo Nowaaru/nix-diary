@@ -48,7 +48,7 @@ in {
         # Example windowrule v2
         # windowrulev2 = float,class:^(kitty)$,title:^(kitty)$
 
-        "nomaximizerequest, class:(.*)" # You'll probably like this.
+        # "nomaximizerequest, class:(.*)"  You'll probably like this.
 
         # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
       ]
@@ -62,7 +62,6 @@ in {
     # Stuff to run every reload.
     exec = [
       "eww open topbar --no-daemonize"
-
       (util.str.applySwayTheme theme)
     ];
 
