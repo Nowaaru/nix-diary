@@ -3,7 +3,7 @@ let
 	windowsFS = "Windows (C:)";
 	miscellaneousFS = "Miscellaneous (D:)";
 	devices = {
-		nvme="/dev/disk/by-uuid/12A0C545A0C52FD1";
+		ssd="/dev/disk/by-uuid/B2DEBA45DEBA0221";
 		hdd="/dev/disk/by-uuid/84D6B99BD6B98E44";
 	};
 
@@ -19,7 +19,7 @@ in {
 		"${windowsFS}" = {
       inherit options;
 			label = windowsFS;
-			device = devices.nvme;
+			device = devices.ssd;
 			fsType = "ntfs";
 
 			# If this is enabled, say goodbye

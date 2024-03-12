@@ -18,11 +18,11 @@
 
     # Various performance metrics.
     ./Utility/status.nix
-    ./loopback.nix
 
     # Stuff.
     ./firefox.nix
     ./storage.nix
+    ./qemu.nix
   ];
 
   # Dependencies and things.
