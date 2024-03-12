@@ -2,9 +2,12 @@
 let
 	windowsFS = "Windows (C:)";
 	miscellaneousFS = "Miscellaneous (D:)";
+	globalFS = "Global (G:)";
+
 	devices = {
-		ssd="/dev/disk/by-uuid/B2DEBA45DEBA0221";
+		ssd="/dev/disk/by-uuid/0E2058022057EF69";
 		hdd="/dev/disk/by-uuid/84D6B99BD6B98E44";
+    global="/dev/disk/by-label/Global";
 	};
 
 	options = [
@@ -15,6 +18,12 @@ let
 		"rw"
 	];
 in {
+  swapDevices = [
+    {
+      device = "/dev/disk/by-label/swap";
+    }
+  ];
+
 	fileSystems = {
 		"${windowsFS}" = {
       inherit options;
@@ -29,7 +38,18 @@ in {
 			autoFormat = false;
 			autoResize = false;
 			mountPoint = "/mnt/windows";
+		};
 
+		"${globalFS}" = {
+      inherit options;
+			label = globalFS;
+			device = devices.global;
+			fsType = "exfat";
+
+			# See above.
+			autoFormat = false;
+			autoResize = false;
+			mountPoint = "/mnt/global";
 		};
 		
 		
