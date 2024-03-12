@@ -17,6 +17,7 @@
   home.shellAliases = {
     ls = "${pkgs.lsd}/bin/lsd";
   };
+
   programs = {
     neovim-flake = {
       enable = true;
