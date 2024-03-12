@@ -14,6 +14,7 @@
       set -U fish_greeting
       ncneofetch
       fish_vi_key_bindings
+      cd $DIARY;
     '';
   };
 }
