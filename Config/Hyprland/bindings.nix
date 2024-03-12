@@ -6,9 +6,10 @@
 
   menu = "fuzzel -D no";
   dmenu = "fuzzel -D no --dmenu";
-  print_screen = "fish ~/.diary/Config/Fish/clip.fish";
-  themeDir = theme.background + "/..";
 
+  screenshot_dir = "$XDG_PICTURES_DIR/Screenshots";
+  print_screen = "grimblast --notify --freeze copysave area ${screenshot_dir}"; # "fish ~/.diary/Config/Fish/clip.fish";
+  themeDir = theme.background + "/..";
 in {
   bind = [
     ###############################

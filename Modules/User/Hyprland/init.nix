@@ -56,6 +56,7 @@ in {
       ps
 
       # hypr
+      grimblast
       hyprpicker
       hyprdim
       swww
