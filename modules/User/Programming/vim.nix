@@ -10,7 +10,7 @@
 in {
   programs.neovim-flake = {
     enable = true;
-    settings = import (inputs.self + /Config/Neovim) {
+    settings = import (inputs.self + /config/neovim) {
       inherit pkgs lib inputs;
     }; # bruh?
   };

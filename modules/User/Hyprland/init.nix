@@ -6,7 +6,7 @@
   ...
 }: let
   flakeRoot = inputs.self;
-  configRoot = "${flakeRoot}/Config/Hyprland";
+  configRoot = "${flakeRoot}/config/hyprland";
 
   hypr-config = import configRoot {
     inherit pkgs nix-colors;
@@ -56,7 +56,6 @@ in {
       ps
 
       # hypr
-      grimblast
       hyprpicker
       hyprdim
       swww

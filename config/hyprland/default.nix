@@ -7,7 +7,7 @@
 
   mode = "dark";
   theme =
-    (import ../Themes {
+    (import ../themes {
       inherit pkgs nix-colors;
       kind = mode;
     })

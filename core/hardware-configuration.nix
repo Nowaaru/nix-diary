@@ -23,11 +23,6 @@
       fsType = "vfat";
     };
 
-  fileSystems."/mnt/global" =
-    { device = "/dev/disk/by-uuid/C0AB-3684";
-      fsType = "exfat";
-    };
-
   swapDevices =
     [ { device = "/dev/disk/by-uuid/7304f85c-848d-4ff2-a054-bd572fb4d8d0"; }
     ];

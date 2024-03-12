@@ -1,6 +1,7 @@
 { pkgs, ... }: {
 	home.packages = with pkgs; [
-        gpu-screen-recorder
+    gpu-screen-recorder
+    grimblast
 		copyq
 		slurp
 		grim

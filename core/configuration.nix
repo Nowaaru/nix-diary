@@ -46,7 +46,7 @@ in {
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # System configuration loader.
-    ../Modules/System/init.nix
+    ../modules/System/init.nix
   ];
 
   # swapDevices = [

@@ -93,12 +93,12 @@
           }
           {
             nixpkgs.overlays = [
-              (import ./Shims/wlroots-explicit-sync-overlay {
+              (import ./overlays/wlroots-explicit-sync-overlay {
                 inherit pkgs lib;
               })
             ];
           }
-          ./Core/configuration.nix
+          ./core/configuration.nix
         ];
       };
 
@@ -106,7 +106,7 @@
         specialArgs = {inherit inputs;};
         modules = [
           agenix.nixosModules.default
-          ./Core/configuration-wsl.nix
+          ./core/configuration-wsl.nix
         ];
       };
     };

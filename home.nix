@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  user-init = import ./Modules/User/init-user.nix {
+  user-init = import ./modules/User/init-user.nix {
     inherit config pkgs lib;
   };
 in {
