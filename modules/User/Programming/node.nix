@@ -4,6 +4,7 @@
       nodePackages.nodejs
       nodePackages.yarn
 
+      nodePackages.typescript-language-server
       typescript
     ];
 }
