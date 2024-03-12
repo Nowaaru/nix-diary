@@ -27,7 +27,7 @@ with lib; {
   imports = [
     # include NixOS-WSL modules
     inputs.nixos-wsl.nixosModules.default
-    ./hardware-configuration.nix
+    ./hardware-configuration-wsl.nix
     ../Modules/System/WSL/init.nix
   ];
 
