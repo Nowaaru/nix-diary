@@ -6,27 +6,11 @@ what I was on about.
 
 - [x] Configure neovim flake.
 
-  - I decided against using the jank
-    LazyVim copy-to-share `~/.config`.
-    I wonder if this costs me in customizability though...
-
-  - [ ] Implement Nix code action to change between `mkDefault`
-        and `mkForce` options interchangeably.
-
-  - [ ] Make keybind setting system less stinky.
-    - Maybe I can try a `folder` function, e.g.
-      `(folder "Miscellaneous" (nnoremap [...]))` or `(folder "Telescope" (folder "Git" (nnoremap [...])))`.
-      Yeah. That sounds good.
-
 - [ ] Implement `wlsunset`-based nightlight widget
       using [`eww`](elkowar/eww).
 
 - [ ] Create custom firefox option-set because
       the home-manager configuration doesn't work.
-
-- [ ] Implement `agenix`.
-
-  - I am in despair.
 
 - [ ] Configure default firefox profile.
 
@@ -52,23 +36,13 @@ what I was on about.
     Today I also learned that `self` refers to the root
     directory of the flake and not the flake attrset. Huh.
 
-- [ ] Apply current theme to screenshot tool
-
-- [ ] Implement right-click to cancel screenshot tool.
-
-- [ ] Fix Roblox Studio + Wayland mouse acceleration problem.
-
-  - Supposedly "fixed" in Wine 9.0-rc2, but Vinegar uses a patched
-    Wine 9.0-rc1. Could just up and yoink the patches from the source but
-    laziness is a vice.
-
 - [x] Install video editor
 
   - Kdenlive will probably do.
 
 - [x] Make screenshot script freeze the screen
 
-- [x] Install [neovim-flake](https://github.om/jordanisaacs/neovim-flake)
+- [x] Install [neovim-flake](https://github.om/NotAShelf/neovim-flake)
 
 - [x] Add window rules to enable tearing on full-screen
       applications.
