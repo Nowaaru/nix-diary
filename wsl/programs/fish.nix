@@ -4,7 +4,7 @@
     # useBabelfish = true;
     shellInit = ''
       set -Ux DIARY ~/.diary
-      source $DIARY/config/fish/init.fish
+      source $DIARY/cfg/fish/init.fish
     '';
     interactiveShellInit = ''
       set -U fish_greeting
