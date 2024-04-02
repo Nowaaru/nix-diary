@@ -4,3 +4,6 @@
 [submodule "/home/noire/.diary/Config/LazyVim"]
 	path = /home/noire/.diary/Config/LazyVim
 	url = https://github.com/Nowaaru/vim
+[submodule "lib"]
+	path = lib
+	url = ./lib

@@ -1,18 +1,28 @@
-{
-  inputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
-  user-init = builtins.trace inputs (import ./usr {
-    inherit config pkgs lib;
-  });
-
-  st = w: builtins.trace w w;
-in rec {
+# TODO: holy shit just
+# remove all of these and start
+# using Folder/Default.nix
+{ inputs, lib, ...}: {
   imports = [
-    user-init
+    # Managing the desktop.
+    ./desktop
+
+    # Managing the fish shell.
+    ./fish
+
+    # Gaming and the like.
+    ./gaming
+
+    # Social media and social utilities.
+    ./social
+
+    # Programming utilities and goodies.
+    ./dev
+
+    # General things, auxiliary functionalities.
+    ./misc
+
+    # Skate through the world, there's no one way to grind...
+    ./music
   ];
 
   home = {

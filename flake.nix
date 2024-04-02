@@ -7,19 +7,35 @@
   description = "noire's nonfunctional user flake.";
 
   inputs = {
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
     nur.url = "github:nix-community/NUR";
 
-    # power-mode-nvim-test = {
-    #   url = "path:/home/noire/Documents/power-mode.nvim";
-    #   flake = true;
-    # };
+    mods.url = "path:/home/noire/Documents/game-mods";
 
     hyprrpc = {
       url = "github:nowaaru/hyprrpc";
+    };
+
+    power-mode-nvim = {
+      url = "path:/home/noire/Documents/power-mode.nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nnmm = {
+      url = "path:/home/noire/Documents/nix-flakes/nix-mod-manager";
+    };
+
+    /*
+    libraries for this flake n stuff
+    */
+    nix-utils = {
+      url = "github:nowaaru/nix-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
     /*
@@ -59,8 +75,7 @@
     nixpkgs,
     neovim-flake,
     home-manager,
-    nixos-wsl,
-    # power-mode-nvim-test,
+    nnmm,
     nix-colors,
     lanzaboote,
     hyprpicker,
@@ -73,7 +88,6 @@
     pkgs = import nixpkgs {
       inherit system;
       overlays = [
-        # power-mode-nvim-test.overlays.default
         hyprpicker.overlays.default
       ];
       config = {
@@ -89,16 +103,13 @@
           lanzaboote.nixosModules.lanzaboote
           agenix.nixosModules.default
           {
-            environment.systemPackages = [agenix.packages.${system}.default];
-          }
-          {
             nixpkgs.overlays = [
-              (import ./overlays/wlroots-explicit-sync-overlay {
+              (import sys/overlay/wlroots-explicit-sync-overlay {
                 inherit pkgs lib;
               })
             ];
           }
-          ./core/configuration.nix
+          ./sys/conf
         ];
       };
 
@@ -106,28 +117,29 @@
         specialArgs = {inherit inputs;};
         modules = [
           agenix.nixosModules.default
-          ./core/configuration-wsl.nix
+          ./sys/wsl
         ];
       };
     };
 
-    homeConfigurations."lastation" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."noire" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = {inherit inputs nix-colors;};
       modules = [
         nur.nixosModules.nur
         neovim-flake.homeManagerModules.default
-        ./home.nix
+        nnmm.homeManagerModules.default
+        ./usr
       ];
     };
 
     /*
     bare-bones wsl config
     */
-    homeConfigurations."leanbox" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."vert" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
-        ./home-wsl.nix
+        ./wsl
       ];
       extraSpecialArgs = {inherit inputs nix-colors;};
     };
