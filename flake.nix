@@ -7,26 +7,27 @@
   description = "noire's nonfunctional user flake.";
 
   inputs = {
-
+    /*
+    essentials
+    */
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
     nur.url = "github:nix-community/NUR";
-
     mods.url = "path:/home/noire/Documents/game-mods";
+    mopidy.url = "path:/home/noire/Documents/nix-secrets/mopidy";
 
-    hyprrpc = {
-      url = "github:nowaaru/hyprrpc";
-    };
-
+    /*
+    experimental modules
+    */
     power-mode-nvim = {
-      url = "path:/home/noire/Documents/power-mode.nvim";
+      url = "path:/home/noire/Documents/projects/power-mode.nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nnmm = {
-      url = "path:/home/noire/Documents/nix-flakes/nix-mod-manager";
+      url = "path:/home/noire/Documents/projects/nix-flakes/nix-mod-manager";
     };
 
     /*
@@ -56,9 +57,18 @@
     };
 
     /*
+    plasma-manager
+    */
+    plasma-manager = {
+      url = "github:pjones/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
+    /*
     neovim
     */
-    neovim-flake.url = "github:NotAShelf/neovim-flake/v0.6";
+    neovim-flake.url = "github:NotAShelf/neovim-flake/83da7acf65bd120008d4f6ec6ea33aa9319c92ca";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
@@ -75,6 +85,7 @@
     nixpkgs,
     neovim-flake,
     home-manager,
+    plasma-manager,
     nnmm,
     nix-colors,
     lanzaboote,
@@ -104,9 +115,9 @@
           agenix.nixosModules.default
           {
             nixpkgs.overlays = [
-              (import sys/overlay/wlroots-explicit-sync-overlay {
-                inherit pkgs lib;
-              })
+              # (import sys/overlay/wlroots-explicit-sync-overlay {
+              #   inherit pkgs lib;
+              # })
             ];
           }
           ./sys/conf

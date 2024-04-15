@@ -7,7 +7,7 @@
       commandLineArgs = "--disable-gpu=true";
     });
   in [
-    obsidian-wayland
+    # obsidian-wayland
     vesktop
     arrpc
   ];

@@ -3,29 +3,33 @@
     if builtins.pathExists ./private.nix
     then import ./private.nix
     else lib.trivial.warn "${builtins.toString ./.}/private.nix does not exist" {user = {};};
-in {
-  inherit (private) user;
+in
+  lib.mkMerge [
+    {
+      core = {
+        editor = lib.mkDefault "nvim";
+        pager = lib.mkDefault "delta";
+      };
 
-  core = {
-    editor = "nvim";
-    pager = "delta";
-  };
+      delta = {
+        features = lib.mkDefault [
+          "line-numbers"
+          "decorations"
+        ];
 
-  delta = {
-    features = [
-      "line-numbers"
-      "decorations"
-    ];
+        line-numbers = true;
+      };
 
-    line-numbers = true;
-  };
+      init = {
+        defaultBranch = lib.mkDefault "master";
+      };
 
-  init = {
-    defaultBranch = "master";
-  };
+      user.signingKey = lib.mkDefault "~/.ssh/id_ed25519.pub";
 
-  web.browser = "firefox";
-  gpg.format = "ssh";
-  push.autoSetupRemote = true;
-  commit.gpgsign = true;
-}
+      web.browser = lib.mkDefault "firefox";
+      gpg.format = lib.mkDefault "ssh";
+      push.autoSetupRemote = lib.mkDefault true;
+      commit.gpgsign = lib.mkDefault true;
+    }
+    private
+  ]

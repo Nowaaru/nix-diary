@@ -7,44 +7,15 @@
   lib,
   inputs,
   ...
-}: let
-  kernelPackages =
-    /*
-                          let
-      linux_6_7_1_pkg = {
-        fetchurl,
-        buildLinux,
-        ...
-      } @ args:
-        buildLinux (args
-          // rec {
-            version = "6.7.1";
-            modDirVersion = version;
-
-            # Latest kernel from Linus' github mirror
-            src = fetchurl {
-              url = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.7.1.tar.xz";
-              hash = "sha256-Hs/6Vo6GoiArpVM62QNLwmOpqhThiVl6lPCbOFStaMM=";
-            };
-
-            kernelPatches = [];
-
-            # extraConfig = ''
-            # '';
-
-            extraMeta.branch = "6.7.1";
-          }
-          // (args.argsOverride or {}));
-      linux_6_7_1 = pkgs.callPackage linux_6_7_1_pkg {};
-
-    in
-      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_6_7_1);
-    */
-    [];
-in {
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
+    # Desktop environment.
+    # (inputs.self + /cfg/deepin)
+    # (inputs.self + /cfg/plasma6/init.nix)
+    (inputs.self + /cfg/gnome)
+
     # System configuration loader.
     ../.
   ];
@@ -138,26 +109,15 @@ in {
   };
 
   services = {
-
-
-    desktopManager = {
-      # Enable Plasma 6 
-
-      plasma6.enable = true;
-      plasma6.enableQt5Integration = true;
-    };
-
-      
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
       videoDrivers = ["nvidia"];
 
-      displayManager.sddm = {
+      displayManager.gdm = {
         enable = true;
-        wayland.enable = true;
+        wayland = true;
       };
-
 
       # Configure keymap in X11
       xkb.layout = "us";
@@ -232,29 +192,38 @@ in {
   # Hyprland!
   programs.hyprland = {
     enable = true;
-    portalPackage = inputs.xdg-desktop-portal-hyprland.packages."${pkgs.system}".xdg-desktop-portal-hyprland;
+    portalPackage =
+      inputs
+      .xdg-desktop-portal-hyprland
+      .packages
+      ."${
+        if pkgs ? "system"
+        then pkgs.system
+        else "x86_64-linux"
+      }"
+      .xdg-desktop-portal-hyprland;
   };
 
   environment = {
     # Session variables for gaming/gamescope.
     sessionVariables = {
       # Hyprland!
-      WLR_NO_HARDWARE_CURSORS = "1";
-      NIX_OZONE_WL = "1";
+      WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
+      NIX_OZONE_WL = lib.mkDefault "1";
 
       # Gamescope.
-      WLR_RENDERER = "vulkan";
-      __GL_GSYNC_ALLOWED = "1";
-      __GL_VRR_ALLOWED = "0";
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      LIBVA_DRIVER_NAME = "nvidia";
-      WLR_RENDERER_ALLOW_SOFTWARE = "1";
-      PROTON_ENABLE_NGX_UPDATER = "1";
-      WLR_USE_LIBINPUT = "1";
-      ENABLE_VKBASALT = "1";
-      GBM_BACKEND = "nvidia-drm";
+      WLR_RENDERER = lib.mkDefault "vulkan";
+      __GL_GSYNC_ALLOWED = lib.mkDefault "1";
+      __GL_VRR_ALLOWED = lib.mkDefault "0";
+      __GLX_VENDOR_LIBRARY_NAME = lib.mkDefault "nvidia";
+      LIBVA_DRIVER_NAME = lib.mkDefault "nvidia";
+      WLR_RENDERER_ALLOW_SOFTWARE = lib.mkDefault "1";
+      PROTON_ENABLE_NGX_UPDATER = lib.mkDefault "1";
+      WLR_USE_LIBINPUT = lib.mkDefault "1";
+      ENABLE_VKBASALT = lib.mkDefault "1";
+      GBM_BACKEND = lib.mkDefault "nvidia-drm";
 
-      TERMINAL = "kitty";
+      TERMINAL = lib.mkDefault "kitty";
     };
     # List packages installed in system profile. To search, run:
     # $ nix search wget
@@ -275,9 +244,6 @@ in {
       fishPlugins.forgit
       fishPlugins.hydro
       fishPlugins.grc
-
-      htop
-      nvtop
 
       dotnet-runtime
 

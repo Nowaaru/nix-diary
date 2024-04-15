@@ -20,6 +20,7 @@
     ./util/status.nix
 
     # Stuff.
+    ./mpd.nix
     ./firefox.nix
     ./storage.nix
     ./qemu.nix
@@ -36,4 +37,6 @@
       unzip
     ]
     ++ [home-manager]; # do not remove home-manager.
+
+  programs.steam.enable = true; # steam-input works through programs.steam rather than just the package
 }

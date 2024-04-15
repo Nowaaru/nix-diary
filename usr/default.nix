@@ -1,7 +1,11 @@
 # TODO: holy shit just
 # remove all of these and start
 # using Folder/Default.nix
-{ inputs, lib, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   imports = [
     # Managing the desktop.
     ./desktop
@@ -54,21 +58,6 @@
     };
   };
 
-  # services.mpd = {
-  #   # Enable the Music Player Daemon.
-  #   user = home.username;
-  #
-  #   enable = true;
-  #   musicDirectory = home.homeDirectory + "/Music";
-  #   extraConfig = ''
-  #   '';
-  # };
-
-  # systemd.services.mpd.environment = {
-  #   # https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/609
-  #   XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.userRunningPipeWire.uid}"; # User-id must match above user. MPD will look inside this directory for the PipeWire socket.
-  # };
-
   # Enable my mod manager.
   programs.nix-mod-manager = {
     enable = true;
@@ -99,12 +88,13 @@
 
           mods = lib.mkMerge [
             efx
-            npc
+            # npc
 
             # nsfw
             sfw
             misc
             # misc-nsfw
+            # monster
           ];
         };
     };

@@ -52,7 +52,20 @@ in {
           require'lspconfig'.csharp_ls.setup(config)
         '';
 
-        "power-mode.nvim" = dag.entryAfter ["image-nvim"] ''
+        "power-mode.nvim" =
+          dag.entryAfter ["image-nvim"] ''
+          '';
+
+        dprint = dag.entryAnywhere ''
+          require'lspconfig'.dprint.setup({
+            cmd = {"${pkgs.dprint}/bin/dprint"};
+          });
+        '';
+
+        nixd = dag.entryAnywhere ''
+          require'lspconfig'.nixd.setup({
+            cmd = {"${pkgs.nixd}/bin/nixd"};
+          });
         '';
       }
       // autocmds;
@@ -458,7 +471,6 @@ in {
       respectBufCwd = mkDefault true; # Automatically change `cwd` based on buffer location
       updateFocusedFile = {
         enable = mkDefault true; # Auto-expand folders to the target buffer location.
-        updateRoot = mkDefault true;
       };
 
       git = {
@@ -524,23 +536,23 @@ in {
 
       filesystemWatchers.enable = mkDefault true;
 
-      actions = {
-        useSystemClipboard = mkDefault true;
-
-        openFile = {
-          eject = mkForce true;
-          # quitOnOpen = mkForce true; /* ends up being more of a hassle than one would think... */
-        };
-
-        changeDir = {
-          enable = mkForce true;
-          global = mkForce false; # Could cause issues with the nvimTree.syncRootWithCwd option.
-        };
-
-        removeFile = {
-          closeWindow = mkForce true;
-        };
-      };
+      # actions = {
+      #   useSystemClipboard = mkDefault true;
+      #
+      #   openFile = {
+      #     eject = mkForce true;
+      #     # quitOnOpen = mkForce true; /* ends up being more of a hassle than one would think... */
+      #   };
+      #
+      #   changeDir = {
+      #     enable = mkForce true;
+      #     global = mkForce false; # Could cause issues with the nvimTree.syncRootWithCwd option.
+      #   };
+      #
+      #   removeFile = {
+      #     closeWindow = mkForce true;
+      #   };
+      # };
     };
 
     terminal = {
@@ -924,7 +936,7 @@ in {
         image-nvim = {
           enable = true;
           setupOpts = {
-            backend = mkDefault "kitty";
+            backend = mkForce "kitty";
 
             integrations.markdown = {
               enable = true;
