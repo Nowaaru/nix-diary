@@ -15,6 +15,7 @@
     # (inputs.self + /cfg/deepin)
     # (inputs.self + /cfg/plasma6/init.nix)
     (inputs.self + /cfg/gnome)
+    inputs.vfio-single-gpu-passthrough-test.outputs.x86_64-linux
 
     # System configuration loader.
     ../.
@@ -179,12 +180,23 @@
     isNormalUser = true;
     description = "noire";
     shell = pkgs.fish;
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "libvirtd"];
     packages = []; # managed via home-manager
   };
+  nix = {
+    # Enable flakes.
+    gc = {
+      automatic = true;
+      randomizedDelaySec = "14m";
+      options = "--delete-older-than 10d";
+    };
 
-  # Enable flakes.
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+    # I am insane.
+    package = pkgs.nixVersions.unstable;
+
+    # Experimental settings.
+    settings.experimental-features = ["nix-command" "flakes"];
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -208,20 +220,20 @@
     # Session variables for gaming/gamescope.
     sessionVariables = {
       # Hyprland!
-      WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
-      NIX_OZONE_WL = lib.mkDefault "1";
+      # WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
+      # NIX_OZONE_WL = lib.mkDefault "1";
 
       # Gamescope.
-      WLR_RENDERER = lib.mkDefault "vulkan";
-      __GL_GSYNC_ALLOWED = lib.mkDefault "1";
-      __GL_VRR_ALLOWED = lib.mkDefault "0";
-      __GLX_VENDOR_LIBRARY_NAME = lib.mkDefault "nvidia";
-      LIBVA_DRIVER_NAME = lib.mkDefault "nvidia";
-      WLR_RENDERER_ALLOW_SOFTWARE = lib.mkDefault "1";
-      PROTON_ENABLE_NGX_UPDATER = lib.mkDefault "1";
-      WLR_USE_LIBINPUT = lib.mkDefault "1";
-      ENABLE_VKBASALT = lib.mkDefault "1";
-      GBM_BACKEND = lib.mkDefault "nvidia-drm";
+      # WLR_RENDERER = lib.mkDefault "vulkan";
+      # __GL_GSYNC_ALLOWED = lib.mkDefault "1";
+      # __GL_VRR_ALLOWED = lib.mkDefault "0";
+      # __GLX_VENDOR_LIBRARY_NAME = lib.mkDefault "nvidia";
+      # LIBVA_DRIVER_NAME = lib.mkDefault "nvidia";
+      # WLR_RENDERER_ALLOW_SOFTWARE = lib.mkDefault "1";
+      # PROTON_ENABLE_NGX_UPDATER = lib.mkDefault "1";
+      # WLR_USE_LIBINPUT = lib.mkDefault "1";
+      # ENABLE_VKBASALT = lib.mkDefault "1";
+      # GBM_BACKEND = lib.mkDefault "nvidia-drm";
 
       TERMINAL = lib.mkDefault "kitty";
     };

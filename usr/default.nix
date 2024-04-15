@@ -59,47 +59,47 @@
   };
 
   # Enable my mod manager.
-  programs.nix-mod-manager = {
-    enable = true;
-    clients = {
-      monster-hunter-world = let
-        inherit (inputs.nnmm.lib.nnmm) mkLocalMod fetchers providers;
-        inherit (inputs.home-manager.lib.hm) dag;
-
-        nexus-provider =
-          providers.nexus.mkNexus "IpfE8TXtgVv8Rs8AoSKzsDPkWyodV1Gwylk1Mm2XRXk=--vzpSxcA0LprYJeFl--1wcrpzP2C72Txa8S3l28uQ==";
-
-        nexus-game-test = nexus-provider.useGame "monsterhunterworld";
-
-        nexus-provider-test = nexus-game-test.fetchNexus {
-          mod-id = 112;
-          file-id = 7364;
-        };
-      in
-        with inputs.mods.monster-hunter-world; {
-          enable = true;
-          rootPath = ".local/share/Steam/steamapps/common/Monster Hunter World";
-          deploymentType = "loose";
-
-          modsPath = ".";
-          binaryPath = ".";
-
-          binaryMods = binary;
-
-          mods = lib.mkMerge [
-            efx
-            # npc
-
-            # nsfw
-            sfw
-            misc
-            # misc-nsfw
-            # monster
-          ];
-        };
-    };
-  };
-
+  # programs.nix-mod-manager = {
+  #   enable = true;
+  #   clients = {
+  #     monster-hunter-world = let
+  #       inherit (inputs.nnmm.lib.nnmm) mkLocalMod fetchers providers;
+  #       inherit (inputs.home-manager.lib.hm) dag;
+  #
+  #       nexus-provider =
+  #         providers.nexus.mkNexus "IpfE8TXtgVv8Rs8AoSKzsDPkWyodV1Gwylk1Mm2XRXk=--vzpSxcA0LprYJeFl--1wcrpzP2C72Txa8S3l28uQ==";
+  #
+  #       nexus-game-test = nexus-provider.useGame "monsterhunterworld";
+  #
+  #       nexus-provider-test = nexus-game-test.fetchNexus {
+  #         mod-id = 112;
+  #         file-id = 7364;
+  #       };
+  #     in
+  #       with inputs.mods.monster-hunter-world; {
+  #         enable = true;
+  #         rootPath = ".local/share/Steam/steamapps/common/Monster Hunter World";
+  #         deploymentType = "loose";
+  #
+  #         modsPath = ".";
+  #         binaryPath = ".";
+  #
+  #         binaryMods = binary;
+  #
+  #         mods = lib.mkMerge [
+  #           efx
+  #           # npc
+  #
+  #           # nsfw
+  #           sfw
+  #           misc
+  #           # misc-nsfw
+  #           # monster
+  #         ];
+  #       };
+  #   };
+  # };
+  #
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
