@@ -26,11 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nnmm = {
-    #   url = "path:/home/noire/Documents/nix-flakes/nix-mod-manager";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    #   inputs.home-manager.follows = "home-manager";
-    # };
+    nnmm = {
+      url = "path:/home/noire/Documents/nix-flakes/nix-mod-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
 
     vfio-single-gpu-passthrough-test = {
       url = "path:/home/noire/Documents/nix-flakes/libvirtd-vfio-flake";
