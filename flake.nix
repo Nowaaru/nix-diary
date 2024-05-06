@@ -64,7 +64,6 @@
     neovim
     */
     nvf.url = "path:/home/noire/Documents/nix-flakes/nvf";
-    neovim-flake.url = "github:NotAShelf/neovim-flake/83da7acf65bd120008d4f6ec6ea33aa9319c92ca";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
@@ -78,7 +77,6 @@
 
   outputs = {
     nixpkgs,
-    neovim-flake,
     home-manager,
     nix-colors,
     lanzaboote,
@@ -131,7 +129,6 @@
       extraSpecialArgs = {inherit inputs nix-colors;};
       modules = [
         nur.nixosModules.nur
-        neovim-flake.homeManagerModules.default
         ./usr
       ];
     };

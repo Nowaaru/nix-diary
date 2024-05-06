@@ -7,7 +7,7 @@ _: {
     ./rust.nix
     ./dotnet.nix
     ./lua.nix
-    ./vim.nix
+    # ./vim.nix
     ./nvim.nix
 
     ./formatters.nix
