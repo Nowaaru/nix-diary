@@ -40,7 +40,7 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = true;
-    settings = {}; # hypr-config.hypr;
+    settings = hypr-config.hypr;
   };
 
   programs.fish.loginShellInit = ifHyprfish ''

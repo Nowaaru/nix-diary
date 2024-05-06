@@ -43,10 +43,20 @@
 
   withOverrides = overrides: what:
     what // overrides;
-
-  mkForceful = what: (mkForce what);
 in (lib.lists.foldl (acc: cur: acc // cur) {} [
-  (useLanguage [withLsp withFormatting withTreesitter (withDiagnostics ["statix" "deadnix"])] "nix")
+  (useLanguage [
+    withLsp
+    withFormatting
+    withTreesitter
+    (withDiagnostics [
+      /*
+      "statix"
+      */
+      /*
+      "deadnix"
+      */
+    ])
+  ] "nix")
   (useLanguage [withLsp withTreesitter withFormatting (withDiagnostics ["shellcheck"])] "bash")
   (useLanguage [withLsp withDebug withTreesitter] "clang")
 

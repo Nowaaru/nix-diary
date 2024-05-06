@@ -8,6 +8,7 @@ _: {
     ./dotnet.nix
     ./lua.nix
     ./vim.nix
+    ./nvim.nix
 
     ./formatters.nix
   ];

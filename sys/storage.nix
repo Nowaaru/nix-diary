@@ -1,7 +1,6 @@
 {...}: let
   windowsFS = "Windows (C:)";
   miscellaneousFS = "Miscellaneous (D:)";
-  globalFS = "Global (G:)";
 
   devices = {
     ssd = "/dev/disk/by-uuid/0E2058022057EF69";
@@ -37,18 +36,6 @@ in {
       autoFormat = false;
       autoResize = false;
       mountPoint = "/mnt/windows";
-    };
-
-    "${globalFS}" = {
-      inherit options;
-      label = globalFS;
-      device = devices.global;
-      fsType = "exfat";
-
-      # See above.
-      autoFormat = false;
-      autoResize = false;
-      mountPoint = "/mnt/global";
     };
 
     "${miscellaneousFS}" = {

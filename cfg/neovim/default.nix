@@ -5,7 +5,7 @@
   lib,
   ...
 }: let
-  inherit (lib) mkDefault mkForce mkOverride;
+  inherit (lib) mkDefault mkForce;
   inherit (inputs.neovim-flake.lib.nvim) dag;
 
   resizeHeight = 2;
@@ -14,12 +14,6 @@
   # read all folders in the ./Modules
   # path, put the filename (extension excluded)
   # inside of the folder and merge to vim attrset
-  st = w: builtins.trace w w;
-  util = import ./util.nix {inherit lib;};
-  keys = import ./keys.nix {inherit lib;};
-  config = import ./config.nix {
-    inherit inputs pkgs;
-  };
   autocmds = import ./autocmds {
     inherit lib dag;
   };
@@ -52,9 +46,12 @@ in {
           require'lspconfig'.csharp_ls.setup(config)
         '';
 
-        "power-mode.nvim" =
-          dag.entryAfter ["image-nvim"] ''
-          '';
+        "power-mode.nvim" = dag.entryAfter ["image-nvim"] ''
+          local powerMode = require("power-mode");
+          powerMode:setup();
+          powerMode:__test_preset();
+
+        '';
 
         dprint = dag.entryAnywhere ''
           require'lspconfig'.dprint.setup({
@@ -67,8 +64,15 @@ in {
             cmd = {"${pkgs.nixd}/bin/nixd"};
           });
         '';
+
+        vtext = dag.entryAnywhere ''
+          vim.diagnostic.config({
+            virtual_text = false,
+          });
+        '';
       }
       // autocmds;
+
     configRC = with pkgs.vimPlugins; {
     };
 
@@ -262,10 +266,11 @@ in {
     ui.modes-nvim = {
       enable = mkDefault false;
       setCursorline = mkDefault false;
-
-      colors.copy = mkDefault "#f5c359";
-      colors.delete = mkDefault "#78ccc5";
-      colors.visual = mkDefault "#9745be";
+      colors = {
+        copy = mkDefault "#f5c359";
+        delete = mkDefault "#78ccc5";
+        visual = mkDefault "#9745be";
+      };
     };
 
     /*

@@ -14,8 +14,8 @@
     # Desktop environment.
     # (inputs.self + /cfg/deepin)
     # (inputs.self + /cfg/plasma6/init.nix)
-    (inputs.self + /cfg/gnome)
-    inputs.vfio-single-gpu-passthrough-test.outputs.x86_64-linux
+    # (inputs.self + /cfg/gnome)
+    # inputs.vfio-single-gpu-passthrough-test.outputs.x86_64-linux
 
     # System configuration loader.
     ../.
@@ -110,15 +110,23 @@
   };
 
   services = {
+    displayManager.sddm = {
+      enable = true;
+      wayland = {
+        enable = true;
+        compositor = "kwin";
+      };
+    };
+
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
       videoDrivers = ["nvidia"];
 
-      displayManager.gdm = {
-        enable = true;
-        wayland = true;
-      };
+      # displayManager.gdm = {
+      #   enable = true;
+      #   wayland = true;
+      # };
 
       # Configure keymap in X11
       xkb.layout = "us";
@@ -192,7 +200,7 @@
     };
 
     # I am insane.
-    package = pkgs.nixVersions.unstable;
+    package = pkgs.nixVersions.nix_2_21;
 
     # Experimental settings.
     settings.experimental-features = ["nix-command" "flakes"];
@@ -220,8 +228,8 @@
     # Session variables for gaming/gamescope.
     sessionVariables = {
       # Hyprland!
-      # WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
-      # NIX_OZONE_WL = lib.mkDefault "1";
+      WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
+      NIX_OZONE_WL = lib.mkDefault "1";
 
       # Gamescope.
       # WLR_RENDERER = lib.mkDefault "vulkan";

@@ -15,7 +15,6 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
     nur.url = "github:nix-community/NUR";
-    mods.url = "path:/home/noire/Documents/game-mods";
     mopidy.url = "path:/home/noire/Documents/nix-secrets/mopidy";
 
     /*
@@ -24,18 +23,6 @@
     power-mode-nvim = {
       url = "path:/home/noire/Documents/projects/power-mode.nvim";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nnmm = {
-      url = "path:/home/noire/Documents/nix-flakes/nix-mod-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    vfio-single-gpu-passthrough-test = {
-      url = "path:/home/noire/Documents/nix-flakes/libvirtd-vfio-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
 
     /*
@@ -76,6 +63,7 @@
     /*
     neovim
     */
+    nvf.url = "path:/home/noire/Documents/nix-flakes/nvf";
     neovim-flake.url = "github:NotAShelf/neovim-flake/83da7acf65bd120008d4f6ec6ea33aa9319c92ca";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
@@ -89,12 +77,9 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     neovim-flake,
     home-manager,
-    plasma-manager,
-    nnmm,
     nix-colors,
     lanzaboote,
     hyprpicker,
@@ -147,7 +132,6 @@
       modules = [
         nur.nixosModules.nur
         neovim-flake.homeManagerModules.default
-        nnmm.homeManagerModules.default
         ./usr
       ];
     };
