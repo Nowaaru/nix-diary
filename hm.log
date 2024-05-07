@@ -438,36 +438,198 @@ error:
              |                                           ^
           335|
 
-       … while evaluating the attribute 'misc.firefox.all'
-         at /nix/store/997hx9bwb5d3iigskbn56w1k4bmk2qjd-source/programs/default.nix:22:17:
-           21|               // {
-           22|                 ${
-             |                 ^
-           23|                   if filename == "default.nix"
+       … from call site
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/usr/noire/default.nix:9:5:
+            8|     # Managing the desktop.
+            9|     programs.desktop.hyprland
+             |     ^
+           10|
+
+       … while calling anonymous lambda
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/modules.nix:506:44:
+          505|       context = name: ''while evaluating the module argument `${name}' in "${key}":'';
+          506|       extraArgs = builtins.mapAttrs (name: _:
+             |                                            ^
+          507|         builtins.addErrorContext (context name)
+
+       … while calling the 'addErrorContext' builtin
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/modules.nix:507:9:
+          506|       extraArgs = builtins.mapAttrs (name: _:
+          507|         builtins.addErrorContext (context name)
+             |         ^
+          508|           (args.${name} or config._module.args.${name})
+
+       … while evaluating the module argument `programs' in "/nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/usr/noire":
+
+       … while evaluating the attribute 'programs'
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/flake.nix:136:9:
+          135|         inherit inputs nix-colors;
+          136|         programs = import ./programs ({inherit pkgs lib inputs;} // inputs);
+             |         ^
+          137|       };
 
        … from call site
-         at /nix/store/997hx9bwb5d3iigskbn56w1k4bmk2qjd-source/programs/default.nix:29:25:
-           28|                   then (directoryPredicate "${dir}/${filename}")
-           29|                   else (mergePredicate dir filename type);
-             |                         ^
-           30|               }
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/flake.nix:136:20:
+          135|         inherit inputs nix-colors;
+          136|         programs = import ./programs ({inherit pkgs lib inputs;} // inputs);
+             |                    ^
+          137|       };
 
-       … while calling 'mergePredicate'
-         at /nix/store/997hx9bwb5d3iigskbn56w1k4bmk2qjd-source/programs/default.nix:36:28:
-           35|
-           36|   mergePredicate = dir: k: v: (
-             |                            ^
-           37|     if v == "directory"
-
-       … from call site
-         at /nix/store/997hx9bwb5d3iigskbn56w1k4bmk2qjd-source/programs/default.nix:41:11:
-           40|     then directoryPredicate "${dir}/${k}"
-           41|     else (import "${dir}/${k}" args)
-             |           ^
-           42|   );
-
-       error: function 'anonymous lambda' called without required argument 'config'
-       at /nix/store/997hx9bwb5d3iigskbn56w1k4bmk2qjd-source/programs/misc/firefox/default.nix:1:1:
+       … while calling anonymous lambda
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/programs/default.nix:1:1:
             1| {
              | ^
-            2|   inputs,
+            2|   lib,
+
+       … from call site
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/programs/default.nix:44:3:
+           43| in
+           44|   directoryPredicate (inputs.self + /programs)
+             |   ^
+           45|
+
+       … while calling 'directoryPredicate'
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/programs/default.nix:9:24:
+            8|
+            9|   directoryPredicate = dir:
+             |                        ^
+           10|     attrsets.foldlAttrs (
+
+       … from call site
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/flake.nix:88:11:
+           87|   } @ inputs: let
+           88|     lib = nixpkgs.lib.extend (final: prev: (import (inputs.self + /lib) {inherit lib;} // inputs) // home-manager.lib);
+             |           ^
+           89|     system = "x86_64-linux";
+
+       … while calling 'extend'
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:307:25:
+          306|     fix' (self: (rattrs self) // {
+          307|       ${extenderName} = f: makeExtensibleWithCustomName extenderName (extends f rattrs);
+             |                         ^
+          308|     });
+
+       … from call site
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:307:28:
+          306|     fix' (self: (rattrs self) // {
+          307|       ${extenderName} = f: makeExtensibleWithCustomName extenderName (extends f rattrs);
+             |                            ^
+          308|     });
+
+       … while calling 'makeExtensibleWithCustomName'
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:305:48:
+          304|   */
+          305|   makeExtensibleWithCustomName = extenderName: rattrs:
+             |                                                ^
+          306|     fix' (self: (rattrs self) // {
+
+       … from call site
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:306:5:
+          305|   makeExtensibleWithCustomName = extenderName: rattrs:
+          306|     fix' (self: (rattrs self) // {
+             |     ^
+          307|       ${extenderName} = f: makeExtensibleWithCustomName extenderName (extends f rattrs);
+
+       … while calling 'fix''
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:84:10:
+           83|   */
+           84|   fix' = f: let x = f x // { __unfix__ = f; }; in x;
+             |          ^
+           85|
+
+       … in the left operand of the update (//) operator
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:84:25:
+           83|   */
+           84|   fix' = f: let x = f x // { __unfix__ = f; }; in x;
+             |                         ^
+           85|
+
+       … from call site
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:84:21:
+           83|   */
+           84|   fix' = f: let x = f x // { __unfix__ = f; }; in x;
+             |                     ^
+           85|
+
+       … while calling anonymous lambda
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:306:11:
+          305|   makeExtensibleWithCustomName = extenderName: rattrs:
+          306|     fix' (self: (rattrs self) // {
+             |           ^
+          307|       ${extenderName} = f: makeExtensibleWithCustomName extenderName (extends f rattrs);
+
+       … in the left operand of the update (//) operator
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:306:31:
+          305|   makeExtensibleWithCustomName = extenderName: rattrs:
+          306|     fix' (self: (rattrs self) // {
+             |                               ^
+          307|       ${extenderName} = f: makeExtensibleWithCustomName extenderName (extends f rattrs);
+
+       … from call site
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:306:18:
+          305|   makeExtensibleWithCustomName = extenderName: rattrs:
+          306|     fix' (self: (rattrs self) // {
+             |                  ^
+          307|       ${extenderName} = f: makeExtensibleWithCustomName extenderName (extends f rattrs);
+
+       … while calling 'extends'
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:248:7:
+          247|     (
+          248|       final:
+             |       ^
+          249|       let
+
+       … in the right operand of the update (//) operator
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:252:12:
+          251|       in
+          252|       prev // overlay final prev
+             |            ^
+          253|     );
+
+       … from call site
+         at /nix/store/p69bcs7ma6ijj8v9xsrg3nq3nn8ryn95-source/lib/fixed-points.nix:252:15:
+          251|       in
+          252|       prev // overlay final prev
+             |               ^
+          253|     );
+
+       … while calling anonymous lambda
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/flake.nix:88:38:
+           87|   } @ inputs: let
+           88|     lib = nixpkgs.lib.extend (final: prev: (import (inputs.self + /lib) {inherit lib;} // inputs) // home-manager.lib);
+             |                                      ^
+           89|     system = "x86_64-linux";
+
+       … in the left operand of the update (//) operator
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/flake.nix:88:99:
+           87|   } @ inputs: let
+           88|     lib = nixpkgs.lib.extend (final: prev: (import (inputs.self + /lib) {inherit lib;} // inputs) // home-manager.lib);
+             |                                                                                                   ^
+           89|     system = "x86_64-linux";
+
+       … in the left operand of the update (//) operator
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/flake.nix:88:88:
+           87|   } @ inputs: let
+           88|     lib = nixpkgs.lib.extend (final: prev: (import (inputs.self + /lib) {inherit lib;} // inputs) // home-manager.lib);
+             |                                                                                        ^
+           89|     system = "x86_64-linux";
+
+       … from call site
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/flake.nix:88:45:
+           87|   } @ inputs: let
+           88|     lib = nixpkgs.lib.extend (final: prev: (import (inputs.self + /lib) {inherit lib;} // inputs) // home-manager.lib);
+             |                                             ^
+           89|     system = "x86_64-linux";
+
+       … while calling anonymous lambda
+         at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/lib/default.nix:1:1:
+            1| {lib, ...} @ args:
+             | ^
+            2| lib.attrsets.foldlAttrs (
+
+       error: infinite recursion encountered
+       at /nix/store/jj9agpnxgpvbrimxiy6fbqmah37w1fh7-source/lib/default.nix:2:1:
+            1| {lib, ...} @ args:
+            2| lib.attrsets.foldlAttrs (
+             | ^
+            3|   acc: k: v:
