@@ -1,2 +1,2 @@
 **/*.orig
-Core/hardware-configuration*
+sys/conf/hardware-configuration*
