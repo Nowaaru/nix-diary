@@ -4,7 +4,6 @@ _: {
     ./firefox
 
     ./print-screen.nix
-    ./electron.nix
     ./portals.nix
     ./hydrus.nix
     ./audio.nix
