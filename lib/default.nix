@@ -1,12 +1,12 @@
-{lib, ...} @ args:
+lib:
 lib.attrsets.foldlAttrs (
-  acc: k: v:
+  acc: k: _:
     acc
     // {
-      ${lib.strings.removeSuffix ".nix" k} = import v args;
+      ${lib.strings.removeSuffix ".nix" k} = import (./. + "/${k}") lib;
     }
 ) {} (
   lib.attrsets.filterAttrs (
-    k: v: v == "directory" && k != "default.nix"
+    k: v: v != "directory" && k != "default.nix"
   ) (builtins.readDir ./.)
 )
