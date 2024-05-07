@@ -85,7 +85,7 @@
     nur,
     ...
   } @ inputs: let
-    lib = nixpkgs.lib.extend (final: prev: (import (inputs.self + /lib) {lib = prev;} // inputs) // home-manager.lib);
+    lib = nixpkgs.lib.extend (final: prev: prev // {gamindustri = import (inputs.self + /lib) prev;});
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
