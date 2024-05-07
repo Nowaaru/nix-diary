@@ -85,7 +85,7 @@
     nur,
     ...
   } @ inputs: let
-    lib = nixpkgs.lib.extend (final: _: (import (inputs.self + /lib) final) // home-manager.lib);
+    lib = nixpkgs.lib; #.extend (final: _: (import (inputs.self + /lib) final) // home-manager.lib);
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -130,24 +130,31 @@
       };
     };
 
-    homeConfigurations."noire" = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      extraSpecialArgs = {inherit inputs nix-colors;};
-      modules = [
-        nur.nixosModules.nur
-        ./usr
-      ];
-    };
+    homeConfigurations = let
+      extraSpecialArgs = {
+        inherit inputs nix-colors;
+        programs = import ./programs {inherit lib inputs;};
+      };
+    in {
+      "noire" =
+        home-manager.lib.homeManagerConfiguration
+        {
+          inherit pkgs extraSpecialArgs;
+          modules = [
+            nur.nixosModules.nur
+            ./usr/noire
+          ];
+        };
 
-    /*
-    bare-bones wsl config
-    */
-    homeConfigurations."vert" = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = [
-        ./wsl
-      ];
-      extraSpecialArgs = {inherit inputs nix-colors;};
+      /*
+      bare-bones wsl config
+      */
+      "vert" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs extraSpecialArgs;
+        modules = [
+          ./wsl
+        ];
+      };
     };
   };
 }

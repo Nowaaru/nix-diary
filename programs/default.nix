@@ -1,4 +1,7 @@
-{lib, ...} @ args: let
+{
+  lib,
+  inputs,
+} @ args: let
   inherit (lib) strings attrsets;
 
   directoryPredicate = dir:
@@ -27,4 +30,4 @@
     else (import "${dir}/${k}" args)
   );
 in
-  directoryPredicate ./.
+  directoryPredicate (inputs.self + /programs)
