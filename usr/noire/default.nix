@@ -1,7 +1,9 @@
 # TODO: holy shit just
 # remove all of these and start
 # using Folder/Default.nix
-{programs, ...}: {
+{programs, ...}: let
+  selfTrace = w: builtins.trace w w;
+in {
   imports = [
     # Managing the desktop.
     programs.desktop.hyprland

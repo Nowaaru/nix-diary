@@ -85,7 +85,7 @@
     nur,
     ...
   } @ inputs: let
-    lib = nixpkgs.lib; #.extend (final: _: (import (inputs.self + /lib) final) // home-manager.lib);
+    lib = nixpkgs.lib.extend (final: _: (import (inputs.self + /lib) final) // home-manager.lib);
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -133,7 +133,7 @@
     homeConfigurations = let
       extraSpecialArgs = {
         inherit inputs nix-colors;
-        programs = import ./programs {inherit lib inputs;};
+        programs = import ./programs ({inherit pkgs lib inputs;} // inputs);
       };
     in {
       "noire" =
