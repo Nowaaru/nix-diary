@@ -38,7 +38,7 @@
     # TODO: if its a directory
     # then run mergepredicate on the builtin files
     then directoryPredicate "${dir}/${k}"
-    else (import "${dir}/${k}" args)
+    else lib.gamindustri.meta.withInputs "${dir}/${k}" args
   );
 in
   directoryPredicate (inputs.self + /programs)
