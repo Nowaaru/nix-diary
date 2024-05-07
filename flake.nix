@@ -85,7 +85,7 @@
     nur,
     ...
   } @ inputs: let
-    inherit (nixpkgs) lib;
+    lib = nixpkgs.lib.extend (final: _: (import (inputs.self + /lib) final) // home-manager.lib);
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -97,10 +97,16 @@
         permittedInsecurePackages = ["electron-25.9.0"];
       };
     };
+    /*
+    lol
+    */
   in {
-    nixosConfigurations = {
+    inherit lib;
+    nixosConfigurations = let
+      specialArgs = {inherit inputs;};
+    in {
       lastation = lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        inherit specialArgs;
         modules = [
           lanzaboote.nixosModules.lanzaboote
           agenix.nixosModules.default
@@ -116,7 +122,7 @@
       };
 
       leanbox = lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        inherit specialArgs;
         modules = [
           agenix.nixosModules.default
           ./sys/wsl
