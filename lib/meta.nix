@@ -1,8 +1,15 @@
 {lib, ...}: {
-  withInputs = what: args: let
-    imported = import what;
+  mkIfElse = with lib;
+    predicate: yes: no:
+      mkMerge [
+        (mkIf predicate yes)
+        (mkIf (!predicate) no)
+      ];
+
+  withInputs = this: with_inputs: let
+    imported = import this;
     parameters = builtins.functionArgs imported;
-    unfillableParameters = builtins.attrNames (lib.attrsets.filterAttrs (k: v: !v && what ? k)) parameters;
+    unfillableParameters = builtins.attrNames (lib.attrsets.filterAttrs (k: v: !v && this ? k)) parameters;
     amtUnfillable = builtins.length unfillableParameters;
   in
     if
@@ -21,7 +28,7 @@
                 )
             }")
             unfillableParameters} do not have defaults and are not filled in by parameter 'args'") {
-        }) "input function is not of type function (got ${builtins.typeOf what})")
-    then (import what args)
+        }) "input function is not of type function (got ${builtins.typeOf this})")
+    then (import this (lib.attrsets.filterAttrs (k: _: (builtins.elem k (builtins.attrNames parameters))) with_inputs))
     else {};
 }
