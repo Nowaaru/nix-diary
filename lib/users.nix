@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  self,
   ...
 }: let
   out = {
@@ -34,8 +35,17 @@
         a
         // {
           ${usr.home.username.content} = lib.homeManagerConfiguration (let
-            _configure = special_args: program_name:
-              lib.withInputs "${usrRoot}/${usr.home.username.content}/${cfgRoot}/${program_name}" special_args;
+            _configure = special_args: program_name: let
+              reqCfgDir = "${usrRoot}/${usr.home.username.content}/${cfgRoot}/${program_name}";
+              fallbackCfgDir = "${self}/cfg/${program_name}";
+              chosenPath =
+                if builtins.pathExists reqCfgDir
+                then reqCfgDir
+                else if builtins.pathExists fallbackCfgDir
+                then fallbackCfgDir
+                else abort "configuration '${program_name}' does not exist as ${reqCfgDir} or '${fallbackCfgDir}'";
+            in
+              lib.withInputs chosenPath special_args;
 
             _extraSpecialArgs =
               specialArgs
