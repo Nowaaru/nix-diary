@@ -1,4 +1,4 @@
-{lib, ...} @ inputs: {
+{lib, ...}: {
   withInputs = what: args: let
     imported = import what;
     parameters = builtins.functionArgs imported;

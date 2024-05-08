@@ -1,35 +1,44 @@
-lib: let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   out = {
     mkUser = username: {
-      programs,
+      programs ? [],
       sessionVariables,
       variables ? sessionVariables,
-      source ? null,
       files ? {},
     }: {
-      home = {
-        inherit username source;
-        homeDirectory = "/home/${username}";
-        sessionVariables = sessionVariables // variables;
-        file = files;
+      imports = programs;
 
-        imports = programs;
+      home = {
+        username = lib.mkForce username;
+        homeDirectory = lib.mkForce "/home/${username}";
+        sessionVariables = lib.mkMerge [sessionVariables variables];
+        stateVersion = lib.mkDefault "24.05";
+        file = lib.mkDefault files;
       };
-      programs.home-manager.enable = true;
+
+      programs.home-manager.enable = lib.mkForce true;
     };
 
-    mkHomeManager = {extraSpecialArgs}:
-      lib.lists.foldl (a: b:
+    mkHomeManager = users: {
+      extraSpecialArgs ? {},
+      usrRoot,
+    }:
+      lib.lists.foldl (a: usr:
         a
         // {
-          ${b.username} = lib.homeManagerConfiguration {
-            inherit extraSpecialArgs;
+          ${usr.home.username.content} = lib.homeManagerConfiguration {
+            inherit extraSpecialArgs pkgs;
             modules = [
-              (lib.mkIf (b.source != null) b.source)
-              b
+              usr
+              (usrRoot + /${usr.home.username.content})
             ];
           };
-        }) {};
+        }) {}
+      users;
   };
 in
   out

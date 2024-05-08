@@ -1,8 +1,3 @@
-# please no unnecessary PRs
-# at this point you probably wont even break it
-# but LORD i don't want to deal with the confusion
-# if it does break
-# Pain
 {
   description = "noire's nonfunctional user flake.";
 
@@ -91,7 +86,8 @@
         // {
           gamindustri = import (inputs.self + /lib) (inputs
             // {
-              lib = prev;
+              inherit pkgs;
+              lib = prev // home-manager.lib;
             });
         })
       // home-manager.lib;
@@ -137,6 +133,7 @@
     };
 
     homeConfigurations = let
+      usrRoot = ./usr;
       extraSpecialArgs = {
         inherit inputs nix-colors nur;
         programs = import ./programs (inputs
@@ -145,25 +142,21 @@
             inherit inputs pkgs lib nur;
           });
       };
-    in {
-      "noire" =
-        home-manager.lib.homeManagerConfiguration
-        {
-          inherit pkgs extraSpecialArgs;
-          modules = [
-            ./usr/noire
-          ];
-        };
+    in
+      with lib.gamindustri.users;
+        mkHomeManager [
+          # me!
+          (mkUser "noire" {
+            sessionVariables = {
+              EDITOR = "nvim";
+            };
+          })
 
-      /*
-      bare-bones wsl config
-      */
-      "vert" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs extraSpecialArgs;
-        modules = [
-          ./wsl
-        ];
-      };
-    };
+          (mkUser "vert" {
+            sessionVariables = {
+              EDITOR = "nvim";
+            };
+          })
+        ] {inherit usrRoot extraSpecialArgs;};
   };
 }
