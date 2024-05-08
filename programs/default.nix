@@ -1,9 +1,8 @@
 {
   lib,
-  config,
   inputs,
   ...
-} @ args: let
+}: let
   inherit (lib) strings attrsets;
 
   directoryPredicate = dir:
@@ -27,8 +26,6 @@
 
   mergePredicate = dir: k: v: (
     if v == "directory"
-    # TODO: if its a directory
-    # then run mergepredicate on the builtin files
     then directoryPredicate "${dir}/${k}"
     else import "${dir}/${k}"
   );
