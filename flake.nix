@@ -134,7 +134,7 @@
 
     homeConfigurations = let
       usrRoot = ./usr;
-      extraSpecialArgs = {
+      specialArgs = {
         inherit inputs nix-colors nur;
         programs = import ./programs (inputs
           // {
@@ -157,6 +157,6 @@
               EDITOR = "nvim";
             };
           })
-        ] {inherit usrRoot extraSpecialArgs;};
+        ] {inherit usrRoot specialArgs;};
   };
 }

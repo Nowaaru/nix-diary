@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-} @ inputs:
+{lib, ...} @ inputs:
 (lib.attrsets.foldlAttrs (
     acc: k: _:
       acc

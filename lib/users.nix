@@ -8,8 +8,10 @@
       programs ? [],
       sessionVariables,
       variables ? sessionVariables,
+      extraSpecialArgs ? {},
       files ? {},
     }: {
+      __ = {inherit extraSpecialArgs;};
       imports = programs;
 
       home = {
@@ -24,16 +26,17 @@
     };
 
     mkHomeManager = users: {
-      extraSpecialArgs ? {},
+      specialArgs ? {},
       usrRoot,
     }:
       lib.lists.foldl (a: usr:
         a
         // {
           ${usr.home.username.content} = lib.homeManagerConfiguration {
-            inherit extraSpecialArgs pkgs;
+            inherit pkgs;
+            extraSpecialArgs = specialArgs // usr.__.extraSpecialArgs;
             modules = [
-              usr
+              (lib.attrsets.filterAttrs (k: _: !(builtins.elem k ["__"])) usr)
               (usrRoot + /${usr.home.username.content})
             ];
           };
