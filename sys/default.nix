@@ -39,4 +39,5 @@
     ++ [home-manager]; # do not remove home-manager.
 
   programs.steam.enable = true; # steam-input works through programs.steam rather than just the package
+  programs.steam.gamescopeSession.enable = true;
 }
