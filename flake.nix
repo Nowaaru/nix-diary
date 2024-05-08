@@ -15,6 +15,7 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
     mopidy.url = "path:/home/noire/Documents/nix-secrets/mopidy";
+    nurpkgs.url = "github:nix-community/NUR";
 
     /*
     experimental modules
@@ -76,6 +77,7 @@
 
   outputs = {
     nixpkgs,
+    nurpkgs,
     home-manager,
     nix-colors,
     lanzaboote,
@@ -98,15 +100,20 @@
       inherit system;
       overlays = [
         hyprpicker.overlays.default
+        nurpkgs.overlay
       ];
       config = {
         allowUnfree = true;
         permittedInsecurePackages = ["electron-25.9.0"];
       };
     };
-    /*
-    lol
-    */
+
+    nur = import nurpkgs {
+      inherit pkgs;
+      nurpkgs = import nixpkgs {
+        inherit system;
+      };
+    };
   in {
     inherit lib;
     nixosConfigurations = let
@@ -131,11 +138,11 @@
 
     homeConfigurations = let
       extraSpecialArgs = {
-        inherit inputs nix-colors;
+        inherit inputs nix-colors nur;
         programs = import ./programs (inputs
           // {
             inherit (pkgs) config;
-            inherit inputs pkgs lib;
+            inherit inputs pkgs lib nur;
           });
       };
     in {

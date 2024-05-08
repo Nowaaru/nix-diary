@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  nur,
   ...
 }: {
   home.packages = with pkgs; [
@@ -48,6 +49,7 @@
         bookmarks = pkgs.lib.mkForce (import ./bookmarks.nix {
           inherit (pkgs) lib;
         });
+        extensions = pkgs.lib.mkForce (import ./extensions.nix nur);
       };
     };
 
