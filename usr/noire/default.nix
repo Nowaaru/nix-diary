@@ -6,7 +6,7 @@
 in {
   imports = [
     # Managing the desktop.
-    programs.desktop.hyprland
+    programs.desktop.hyprland.all
 
     # Developer goodies.
     programs.dev.fish
@@ -52,6 +52,8 @@ in {
     programs.music.mixers.ncpamixer
     programs.music.players.spotify
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   home = {
     # Home Manager needs a bit of information about you and the paths it should

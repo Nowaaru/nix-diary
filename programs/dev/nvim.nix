@@ -39,18 +39,22 @@
       };
 
       "<M-w>" = {
+        action = "<C-w>";
+      };
+
+      "<C-w>" = {
         action = "require('smart-splits').move_cursor_up";
         lua = true;
       };
-      "<M-s>" = {
+      "<C-s>" = {
         action = "require('smart-splits').move_cursor_down";
         lua = true;
       };
-      "<M-a>" = {
+      "<C-a>" = {
         action = "require('smart-splits').move_cursor_left";
         lua = true;
       };
-      "<M-d>" = {
+      "<C-d>" = {
         action = "require('smart-splits').move_cursor_right";
         lua = true;
       };

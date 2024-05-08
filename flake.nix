@@ -14,7 +14,6 @@
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
-    nur.url = "github:nix-community/NUR";
     mopidy.url = "path:/home/noire/Documents/nix-secrets/mopidy";
 
     /*
@@ -82,10 +81,18 @@
     lanzaboote,
     hyprpicker,
     agenix,
-    nur,
     ...
   } @ inputs: let
-    lib = nixpkgs.lib.extend (final: prev: prev // {gamindustri = import (inputs.self + /lib) prev;});
+    lib =
+      nixpkgs.lib.extend (_: prev:
+        prev
+        // {
+          gamindustri = import (inputs.self + /lib) (inputs
+            // {
+              lib = prev;
+            });
+        })
+      // home-manager.lib;
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -109,14 +116,6 @@
         inherit specialArgs;
         modules = [
           lanzaboote.nixosModules.lanzaboote
-          agenix.nixosModules.default
-          {
-            nixpkgs.overlays = [
-              # (import sys/overlay/wlroots-explicit-sync-overlay {
-              #   inherit pkgs lib;
-              # })
-            ];
-          }
           ./sys/conf
         ];
       };
@@ -133,7 +132,11 @@
     homeConfigurations = let
       extraSpecialArgs = {
         inherit inputs nix-colors;
-        programs = import ./programs ({inherit pkgs lib inputs;} // inputs);
+        programs = import ./programs (inputs
+          // {
+            inherit (pkgs) config;
+            inherit inputs pkgs lib;
+          });
       };
     in {
       "noire" =
@@ -141,7 +144,6 @@
         {
           inherit pkgs extraSpecialArgs;
           modules = [
-            nur.nixosModules.nur
             ./usr/noire
           ];
         };

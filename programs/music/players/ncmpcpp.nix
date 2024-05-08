@@ -1,19 +1,7 @@
-{
-  pkgs,
-  lib,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     ncmpcpp
-    spotify
   ];
-
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      # Add additional package names here
-      "spotify"
-    ];
 
   services = {
     mpd = {

@@ -2185,21 +2185,6 @@
         "type": "github"
       }
     },
-    "nur": {
-      "locked": {
-        "lastModified": 1714866376,
-        "narHash": "sha256-TNHj9ARs7ny3l7pubZO4/9r4wPpZZiKIUrBobLB35is=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "059f6c2bf1f8b8ee1789f2692c2be200514d29b8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
-        "type": "github"
-      }
-    },
     "nvf": {
       "inputs": {
         "flake-parts": "flake-parts_4",
@@ -4463,7 +4448,6 @@
         "nix-utils": "nix-utils",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_7",
-        "nur": "nur",
         "nvf": "nvf",
         "plasma-manager": "plasma-manager",
         "power-mode-nvim": "power-mode-nvim",

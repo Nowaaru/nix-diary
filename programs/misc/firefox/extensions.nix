@@ -1,5 +1,5 @@
-{config}:
-with config.nur.repos.rycee.firefox-addons; [
+nur:
+with nur.repos.rycee.firefox-addons; [
   terms-of-service-didnt-read
   return-youtube-dislikes
   refined-github

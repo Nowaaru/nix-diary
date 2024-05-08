@@ -1,6 +1,5 @@
 {
   inputs,
-  config,
   pkgs,
   ...
 }: {
@@ -19,7 +18,7 @@
       pkgs.wrapFirefox pkgs.firefox-unwrapped
       {
         extraPolicies = import ./policies.nix {
-          inherit config inputs pkgs;
+          inherit inputs pkgs;
         };
       };
 
@@ -49,9 +48,6 @@
         bookmarks = pkgs.lib.mkForce (import ./bookmarks.nix {
           inherit (pkgs) lib;
         });
-        extensions = import ./extensions.nix {
-          inherit config;
-        };
       };
     };
 

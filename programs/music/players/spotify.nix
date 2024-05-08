@@ -1,13 +1,12 @@
 {
-  pkgs,
   lib,
+  pkgs,
   ...
 }: {
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
-      "osu-lazer-bin"
+      "spotify"
     ];
-  home.packages = with pkgs; [
-    osu-lazer-bin
-  ];
+
+  home.packages = with pkgs; [spotify];
 }
