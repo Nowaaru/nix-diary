@@ -29,8 +29,7 @@
       specialArgs ? {},
       cfgRoot ? "cfg",
       usrRoot,
-    }: let
-    in
+    }:
       lib.lists.foldl (a: usr:
         a
         // {
