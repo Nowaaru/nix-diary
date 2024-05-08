@@ -38,6 +38,14 @@
         lua = true;
       };
 
+      "<S-h>" = {
+        action = "<cmd>BufferLineCyclePrev<CR>";
+      };
+
+      "<S-l>" = {
+        action = "<cmd>BufferLineCycleNext<CR>";
+      };
+
       "<M-w>" = {
         action = "<C-w>";
       };

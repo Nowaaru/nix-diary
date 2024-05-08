@@ -18,6 +18,9 @@ in {
     programs.dev.roblox
     programs.dev.rust
 
+    programs.dev.git.lazygit
+    programs.dev.git.all
+
     # Gaming and the like.
     programs.gaming.osu
 
