@@ -9,7 +9,7 @@
     };
 
     mopidy = let
-      mopidySecrets = inputs.mopidy;
+      mopidySecrets = inputs.secrets.mopidy;
     in {
       enable = true;
       extensionPackages = with pkgs; [
@@ -23,11 +23,11 @@
         mopidy-soundcloud
       ];
       configuration = ''
-      [mpd]
-      enabled=true
-      hostname=:: # Scary!
-      ${mopidySecrets.spotify}
-      ${mopidySecrets.youtube}
+        [mpd]
+        enabled=true
+        hostname=:: # Scary!
+        ${mopidySecrets.spotify}
+        ${mopidySecrets.youtube}
       '';
     };
   };

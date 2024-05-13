@@ -9,7 +9,7 @@
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
-    mopidy.url = "path:/home/noire/Documents/nix-secrets/mopidy";
+    secrets.url = "path:/home/noire/Documents/nix-secrets";
     nurpkgs.url = "github:nix-community/NUR";
 
     /*
