@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
 }: let
@@ -51,7 +52,7 @@ in {
     enable = false;
     level = 16;
 
-    logFile = /tmp/nvf.log;
+    logFile = "/tmp/nvf.log";
   };
 
   autocomplete = {
@@ -388,6 +389,7 @@ in {
       log_info = "info";
       show_time = true;
       enable_line_number = true;
+      blacklist = inputs.secrets.neocord-blacklist;
 
       logo = "auto";
       logo_tooltip = "Once you're too far in, you can never go back...";
@@ -399,9 +401,9 @@ in {
       plugin_manager_text = "Where... am I?";
       reading_text = "📃 Catching up on %s...";
       terminal_text = "🖥️ Terminal time!";
-      file_explorer_text = "🗂️ Using NvimTree (%s)";
+      file_explorer_text = "🗂️ Using %s";
       editing_text = "💥🔨 Tinkering with %s";
-      workspace_text = "🧰 Checking out the damage..";
+      workspace_text = "🧰 %s";
     };
   };
 
@@ -598,5 +600,5 @@ in {
 
   tabline.nvimBufferline.enable = true;
   snippets.vsnip.enable = true;
-  spellcheck.enable = true;
+  spellcheck.enable = lib.mkForce false;
 }

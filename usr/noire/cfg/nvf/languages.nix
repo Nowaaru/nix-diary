@@ -15,14 +15,19 @@ pkgs: {
 
   ts = {
     enable = true;
-    format = {
-      package = pkgs.dprint;
-    };
+    format.enable = true;
+    # format = {
+    #   package = pkgs.dprint;
+    # };
 
     extraDiagnostics.types = ["eslint_d"];
   };
 
-  lua.enable = true;
+  lua = {
+    enable = true;
+    lsp.neodev.enable = true;
+  };
+
   nix.enable = true;
   bash.enable = true;
 }
