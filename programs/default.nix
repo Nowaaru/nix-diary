@@ -1,8 +1,4 @@
-{
-  lib,
-  inputs,
-  ...
-}: let
+lib: let
   inherit (lib) strings attrsets;
 
   directoryPredicate = dir:
@@ -29,5 +25,6 @@
     then directoryPredicate "${dir}/${k}"
     else import "${dir}/${k}"
   );
-in
-  directoryPredicate (inputs.self + /programs)
+in {
+  mkProgramTreeFromDir = directoryPredicate;
+}
