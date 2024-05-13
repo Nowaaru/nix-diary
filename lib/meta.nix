@@ -6,6 +6,8 @@
         (mkIf (!predicate) no)
       ];
 
+  selfTrace = this: builtins.trace this this;
+
   withInputs = this: with_inputs: let
     imported = import this;
     parameters = builtins.functionArgs imported;
