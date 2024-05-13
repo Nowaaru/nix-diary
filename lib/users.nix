@@ -4,6 +4,7 @@
   self,
   ...
 }: let
+  libprograms = import ./programs.nix lib;
   out = {
     mkUser = username: {
       programs ? [],
@@ -43,13 +44,15 @@
                 then reqCfgDir
                 else if builtins.pathExists fallbackCfgDir
                 then fallbackCfgDir
-                else abort "configuration '${program_name}' does not exist as ${reqCfgDir} or '${fallbackCfgDir}'";
+                else abort "configuration '${program_name}' does not exist as '${reqCfgDir}' or '${fallbackCfgDir}'";
             in
               lib.withInputs chosenPath special_args;
 
             _extraSpecialArgs =
               specialArgs
               // usr.__.extraSpecialArgs;
+
+            programs-dir = self + /programs;
           in rec {
             inherit pkgs;
             extraSpecialArgs =
@@ -60,6 +63,17 @@
                     inherit pkgs;
                     inherit (pkgs) lib;
                   });
+                programs = libprograms.mkProgramTreeFromDir programs-dir;
+                user = let
+                  name = usr.home.username.content;
+                  usr-programs-dir = self + /usr/${name}/programs;
+                in {
+                  inherit name;
+                  programs =
+                    if (builtins.pathExists usr-programs-dir)
+                    then (libprograms.mkProgramTreeFromDir usr-programs-dir)
+                    else {};
+                };
               };
 
             modules = [
