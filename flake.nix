@@ -157,6 +157,12 @@
               EDITOR = "nvim";
             };
           })
+
+          (mkUser "neptune" {
+            sessionVariables = {
+              EDITOR = "nvim";
+            };
+          })
         ] {inherit usrRoot specialArgs;};
   };
 }
