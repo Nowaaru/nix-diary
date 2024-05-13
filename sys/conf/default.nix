@@ -7,7 +7,7 @@
   lib,
   inputs,
   ...
-}: {
+} @ args: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
@@ -19,6 +19,8 @@
 
     # System configuration loader.
     ../.
+    # Users
+    ./register-users.nix
   ];
 
   # swapDevices = [
@@ -174,13 +176,14 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.noire = {
-    isNormalUser = true;
-    description = "noire";
-    shell = pkgs.fish;
-    extraGroups = ["networkmanager" "wheel" "libvirtd"];
-    packages = []; # managed via home-manager
-  };
+  # users.users.noire = {
+  #   isNormalUser = true;
+  #   description = "noire";
+  #   shell = pkgs.fish;
+  #   extraGroups = ["networkmanager" "wheel" "libvirtd"];
+  #   packages = []; # managed via home-manager
+  # };
+  # users.users = import ./register-users.nix args;
   nix = {
     # Enable flakes.
     gc = {
@@ -198,6 +201,9 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Noisetorch
+  programs.noisetorch.enable = true;
 
   # Hyprland!
   programs.hyprland = {
@@ -305,4 +311,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
+  virtualisation.waydroid.enable = true;
 }
