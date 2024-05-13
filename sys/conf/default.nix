@@ -1,6 +1,12 @@
 # Edit this configuration file to define what should be installed on
 # your system.	Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
+/*
+TODO: To allow other users to edit their home-manager
+configuration, symlink their ~/.diary/usr/{usrName} directory
+to their own ~/.diary folder and rescind permissions
+for directories above their own dedicated edirectory.
+*/
 {
   config,
   pkgs,
@@ -13,7 +19,7 @@
     ./hardware.nix
     # Desktop environment.
     # (inputs.self + /cfg/deepin)
-    # (inputs.self + /cfg/plasma6/init.nix)
+    (inputs.self + /cfg/plasma6/init.nix)
     # (inputs.self + /cfg/gnome)
     # inputs.vfio-single-gpu-passthrough-test.outputs.x86_64-linux
 
