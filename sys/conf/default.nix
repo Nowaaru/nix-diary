@@ -19,8 +19,8 @@ for directories above their own dedicated edirectory.
     ./hardware.nix
     # Desktop environment.
     # (inputs.self + /cfg/deepin)
-    (inputs.self + /cfg/plasma6/init.nix)
-    # (inputs.self + /cfg/gnome)
+    # (inputs.self + /cfg/plasma6/init.nix)
+    (inputs.self + /cfg/gnome)
     # inputs.vfio-single-gpu-passthrough-test.outputs.x86_64-linux
 
     # System configuration loader.
@@ -108,23 +108,23 @@ for directories above their own dedicated edirectory.
   };
 
   services = {
-    displayManager.sddm = {
-      enable = true;
-      wayland = {
-        enable = true;
-        compositor = "kwin";
-      };
-    };
+    # displayManager.sddm = {
+    #   enable = true;
+    #   wayland = {
+    #     enable = true;
+    #     compositor = "kwin";
+    #   };
+    # };
 
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
       videoDrivers = ["nvidia"];
 
-      # displayManager.gdm = {
-      #   enable = true;
-      #   wayland = true;
-      # };
+      displayManager.gdm = {
+        enable = true;
+        wayland = true;
+      };
 
       # Configure keymap in X11
       xkb.layout = "us";
