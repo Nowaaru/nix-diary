@@ -29,14 +29,7 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    /*
-    agenix
-    */
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.darwin.follows = ""; # please god i pray that not a single mac user sees this config option
-    };
+    virtio.url = "path:/home/noire/Documents/nix-flakes/libvirtd-vfio-flake";
 
     /*
     home-manager
