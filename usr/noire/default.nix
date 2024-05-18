@@ -24,6 +24,9 @@
     programs.dev.git.all
 
     # Gaming and the like.
+    programs.gaming.minecraft
+    programs.gaming.lutris
+    programs.gaming.steam
     programs.gaming.osu
 
     # Social media and social utilities.
@@ -32,6 +35,8 @@
     # General things, auxiliary functionalities.
     programs.misc.qol.night-light
     programs.misc.qol.kdenlive
+    programs.misc.qol.obsidian
+    programs.misc.bitwarden
 
     programs.misc.terminal.all
     programs.misc.firefox.all
@@ -57,6 +62,7 @@
     programs.music.players.spotify
 
     user.programs.qt
+    user.programs.heroic
   ];
 
   nixpkgs.config.allowUnfree = true;
