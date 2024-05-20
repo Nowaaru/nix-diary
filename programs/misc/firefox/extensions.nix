@@ -5,5 +5,4 @@ with nur.repos.rycee.firefox-addons; [
   refined-github
 
   adnauseam
-  tridactyl
 ]
