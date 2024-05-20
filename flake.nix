@@ -70,7 +70,6 @@
     nix-colors,
     lanzaboote,
     hyprpicker,
-    agenix,
     ...
   } @ inputs: let
     lib =
@@ -119,7 +118,6 @@
       leanbox = lib.nixosSystem {
         inherit specialArgs;
         modules = [
-          agenix.nixosModules.default
           ./sys/wsl
         ];
       };

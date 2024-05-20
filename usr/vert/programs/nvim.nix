@@ -1,19 +1,15 @@
 {
   inputs,
-  self,
-  pkgs,
-  lib,
+  configure,
 }: {
   imports = [
-    inputs.neovim-flake.homeManagerModules.default
+    inputs.nvf.homeManagerModules.default
   ];
 
   programs = {
-    neovim-flake = {
+    nvf = {
       enable = true;
-      settings = import (inputs.self + /Config/Neovim) {
-        inherit pkgs lib inputs;
-      }; # bruh?
+      settings = configure "nvf";
     };
   };
 }

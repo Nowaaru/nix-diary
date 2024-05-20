@@ -1,17 +1,20 @@
 {
-  inputs,
-  config,
   pkgs,
-  lib,
+  user,
+  programs,
   ...
-}: let
-  wsl-init = import ./Modules/WSL/init.nix {
-    inherit inputs config pkgs lib;
-  };
-in {
+}: {
   imports = [
-    wsl-init
+    user.programs.fish
+    user.programs.nvim
+    user.programs.git
   ];
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-curses;
+  };
 
   nixpkgs = {
     config = {};
