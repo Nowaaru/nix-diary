@@ -5,29 +5,28 @@
 # https://github.com/nix-community/NixOS-WSL
 {
   inputs,
-  config,
   lib,
   pkgs,
   ...
 }:
 with lib; {
-  home.packages = [
+  environment.systemPackages = [
     grc
     fzf
     zip
     unzip
 
     fishPlugins.done
-    fishPlugins.fzf-fish
-    fishPlugins.forgit
-    fishPlugins.hydro
-    fishPlugins.grc
+
+    home-manager
+    pinentry
+    gnupg
+    git
   ];
 
   imports = [
     # include NixOS-WSL modules
     inputs.nixos-wsl.nixosModules.default
-    ./init.nix
     ./hardware.nix
   ];
 
@@ -61,5 +60,5 @@ with lib; {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }
