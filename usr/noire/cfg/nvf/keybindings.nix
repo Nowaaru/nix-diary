@@ -5,7 +5,7 @@ let
   j = {
     action = "gj";
   };
-in {
+in rec {
   normal = {
     inherit k j;
     "<C-j>" = {
@@ -68,6 +68,11 @@ in {
       action = "require('smart-splits').move_cursor_right";
       lua = true;
     };
+  };
+
+  terminal = {
+    inherit (normal) "<C-w>" "<C-s>" "<C-a>" "<C-d>";
+    inherit (normal) "<C-S-w>" "<C-S-s>" "<C-S-a>" "<C-S-d>";
   };
 
   visual = {
