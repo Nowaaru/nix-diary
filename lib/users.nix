@@ -38,14 +38,26 @@
         // {
           ${usr.home.username.content} = lib.homeManagerConfiguration (let
             _configure = special_args: program_name: let
-              reqCfgDir = "${usrRoot}/${usr.home.username.content}/${cfgRoot}/${program_name}";
-              fallbackCfgDir = "${self}/cfg/${program_name}";
+              mkCfgDir = cfgDir:
+                if builtins.pathExists cfgDir
+                then cfgDir
+                else
+                  (
+                    if (builtins.pathExists (cfgDir + ".nix"))
+                    then cfgDir + ".nix"
+                    else cfgDir
+                  );
+              reqCfgDir = mkCfgDir "${usrRoot}/${usr.home.username.content}/${cfgRoot}/${program_name}";
+              fallbackCfgDir = mkCfgDir "${self}/cfg/${program_name}";
               chosenPath =
+                # i already check if the path exists
+                # but my brain is blanking on how to otherwise make errors
+                # dynamic and verbose while not doing the exists checks
                 if builtins.pathExists reqCfgDir
                 then reqCfgDir
                 else if builtins.pathExists fallbackCfgDir
                 then fallbackCfgDir
-                else abort "configuration '${program_name}' does not exist as '${reqCfgDir}' or '${fallbackCfgDir}'";
+                else abort "configuration '${program_name}' does not exist as '${reqCfgDir}[.nix]' or '${fallbackCfgDir}[.nix]'";
             in
               lib.withInputs chosenPath special_args;
 
