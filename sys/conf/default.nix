@@ -29,8 +29,6 @@ for directories above their own dedicated edirectory.
     ./register-users.nix
   ];
 
-  services.logrotate.checkConfig = false;
-
   # swapDevices = [
   #   {
   #     device = "/var/lib/swapfile";
@@ -53,14 +51,14 @@ for directories above their own dedicated edirectory.
     blacklistedKernelModules = ["noveau"];
 
     loader = {
-      systemd-boot.enable = lib.mkForce true;
+      systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
     };
 
-    # lanzaboote = {
-      # enable = true;
-      # pkiBundle = "/etc/secureboot";
-    # };
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
   };
 
   # Set your time zone.
@@ -96,7 +94,7 @@ for directories above their own dedicated edirectory.
     };
 
     opengl = {
-      enable = true;
+      enable = lib.mkDefault false;
       driSupport = true;
       driSupport32Bit = true;
 
