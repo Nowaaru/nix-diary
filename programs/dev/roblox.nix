@@ -1,20 +1,35 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
+  xdg.desktopEntries.roblox-studio = {
+    name = "Roblox Studio";
+    genericName = "roblox-studio";
+    comment = "Roblox development environment";
+    exec = "vinegar studio run";
+    icon = "${inputs.self + /assets/icons/roblox-studio-128.png}";
+    type = "Application";
+    categories = ["Games" "Graphics" "Development" "Education" "3DGraphics"];
+    startupNotify = true;
+  };
+
   home = {
     packages = with pkgs; [
-      (writeShellScriptBin "vinegar" ''
-        flatpak run org.vinegarhq.Vinegar studio run
+      (writeShellScriptBin "roblox-studio" ''
+        vinegar studio run
       '')
+
+      vinegar
       rojo
     ];
+
     file = {
       ".config/vinegar/config.toml".text = ''
         [env]
-        WINEESYNC = "0"
+        WINEESYNC = "1"
         [splash]
         enabled = false
-        [player]
-        renderer = "Vulkan"
-        dxvk = false
         [studio]
         dxvk = false
         renderer = "Vulkan"

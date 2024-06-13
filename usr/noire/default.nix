@@ -61,9 +61,17 @@
     programs.music.mixers.ncpamixer
     programs.music.players.spotify
 
+    user.programs.gimp
+    user.programs.floorp.all
+    user.programs.piper
     user.programs.qt
-    user.programs.heroic
   ];
+
+  dconf.settings = {
+    "org/gnome/mutter" = {
+      experimental-features = ["scale-monitor-framebuffer"];
+    };
+  };
 
   nixpkgs.config.allowUnfree = true;
 }

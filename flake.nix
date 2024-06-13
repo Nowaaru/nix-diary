@@ -1,11 +1,12 @@
 {
   description = "noire's nonfunctional user flake.";
 
-  inputs = {
+  inputs = rec {
     /*
     essentials
     */
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/nixos-unstable"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
@@ -29,7 +30,7 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    virtio.url = "path:/home/noire/Documents/nix-flakes/libvirtd-vfio-flake";
+    #virtio.url = "path:/home/noire/Documents/nix-flakes/libvirtd-vfio-flake";
 
     /*
     home-manager
@@ -51,7 +52,7 @@
     /*
     neovim
     */
-    nvf.url = "path:/home/noire/Documents/nix-flakes/nvf";
+    nvf.url = "github:NotAShelf/nvf";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
@@ -65,6 +66,7 @@
 
   outputs = {
     nixpkgs,
+    nixpkgs-master,
     nurpkgs,
     home-manager,
     nix-colors,
@@ -84,7 +86,7 @@
         })
       // home-manager.lib;
     system = "x86_64-linux";
-    pkgs = import nixpkgs {
+    pkgs = import nixpkgs-master {
       inherit system;
       overlays = [
         hyprpicker.overlays.default

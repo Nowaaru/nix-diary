@@ -19,15 +19,17 @@ for directories above their own dedicated edirectory.
     ./hardware.nix
     # Desktop environment.
     # (inputs.self + /cfg/deepin)
-    # (inputs.self + /cfg/plasma6/init.nix)
-    (inputs.self + /cfg/gnome)
-    inputs.virtio.outputs.x86_64-linux
+    (inputs.self + /cfg/plasma6/init.nix)
+    # (inputs.self + /cfg/gnome)
+    # inputs.virtio.outputs.x86_64-linux
 
     # System configuration loader.
     ../.
     # Users
     ./register-users.nix
   ];
+
+  services.logrotate.checkConfig = false;
 
   # swapDevices = [
   #   {
@@ -51,14 +53,14 @@ for directories above their own dedicated edirectory.
     blacklistedKernelModules = ["noveau"];
 
     loader = {
-      systemd-boot.enable = lib.mkForce false;
+      systemd-boot.enable = lib.mkForce true;
       efi.canTouchEfiVariables = true;
     };
 
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/etc/secureboot";
-    };
+    # lanzaboote = {
+      # enable = true;
+      # pkiBundle = "/etc/secureboot";
+    # };
   };
 
   # Set your time zone.
@@ -82,12 +84,13 @@ for directories above their own dedicated edirectory.
     # Hardware setup.
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
+
     nvidia = {
       modesetting.enable = true; # required
       powerManagement.enable = true; # can cause sleep settings but supposedly fixed with the newest nvidia update
       powerManagement.finegrained = false;
 
-      open = false;
+      open = true;
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
@@ -250,6 +253,15 @@ for directories above their own dedicated edirectory.
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = with pkgs; [
+      # test, for now.
+      (pkgs.writeTextDir "share/libratbag/logitech-g102-g203.device" ''
+        # G102, G103 and G203 (USB)
+        [Device]
+        Name=Logitech Gaming Mouse G102/G103/G203
+        DeviceMatch=usb:046d:c084;usb:046d:c092;usb:046d:c09d
+        Driver=hidpp20
+        LedTypes=logo;side;
+      '')
       # home-manager
       libsForQt5.kio-admin
 

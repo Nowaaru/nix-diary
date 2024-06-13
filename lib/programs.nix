@@ -20,11 +20,10 @@ lib: let
     ) {}
     (builtins.readDir dir);
 
-  mergePredicate = dir: k: v: (
-    if v == "directory"
-    then directoryPredicate "${dir}/${k}"
-    else import "${dir}/${k}"
-  );
+  mergePredicate = dir: k: v:
+    if (v == "directory")
+    then (directoryPredicate "${dir}/${k}")
+    else import "${dir}/${k}";
 in {
-  mkProgramTreeFromDir = directoryPredicate;
+  mkProgramTreeFromDir = e: builtins.trace "done!" (directoryPredicate e);
 }

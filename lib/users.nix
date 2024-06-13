@@ -5,6 +5,7 @@
   ...
 }: let
   libprograms = import ./programs.nix lib;
+  st = w: builtins.trace w w;
   out = {
     mkUser = username: {
       programs ? [],

@@ -1,0 +1,8 @@
+lib: {
+  imports = [];
+
+  config = {
+  };
+
+  options = {};
+}
