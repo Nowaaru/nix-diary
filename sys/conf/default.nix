@@ -152,12 +152,13 @@ for directories above their own dedicated edirectory.
     };
 
     # Enable CUPS to print documents.
-    printing.enable = true;
+    printing.enable = false;
     pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      audio.enable = true;
       # If you want to use JACK applications, uncomment this
       #jack.enable = true;
 
