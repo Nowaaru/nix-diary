@@ -1,7 +1,7 @@
 {theme, ...}: let
   fileManager = "kitty ranger";
   terminal = "kitty";
-  browser = "firefox";
+  browser = "floorp";
   mainMod = "SUPER";
 
   menu = "fuzzel -D no";
