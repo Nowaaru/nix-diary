@@ -4,18 +4,55 @@ A repository for my Nix shenanigans.
 Need a to-do because I keep forgetting
 what I was on about.
 
-- [x] Configure neovim flake.
+Order is priority.
+
+### Personalization
+
+- [ ] Neatly implement file associations
+      for users individually.
+
+- [ ] Create Gecko-based browser option-set module because
+      the home-manager configuration doesn't work.
+
+- [ ] Configure neovim-flake dashboard.
+
+- [ ] Make a neovim .desktop file, or maybe
+      just use gVim?
+
+- [ ] Implement custom icon for floorp using
+      home-manager.
 
 - [ ] Implement `wlsunset`-based nightlight widget
       using [`eww`](elkowar/eww).
 
-- [ ] Create custom firefox option-set because
-      the home-manager configuration doesn't work.
+- [ ] Implement an actually-competent audio device
+      widget using [`eww`](elkowar/eww)
 
-- [ ] Configure default firefox profile.
+- [ ] Look into Yabar
 
-  - [ ] Configure userchrome based off of
-        the theme
+  - Thanks, dub. 👍
+
+- [ ] Implement kernel-based virtual machine
+      via system configuration.
+
+  - Will definitely share the flake file when it's complete 😍
+
+- [x] Install video editor
+
+  - Kdenlive will probably do.
+
+- [x] Install [neovim-flake](https://github.om/NotAShelf/neovim-flake)
+
+- [x] Install Rojo.
+
+  - Need this for Roblox development. Probably.
+
+- [x] Implement custom user management
+      through home-manager.
+
+- [x] Configure neovim flake.
+
+### System
 
 - [ ] Implement a clipboard manager using [`eww`](elkowar/eww)
       and [`cliphist`](sentriz/cliphist).
@@ -26,34 +63,10 @@ what I was on about.
     terminal solutions and gpu-screen-recorder
     for desktop.
 
-- [ ] Extract theming system into a different
+- [x] Extract theming system into a different
       flake.
 
-  - Problem with such a fragmented configuration is that
-    Nix seemingly doesn't have a path shortcut for the
-    flake root.
-
-    Today I also learned that `self` refers to the root
-    directory of the flake and not the flake attrset. Huh.
-
-- [x] Install video editor
-
-  - Kdenlive will probably do.
-
-- [x] Make screenshot script freeze the screen
-
-- [x] Install [neovim-flake](https://github.om/NotAShelf/neovim-flake)
-
-- [x] Add window rules to enable tearing on full-screen
-      applications.
-
-  - Turns out that tearing with double buffering is a feat
-    that Linux doesn't like. Seems like it's a "deal with it and
-    wait" problem.
-
-- [x] Install Rojo.
-
-  - Need this for Roblox development. Probably.
+      - [x] Settled by storing into .config file.
 
 - [x] Personalize Waybar (or just use Eww)
 
