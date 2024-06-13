@@ -39,7 +39,6 @@
     programs.misc.bitwarden
 
     programs.misc.terminal.all
-    programs.misc.firefox.all
 
     programs.misc.font
     programs.misc.dunst
