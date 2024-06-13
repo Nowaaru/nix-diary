@@ -10,7 +10,7 @@
     exec = "vinegar studio run";
     icon = "${inputs.self + /assets/icons/roblox-studio-128.png}";
     type = "Application";
-    categories = ["Games" "Graphics" "Development" "Education" "3DGraphics"];
+    categories = ["Game" "Graphics" "Development" "Education" "3DGraphics"];
     startupNotify = true;
   };
 
