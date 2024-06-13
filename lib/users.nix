@@ -78,6 +78,9 @@
               };
 
             modules = [
+              {
+                xdg.systemDirs.data = ["/home/${usr.home.username.content}/.local/state/nix/profiles/home-manager/home-path/share/applications/"];
+              }
               (lib.attrsets.filterAttrs (k: _: !(builtins.elem k ["__"])) usr)
               (usrRoot + /${usr.home.username.content})
             ];
