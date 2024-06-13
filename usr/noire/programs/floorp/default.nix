@@ -14,7 +14,7 @@
       MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;x-scheme-handler/http;x-scheme-handler/https
       Exec=floorp --name floorp %U
       Terminal=false
-      Icon=floorp
+      Icon=${pkgs.floorp-unwrapped.out + "/lib/floorp/browser/chrome/icons/default/default128.png"}
       Type=Application
       Categories=Network;WebBrowser
       StartupNotify=true
