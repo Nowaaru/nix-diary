@@ -1,4 +1,7 @@
-{lib, ...}: {
+{
+  lib,
+  ...
+}: {
   mkIfElse = with lib;
     predicate: yes: no:
       mkMerge [
