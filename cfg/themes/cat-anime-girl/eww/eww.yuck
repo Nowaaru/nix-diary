@@ -168,7 +168,7 @@
                   )))
 
 (defwindow topbar 
-           :monitor 1
+           :monitor 0
            :stacking "fg"
            :namespace "eww-blur"
            :exclusive true
@@ -213,7 +213,7 @@
 ; (they're a bit too big?)
 
 (defwindow poweropts
-           :monitor 1
+           :monitor 0
            :stacking "overlay"
            :namespace "eww-blur"
            :geometry (geometry :x "0%"
