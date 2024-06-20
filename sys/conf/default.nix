@@ -12,42 +12,30 @@ for directories above their own dedicated edirectory.
   pkgs,
   lib,
   inputs,
+  modules,
   ...
 } @ args: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
     # Desktop environment.
-    # (inputs.self + /cfg/deepin)
     (inputs.self + /cfg/plasma6/init.nix)
-    # (inputs.self + /cfg/gnome)
     inputs.virtio.outputs.x86_64-linux
+
+    # Custom modules.
+    modules.mihoyo
 
     # System configuration loader.
     ../.
+
     # Users
     ./register-users.nix
   ];
 
-  # swapDevices = [
-  #   {
-  #     device = "/var/lib/swapfile";
-  #     size = 16*1024; # 1024mb * 16 = 16gb
-  #   }
-  # ];
-
-  /*
-  zramSwap = {
-    enable = true;
-    memoryPercent = 50;
-  };
-  */
-
   # Bootloader.
   boot = {
-    # inherit kernelPackages;
     bootspec.enable = true;
-    initrd.kernelModules = ["nvidia"];
+    kernelModules = ["nvidia"];
     blacklistedKernelModules = ["noveau"];
 
     loader = {
@@ -59,6 +47,33 @@ for directories above their own dedicated edirectory.
       enable = true;
       pkiBundle = "/etc/secureboot";
     };
+
+    # Plymouth and Friends.
+    plymouth = {
+      enable = false;
+      theme = "hexagon_red";
+      themePackages = [(pkgs.adi1090x-plymouth-themes.override {selected_themes = ["hexagon_red"];})];
+    };
+
+    # consoleLogLevel = 0;
+    # kernelParams = [
+    #   "quiet"
+    #   "splash"
+    #   "boot.shell_on_fail"
+    #   "nosgx"
+    #   "loglevel=3"
+    #   "rd.systemd.show_status=false"
+    #   "rd.udev.log_level=3"
+    #   "udev.log_priority=3"
+    # ];
+    # Hide the OS choice for bootloaders.
+    # It's still possible to open the bootloader list by pressing any key
+    # It will just not appear on screen unless a key is pressed
+    # loader.timeout = 0;
+    # initrd = {
+    #   systemd.enable = true;
+    #   verbose = true;
+    # };
   };
 
   # Set your time zone.
@@ -78,6 +93,7 @@ for directories above their own dedicated edirectory.
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
+
   hardware = {
     # Hardware setup.
     bluetooth.enable = true;
@@ -85,16 +101,16 @@ for directories above their own dedicated edirectory.
 
     nvidia = {
       modesetting.enable = true; # required
-      powerManagement.enable = true; # can cause sleep settings but supposedly fixed with the newest nvidia update
+      powerManagement.enable = true; # can cause sleep problems but supposedly fixed with the newest nvidia update
       powerManagement.finegrained = false;
 
-      open = true;
+      # open = true;
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
 
     opengl = {
-      enable = lib.mkDefault false;
+      enable = lib.mkDefault true;
       driSupport = true;
       driSupport32Bit = true;
 
@@ -109,23 +125,19 @@ for directories above their own dedicated edirectory.
   };
 
   services = {
-    # displayManager.sddm = {
-    #   enable = true;
-    #   wayland = {
-    #     enable = true;
-    #     compositor = "kwin";
-    #   };
-    # };
+    displayManager.sddm = {
+      enable = true;
+      wayland = {
+        enable = true;
+      };
+
+      settings = {};
+    };
 
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
       videoDrivers = ["nvidia"];
-
-      displayManager.gdm = {
-        enable = true;
-        wayland = true;
-      };
 
       # Configure keymap in X11
       xkb.layout = "us";
@@ -298,6 +310,7 @@ for directories above their own dedicated edirectory.
     enable = true;
     enableSSHSupport = true;
   };
+
   networking = {
     hostName = "lastation"; # Define your hostname.
     # networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
@@ -320,6 +333,7 @@ for directories above their own dedicated edirectory.
     };
   };
 
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -328,4 +342,5 @@ for directories above their own dedicated edirectory.
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
   virtualisation.waydroid.enable = true;
+  mihoyo.enable = true;
 }

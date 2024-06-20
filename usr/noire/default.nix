@@ -60,6 +60,7 @@
     programs.music.mixers.ncpamixer
     programs.music.players.spotify
 
+    user.programs.an-anime-team.all
     user.programs.librewolf
 
     user.programs.gimp
