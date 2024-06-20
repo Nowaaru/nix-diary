@@ -4,10 +4,6 @@
   nur,
   ...
 }: {
-  home.packages = with pkgs; [
-    librewolf
-  ];
-
   home.sessionVariables = {
     MOZ_DBUS_ENABLE = 1;
     MOZ_ENABLE_WAYLAND = 1;
