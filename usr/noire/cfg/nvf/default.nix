@@ -249,7 +249,7 @@ in {
 
   lsp = {
     enable = true;
-    formatOnSave = true;
+    formatOnSave = false;
 
     mappings = {
       hover = "<S-k>";
