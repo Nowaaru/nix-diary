@@ -80,7 +80,7 @@ in {
     file = {
       ".config/eww" = {
         enable = selfTrace (lib.attrsets.hasAttrByPath ["theme" "widgets"] hypr-config);
-        source = hypr-config.theme.widgets;
+        source = selfTrace hypr-config.theme.widgets;
       };
     };
   };
