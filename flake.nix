@@ -3,22 +3,26 @@
 
   inputs = rec {
     /*
-    essentials
+    essentials - repositories
     */
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/nixos-unstable"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
-    nix-colors.url = "github:misterio77/nix-colors";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/release-24.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
+    nurpkgs.url = "github:nix-community/NUR";
+
+    /*
+    essentials - overlays
+    */
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     rust-overlay.url = "github:oxalica/rust-overlay";
-    secrets.url = "path:/home/noire/Documents/nix-secrets";
-    nurpkgs.url = "github:nix-community/NUR";
+    nix-colors.url = "github:misterio77/nix-colors";
 
     /*
     experimental modules
     */
     power-mode-nvim = {
       url = "path:/home/noire/Documents/projects/power-mode.nvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     /*
@@ -26,18 +30,31 @@
     */
     nix-utils = {
       url = "github:nowaaru/nix-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
       inputs.home-manager.follows = "home-manager";
     };
 
-    #virtio.url = "path:/home/noire/Documents/nix-flakes/libvirtd-vfio-flake";
+    /*
+    virtual machine test
+    */
+    virtio.url = "path:/home/noire/Documents/nix-flakes/libvirtd-vfio-flake";
+
+    /*
+    secrets
+    */
+    secrets.url = "path:/home/noire/Documents/nix-secrets";
+
+    /*
+    an anime game launcher
+    */
+    an-anime-game-launcher.url = "github:ezKEA/aagl-gtk-on-nix";
 
     /*
     home-manager
     */
     home-manager = {
       url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     /*
@@ -45,7 +62,7 @@
     */
     plasma-manager = {
       url = "github:pjones/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.home-manager.follows = "home-manager";
     };
 
@@ -65,7 +82,8 @@
   };
 
   outputs = {
-    nixpkgs,
+    nixpkgs-stable,
+    nixpkgs-unstable,
     nixpkgs-master,
     nurpkgs,
     home-manager,
@@ -74,88 +92,105 @@
     hyprpicker,
     ...
   } @ inputs: let
-    lib =
-      nixpkgs.lib.extend (_: prev:
-        prev
-        // {
-          gamindustri = import (inputs.self + /lib) (inputs
-            // {
-              inherit pkgs;
-              lib = prev // home-manager.lib;
-            });
-        })
-      // home-manager.lib;
+    useReleaseStream = release-stream: function-that-uses-stream: (function-that-uses-stream release-stream (import release-stream {inherit system overlays config;}));
+    overlays = [
+      hyprpicker.overlays.default
+      nurpkgs.overlay
+    ];
+
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = ["electron-25.9.0"];
+    };
+
     system = "x86_64-linux";
-    pkgs = import nixpkgs-master {
-      inherit system;
-      overlays = [
-        hyprpicker.overlays.default
-        nurpkgs.overlay
-      ];
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = ["electron-25.9.0"];
-      };
-    };
-
-    nur = import nurpkgs {
-      inherit pkgs;
-      nurpkgs = import nixpkgs {
-        inherit system;
-      };
-    };
-  in {
-    inherit lib;
-    nixosConfigurations = let
-      specialArgs = {inherit inputs;};
-    in {
-      lastation = lib.nixosSystem {
-        inherit specialArgs;
-        modules = [
-          lanzaboote.nixosModules.lanzaboote
-          ./sys/conf
-        ];
-      };
-
-      leanbox = lib.nixosSystem {
-        inherit specialArgs;
-        modules = [
-          ./sys/wsl
-        ];
-      };
-    };
-
-    homeConfigurations = let
-      usrRoot = ./usr;
-      specialArgs = {
-        inherit inputs nix-colors nur;
-        programs = import ./programs (inputs
+  in
+    useReleaseStream nixpkgs-unstable (nixpkgs: pkgs: let
+      lib =
+        nixpkgs.lib.extend (_: prev:
+          prev
           // {
-            inherit (pkgs) config;
-            inherit inputs pkgs lib nur;
-          });
+            gamindustri = import (inputs.self + /lib) (inputs
+              // {
+                inherit pkgs;
+                lib = prev // home-manager.lib;
+              });
+          })
+        // home-manager.lib;
+      nur = import nurpkgs {
+        inherit pkgs;
+        nurpkgs = import nixpkgs {
+          inherit system;
+        };
       };
-    in
-      with lib.gamindustri.users;
-        mkHomeManager [
-          # me!
-          (mkUser "noire" {
-            sessionVariables = {
-              EDITOR = "nvim";
-            };
-          })
 
-          (mkUser "vert" {
-            sessionVariables = {
-              EDITOR = "nvim";
-            };
-          })
+      modules = lib.gamindustri.modules.mkModules (inputs.self + /modules);
+    in {
+      inherit lib;
+      nixosConfigurations = let
+        specialArgs = {
+          inherit inputs modules;
+        };
+      in {
+        lastation = lib.nixosSystem {
+          inherit specialArgs;
+          modules = [
+            lanzaboote.nixosModules.lanzaboote
+            ./sys/conf
+          ];
+        };
 
-          (mkUser "neptune" {
-            sessionVariables = {
-              EDITOR = "nvim";
-            };
-          })
-        ] {inherit usrRoot specialArgs;};
-  };
+        leanbox = lib.nixosSystem {
+          inherit specialArgs;
+          modules = [
+            ./sys/wsl
+          ];
+        };
+      };
+
+      homeConfigurations = let
+        stable = import nixpkgs-stable {
+          inherit system overlays config;
+        };
+
+        master = import nixpkgs-master {
+          inherit system overlays config;
+        };
+
+        unstable = import nixpkgs-unstable {
+          inherit system overlays config;
+        };
+
+        usrRoot = ./usr;
+        specialArgs = {
+          inherit inputs nix-colors nur stable master unstable modules;
+          programs = import ./programs (inputs
+            // {
+              inherit (pkgs) config;
+              inherit inputs pkgs lib nur stable master unstable modules;
+            });
+        };
+      in
+        with lib.gamindustri.users;
+          mkHomeManager [
+            # me!
+            (mkUser "noire" {
+              sessionVariables = {
+                EDITOR = "nvim";
+              };
+            })
+
+            (mkUser "vert" {
+              sessionVariables = {
+                EDITOR = "nvim";
+              };
+            })
+
+            (mkUser "neptune" {
+              sessionVariables = {
+                EDITOR = "nvim";
+              };
+            })
+          ] {inherit usrRoot specialArgs;};
+    });
 }
