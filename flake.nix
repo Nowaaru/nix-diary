@@ -136,6 +136,7 @@
           inherit specialArgs;
           modules = [
             lanzaboote.nixosModules.lanzaboote
+            inputs.an-anime-game-launcher.nixosModules.default
             ./sys/conf
           ];
         };

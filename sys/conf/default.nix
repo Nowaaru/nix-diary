@@ -22,9 +22,6 @@ for directories above their own dedicated edirectory.
     (inputs.self + /cfg/plasma6/init.nix)
     inputs.virtio.outputs.x86_64-linux
 
-    # Custom modules.
-    modules.mihoyo
-
     # System configuration loader.
     ../.
 
@@ -318,6 +315,7 @@ for directories above their own dedicated edirectory.
     # Configure network proxy if necessary
     # networking.proxy.default = "http://user:password@proxy:port/";
     # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    mihoyo-telemetry.block = true;
 
     # Enable networking
     networkmanager.enable = true;
@@ -342,5 +340,4 @@ for directories above their own dedicated edirectory.
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
   virtualisation.waydroid.enable = true;
-  mihoyo.enable = true;
 }
