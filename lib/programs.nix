@@ -25,5 +25,5 @@ lib: let
     then (directoryPredicate "${dir}/${k}")
     else import "${dir}/${k}";
 in {
-  mkProgramTreeFromDir = e: builtins.trace "done!" (directoryPredicate e);
+  mkProgramTreeFromDir = directoryPredicate;
 }
