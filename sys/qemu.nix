@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   virtualisation.libvirtd.enable = true;
-  users.groups.libvirtd.members = ["root" "noire"];
+  users.groups.libvirt.members = ["root" "noire"];
 
   environment.systemPackages = [
     pkgs.qemu

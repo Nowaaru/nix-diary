@@ -21,7 +21,7 @@ for directories above their own dedicated edirectory.
     # (inputs.self + /cfg/deepin)
     (inputs.self + /cfg/plasma6/init.nix)
     # (inputs.self + /cfg/gnome)
-    # inputs.virtio.outputs.x86_64-linux
+    inputs.virtio.outputs.x86_64-linux
 
     # System configuration loader.
     ../.
