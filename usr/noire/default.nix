@@ -60,6 +60,8 @@
     programs.music.mixers.ncpamixer
     programs.music.players.spotify
 
+    user.programs.librewolf
+
     user.programs.gimp
     user.programs.floorp.all
     user.programs.piper
