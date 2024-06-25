@@ -3,7 +3,7 @@
   pkgs,
   lib,
 }: let
-  maps = import ./keybindings.nix;
+  maps = import ./keybindings.nix lib;
   languages = import ./languages.nix pkgs;
   mkUnused = keybinding: "<leader><leader>${keybinding}";
 in {
@@ -33,6 +33,10 @@ in {
   luaConfigPost = '''';
 
   extraPlugins = with pkgs.vimPlugins; {
+    lsp-signature-help = {
+      package = cmp-nvim-lsp-signature-help; 
+    };
+
     smart-splits = {
       package = smart-splits-nvim;
       setup = ''
@@ -60,6 +64,10 @@ in {
     alwaysComplete = true;
     type = "nvim-cmp";
 
+    sources = {
+      # nvim_lsp_signature_help = null;
+    };
+
     mappings = {
       confirm = "<CR>";
       complete = "<C-Space>";
@@ -84,7 +92,16 @@ in {
       enable = true;
 
       # TODO: Make registers.
-      register = {};
+      register = {
+        "<leader>m" = "[] Minimap";
+        "<leader>g" = "[] GitSigns";
+        "<leader>b" = "[] Buffers & Tabs";
+        "<leader>t" = "[] Todo";
+        "<leader>c" = "[] Code Actions";
+        "<leader>l" = "[] LSP Actions";
+        "<leader>x" = "[] Trouble";
+        "<leader><leader>" = "[] Lost & Found";
+      };
     };
 
     # TODO: PR nvf to include Legendary.
@@ -121,8 +138,8 @@ in {
       enable = true;
       mappings = {
         focus = "<leader>e";
-        refresh = "<leader>tr";
-        findFile = "<leader>tf";
+        findFile = "<leader>f";
+        refresh = "<leader>R";
       };
 
       setupOpts = {
@@ -239,6 +256,7 @@ in {
         toggleBlame = "<leader>gstb";
         toggleDeleted = "<leader>gstd";
         undoStageHunk = "<leader>gshu";
+        previewHunk = "<leader>gp";
       };
 
       codeActions.enable = true;
@@ -373,9 +391,9 @@ in {
     todo-comments = {
       enable = true;
       mappings = {
-        quickFix = "<leader>tdq";
-        trouble = "<leader>tdt";
-        telescope = mkUnused "Utds";
+        quickFix = "<leader>tq";
+        trouble = "<leader>tx";
+        telescope = mkUnused "ts";
       };
     };
 
@@ -514,10 +532,11 @@ in {
           enable = true;
           style = "double";
         };
+        
 
         lsp-signature = {
           enable = true;
-          style = "shadow"; # maybe single?
+          style = "single"; # maybe single?
         };
 
         lspsaga = {
@@ -598,7 +617,24 @@ in {
     nvimWebDevicons.enable = true;
   };
 
-  tabline.nvimBufferline.enable = true;
+  tabline.nvimBufferline = {
+    enable = true;
+    mappings = {
+      closeCurrent = null;
+
+      cyclePrevious = null;
+      cycleNext = null;
+
+      movePrevious = null;
+      moveNext = null;
+      
+      pick = null;
+      sortByDirectory = null;
+      sortByExtension = null;
+      sortById = null;
+    };
+  };
+
   snippets.vsnip.enable = true;
   spellcheck.enable = lib.mkForce false;
 }
