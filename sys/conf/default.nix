@@ -28,6 +28,23 @@ for directories above their own dedicated edirectory.
     # Users
     ./register-users.nix
   ];
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      open-fonts
+      open-sans
+      roboto
+      roboto-mono
+      roboto-serif
+      migu
+      noto-fonts
+      google-fonts
+      dejavu_fonts
+      (nerdfonts.override {fonts = ["JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono"];})
+    ];
+
+    fontDir.enable = true;
+  };
 
   # Bootloader.
   boot = {
@@ -108,7 +125,6 @@ for directories above their own dedicated edirectory.
 
     opengl = {
       enable = lib.mkDefault true;
-      driSupport = true;
       driSupport32Bit = true;
 
       extraPackages = with pkgs; [

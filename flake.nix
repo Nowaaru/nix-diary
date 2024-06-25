@@ -1,13 +1,11 @@
 {
   description = "noire's nonfunctional user flake.";
 
-  inputs = rec {
-    /*
-    essentials - repositories
-    */
+  inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
+
     nurpkgs.url = "github:nix-community/NUR";
 
     /*
@@ -22,7 +20,7 @@
     */
     power-mode-nvim = {
       url = "path:/home/noire/Documents/projects/power-mode.nvim";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     /*
@@ -30,7 +28,7 @@
     */
     nix-utils = {
       url = "github:nowaaru/nix-utils";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.home-manager.follows = "home-manager";
     };
 
@@ -76,15 +74,40 @@
     home computer things
     */
     lanzaboote.url = "github:nix-community/lanzaboote";
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprpicker.url = "github:hyprwm/hyprpicker";
-    xdg-desktop-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+
+    /*
+    hyprland
+    */
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    hyprpicker = {
+      url = "github:hyprwm/hyprpicker";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        hyprland.follows = "hyprland";
+      };
+    };
+    xdg-desktop-portal-hyprland = {
+      url = "github:hyprwm/xdg-desktop-portal-hyprland";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        hyprland.follows = "hyprland";
+      };
+    };
+
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        hyprland.follows = "hyprland";
+      };
+    };
   };
 
   outputs = {
-    nixpkgs-stable,
     nixpkgs-unstable,
-    nixpkgs-master,
     nurpkgs,
     home-manager,
     nix-colors,
@@ -96,6 +119,18 @@
     overlays = [
       hyprpicker.overlays.default
       nurpkgs.overlay
+      (_: super: {
+        wlroots = super.wlroots.overrideAttrs (prev: {
+          patches =
+            prev.patches
+            ++ [
+              (super.fetchpatch {
+                url = "freedesktop.org/wlroots/wlroots/-/merge_requests/4715.patch";
+                hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+              })
+            ];
+        });
+      })
     ];
 
     config = {
@@ -150,15 +185,15 @@
       };
 
       homeConfigurations = let
-        stable = import nixpkgs-stable {
+        stable = import inputs.nixpkgs-stable {
           inherit system overlays config;
         };
 
-        master = import nixpkgs-master {
+        master = import inputs.nixpkgs-master {
           inherit system overlays config;
         };
 
-        unstable = import nixpkgs-unstable {
+        unstable = import inputs.nixpkgs-unstable {
           inherit system overlays config;
         };
 

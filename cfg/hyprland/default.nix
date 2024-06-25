@@ -11,7 +11,7 @@
       inherit pkgs nix-colors;
       kind = mode;
     })
-    .cat-anime-girl;
+    .mountain-view;
 
   ###############################################
 
@@ -61,14 +61,14 @@ in {
 
     # Stuff to run every reload.
     exec = [
-      "eww open topbar --no-daemonize"
+      "eww daemon"
+      "eww open topbar"
       (util.str.applySwayTheme theme)
     ];
 
     # Background manager.
     exec-once =
       [
-        "eww daemon"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "sww kill; wait $!; swww init"
         "hyprdim"

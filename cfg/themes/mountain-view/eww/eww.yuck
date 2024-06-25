@@ -1,0 +1,77 @@
+(defvar hovering false)
+
+(defpoll time :interval "1s"
+              :initial "welcome"  ; optional, defaults to poll at startup
+  `date +%H:%M`)
+
+(defwindow topbar
+           :monitor 0
+           :geometry (geometry :x "0%"
+                               :y "8px"
+                               :height "52px"
+                               :anchor "top center")
+           :stacking "fg"
+           :exclusive true
+           :focusable false
+           :namespace "topbar"
+  (topbar))
+          
+(defwidget topbar []
+  (eventbox :class "container"
+            :onhover "eww update hovering=true"
+            :onhoverlost "eww update hovering=false"
+    (box :orientation "horizontal"
+         :class "container"
+         :space-evenly false
+         :height 36
+         :spacing 7
+         :valign "center"
+          (divet :align "start" 
+                 :size 3
+                 :transparency 0.15)
+          (divet :align "start" 
+                 :size 6
+                 :transparency 0.3)
+          (divet :align "start" 
+                 :transparency 0.5
+                 :size 8)
+          (divet :align "end")
+      (time)
+          (divet :align "end")
+          (divet :align "end" 
+                 :transparency 0.5
+                 :size 8)
+          (divet :align "end" 
+                 :size 6
+                 :transparency 0.3)
+          (divet :align "end" 
+                 :size 3
+                 :transparency 0.15))))
+
+(defwidget system_tray [?align]
+  (box :class "system_tray"
+       :width 256
+       :height 32
+       :halign "${align ?: "center"}"
+       :valign "center"
+       :orientation "horizontal"))
+
+(defwidget divet [?align ?size ?transparency]
+  (box :class "divet"
+       :width "${size ?: 14}"
+       :height "${size ?: 14}"
+       :halign "${align ?: "center"}"
+       :valign "center"
+       :style "opacity:${transparency ?: "revert"}"
+       :orientation "vertical"))
+
+(defwidget time []
+  (box :class "time ${hovering ? "hover" : ""}"
+       :width 120
+       :height 32
+       :halign "start"
+       :orientation "horizontal"
+    (label :text time
+           :halign "center"
+           :valign "baseline")))
+

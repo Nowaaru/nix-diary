@@ -79,8 +79,12 @@ in {
 
     file = {
       ".config/eww" = {
-        enable = selfTrace (lib.attrsets.hasAttrByPath ["theme" "widgets"] hypr-config);
-        source = selfTrace hypr-config.theme.widgets;
+        enable = lib.attrsets.hasAttrByPath ["theme" "widgets"] hypr-config;
+        source = hypr-config.theme.widgets;
+        recursive = true;
+        onChange = ''
+          eww -c ~/.config/eww kill
+        '';
       };
     };
   };

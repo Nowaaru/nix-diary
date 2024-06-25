@@ -1,0 +1,49 @@
+* {
+  background: none;
+}
+
+.topbar {
+  margin-top: 12px;
+}
+
+.topbar box:not(.container) {
+  background: #0A0C0C;
+  opacity: 0.7;
+}
+
+.topbar box:not(.divet):not(.container) {
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px 1px #0A0C0C;
+}
+
+.application-name {
+  padding-top:4px;
+  font-size: 16px;
+  font-family: "Josefin Sans";
+  color: #797488;
+  font-weight: 300;
+  text-shadow: 0px 0px 2px #595468;
+}
+
+.application-name label {
+  margin: 0px 8px;
+}
+
+.divet {
+  border-radius: 2px;
+  box-shadow: 0px 0px 4px 0px #0A0C0C;
+}
+
+box.time.hover label {
+  font-weight: 200;
+}
+
+box.time label {
+
+  color: #D7AFBB;
+  padding-top:4px;
+  text-shadow: 0px 0px 2px #797488;
+  font-size: 18px;
+  font-family: "Josefin Sans";
+  font-weight: 100;
+}

@@ -3,14 +3,11 @@
   colors-lib,
   kind ? "light",
   ...
-}: let
-  background = ./cat-anime-girl.png;
-  selfTrace = what:
-    builtins.trace what what;
-in {
+}: rec {
   name = "Cat Anime Girl";
   author = "Nowaaru";
   widgets = ./eww;
+  background = ./cat-anime-girl.png;
 
   programs = {
     dunst = lib.mkForce (import ./dunst.nix);
@@ -22,6 +19,4 @@ in {
       inherit kind;
     })
     .palette;
-
-  inherit background;
 }
