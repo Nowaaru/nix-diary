@@ -12,14 +12,12 @@ for directories above their own dedicated edirectory.
   pkgs,
   lib,
   inputs,
-  modules,
+  configure,
   ...
 } @ args: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
-    # Desktop environment.
-    (inputs.self + /cfg/plasma6/init.nix)
     inputs.virtio.outputs.x86_64-linux
 
     # System configuration loader.
@@ -50,7 +48,8 @@ for directories above their own dedicated edirectory.
   boot = {
     bootspec.enable = true;
     kernelModules = ["nvidia"];
-    blacklistedKernelModules = ["noveau"];
+    blacklistedKernelModules = ["nouveau"];
+    kernelPackages = pkgs.linuxPackages;
 
     loader = {
       systemd-boot.enable = lib.mkForce false;
@@ -68,6 +67,13 @@ for directories above their own dedicated edirectory.
       theme = "hexagon_red";
       themePackages = [(pkgs.adi1090x-plymouth-themes.override {selected_themes = ["hexagon_red"];})];
     };
+
+    kernelParams = [
+      "amdgpu.ppfeaturemask=0xffffffff"
+      "nvidia-drm.modeset=1"
+      "nvidia-drm.fbdev=1"
+      "nvidia.NVreg_EnableGpuFirmware=0"
+    ];
 
     # consoleLogLevel = 0;
     # kernelParams = [
@@ -123,9 +129,9 @@ for directories above their own dedicated edirectory.
       package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
 
-    opengl = {
+    graphics = {
       enable = lib.mkDefault true;
-      driSupport32Bit = true;
+      enable32Bit = true;
 
       extraPackages = with pkgs; [
         intel-compute-runtime
@@ -134,10 +140,51 @@ for directories above their own dedicated edirectory.
 
     # Enable OpenTabletDriver.
     opentabletdriver.enable = true;
-    pulseaudio.enable = false;
   };
 
   services = {
+    kanata = {
+      enable = true;
+      keyboards.default = {
+        extraDefCfg = ''
+          concurrent-tap-hold yes
+        '';
+
+        config = ''
+          (defsrc
+                                 bspc
+                   w          [ ] \
+            caps a s d      ; '
+                 ralt  spc
+          )
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+          (deflayer default
+                                    _
+                     _          _ _ _
+            @cycle _ _ _      _ _
+                      _  _
+          )
+
+          (deflayer unib2
+                                    lalt
+                     1             b c d
+            @cycle 2 3 4         a g
+                      bspc  spc
+          )
+
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+          (defalias
+            to-unib2 (layer-switch unib2)
+            to-default (layer-switch default))
+
+          (defalias
+            cycle (tap-dance 200 (caps @to-default @to-unib2)))
+        '';
+      };
+    };
     displayManager.sddm = {
       enable = true;
       wayland = {
@@ -158,6 +205,7 @@ for directories above their own dedicated edirectory.
 
       # Disable XTerm
       desktopManager.xterm.enable = false;
+      windowManager.awesome.enable = true;
     };
 
     # Configure keymap in Wayland.
@@ -202,7 +250,6 @@ for directories above their own dedicated edirectory.
   };
 
   # Enable sound with pipewire.
-  sound.enable = true;
   security.rtkit.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -234,23 +281,34 @@ for directories above their own dedicated edirectory.
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  programs = {
+    # Noisetorch
+    noisetorch.enable = true;
 
-  # Noisetorch
-  programs.noisetorch.enable = true;
+    dconf.enable = true;
 
-  # Hyprland!
-  programs.hyprland = {
-    enable = true;
-    portalPackage =
-      inputs
-      .xdg-desktop-portal-hyprland
-      .packages
-      ."${
-        if pkgs ? "system"
-        then pkgs.system
-        else "x86_64-linux"
-      }"
-      .xdg-desktop-portal-hyprland;
+    # Hyprland!
+    hyprland = {
+      enable = true;
+      portalPackage =
+        inputs
+        .xdg-desktop-portal-hyprland
+        .packages
+        ."${
+          if pkgs ? "system"
+          then pkgs.system
+          else "x86_64-linux"
+        }"
+        .xdg-desktop-portal-hyprland;
+    };
+
+    # Some programs need SUID wrappers, can be configured further or are
+    # started in user sessions.
+    # programs.mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
 
   environment = {
@@ -286,11 +344,9 @@ for directories above their own dedicated edirectory.
         Driver=hidpp20
         LedTypes=logo;side;
       '')
-      # home-manager
+      corectrl
+      gnome.adwaita-icon-theme
       libsForQt5.kio-admin
-
-      kitty
-      kitty-img
 
       grc
       fzf
@@ -303,25 +359,14 @@ for directories above their own dedicated edirectory.
       fishPlugins.grc
 
       dotnet-runtime
-
-      (nerdfonts.override {fonts = ["JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono"];})
-      #	wget
     ];
 
-    # Remove unnecessary packages from Plasma 5.
-    plasma6.excludePackages = with pkgs.libsForQt5; [
-      plasma-browser-integration
-      konsole
-      oxygen
-    ];
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+    # Remove unnecessary packages from Plasma 6.
+    # plasma6.excludePackages = with pkgs.libsForQt5; [
+    #   plasma-browser-integration
+    #   konsole
+    #   oxygen
+    # ];
   };
 
   networking = {
@@ -346,7 +391,6 @@ for directories above their own dedicated edirectory.
       allowedUDPPorts = [];
     };
   };
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

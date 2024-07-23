@@ -5,7 +5,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
-
+    nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/d9e28880025f124abe4f79dc99500d7ec155d55d";
     nurpkgs.url = "github:nix-community/NUR";
 
     /*
@@ -113,6 +113,7 @@
     nix-colors,
     lanzaboote,
     hyprpicker,
+    nixpkgs-mongodb-pin,
     ...
   } @ inputs: let
     useReleaseStream = release-stream: function-that-uses-stream: (function-that-uses-stream release-stream (import release-stream {inherit system overlays config;}));
@@ -120,17 +121,26 @@
       hyprpicker.overlays.default
       nurpkgs.overlay
       (_: super: {
-        wlroots = super.wlroots.overrideAttrs (prev: {
-          patches =
-            prev.patches
-            ++ [
-              (super.fetchpatch {
-                url = "freedesktop.org/wlroots/wlroots/-/merge_requests/4715.patch";
-                hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-              })
-            ];
-        });
+        inherit
+          ((import nixpkgs-mongodb-pin {
+            inherit system;
+            config.allowUnfreePredicate = pkg: "mongodb" == (super.lib.getName pkg);
+          }))
+          mongodb
+          ;
       })
+      # (_: super: {
+      #   wlroots = super.wlroots.overrideAttrs (prev: {
+      #     patches =
+      #       prev.patches
+      #       ++ [
+      #         (super.fetchpatch {
+      #           url = "freedesktop.org/wlroots/wlroots/-/merge_requests/4715.patch";
+      #           hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+      #         })
+      #       ];
+      #   });
+      # })
     ];
 
     config = {

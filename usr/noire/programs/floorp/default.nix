@@ -14,7 +14,7 @@ in {
     };
     categories = ["Network" "WebBrowser"];
     comment = "A beautiful, customizable gecko-based Japanese browser.";
-    exec = "${floorpPath} --name floorp %U";
+    exec = "${floorpPath} --name floorp %U -p noire";
     genericName = "Web Browser";
     startupNotify = true;
     type = "Application";

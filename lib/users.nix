@@ -49,17 +49,22 @@
                   );
               reqCfgDir = mkCfgDir "${usrRoot}/${usr.home.username.content}/${cfgRoot}/${program_name}";
               fallbackCfgDir = mkCfgDir "${self}/cfg/${program_name}";
-              chosenPath =
-                # i already check if the path exists
-                # but my brain is blanking on how to otherwise make errors
-                # dynamic and verbose while not doing the exists checks
-                if builtins.pathExists reqCfgDir
-                then reqCfgDir
-                else if builtins.pathExists fallbackCfgDir
-                then fallbackCfgDir
-                else abort "configuration '${program_name}' does not exist as '${reqCfgDir}[.nix]' or '${fallbackCfgDir}[.nix]'";
+              reqExists = builtins.pathExists reqCfgDir;
+              fallbackExists = builtins.pathExists fallbackCfgDir;
             in
-              lib.withInputs chosenPath special_args;
+              if reqExists && fallbackExists
+              then (lib.withInputs fallbackCfgDir special_args) // (lib.withInputs reqCfgDir special_args)
+              else
+                (
+                  if reqExists
+                  then (lib.withInputs reqCfgDir special_args)
+                  else
+                    (
+                      if fallbackExists
+                      then lib.withInputs fallbackCfgDir special_args
+                      else abort "configuration '${program_name}' does not exist as '${reqCfgDir}[.nix]' or '${fallbackCfgDir}[.nix]'"
+                    )
+                );
 
             _extraSpecialArgs =
               specialArgs
@@ -89,12 +94,18 @@
                 };
               };
 
-            modules = [
+            modules = let
+              usernameContent = usr.home.username.content;
+            in [
+              # patches below
               {
-                xdg.systemDirs.data = ["/home/${usr.home.username.content}/.local/state/nix/profiles/home-manager/home-path/share/applications/"];
+                # patch to add application .desktop files
+                # automatically to launchers and things
+                xdg.systemDirs.data = ["/home/${usernameContent}/.local/state/nix/profiles/home-manager/home-path/share/applications/"];
               }
+
               (lib.attrsets.filterAttrs (k: _: !(builtins.elem k ["__"])) usr)
-              (usrRoot + /${usr.home.username.content})
+              (usrRoot + /${usernameContent})
             ];
           });
         }) {}

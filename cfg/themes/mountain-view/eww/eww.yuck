@@ -1,13 +1,18 @@
-(defvar hovering false)
+(defvar topbar_hovering false)
 
 (defpoll time :interval "1s"
               :initial "welcome"  ; optional, defaults to poll at startup
   `date +%H:%M`)
 
+(defpoll clients :interval "100ms"
+                 :initial "[]"
+  `hyprctl -j clients`)
+
 (defwindow topbar
            :monitor 0
            :geometry (geometry :x "0%"
                                :y "8px"
+                               :width "60%"
                                :height "52px"
                                :anchor "top center")
            :stacking "fg"
@@ -15,16 +20,30 @@
            :focusable false
            :namespace "topbar"
   (topbar))
+
+(defwindow sidebar
+           :monitor 0
+           :geometry (geometry
+                               :x "8px"
+                               :height "90%"
+                               :width "64px"
+                               :anchor "center left")
+           :stacking "fg"
+           :exclusive true
+           :focusable false
+           :namespace "sidebar"
+  (system_tray))
           
 (defwidget topbar []
   (eventbox :class "container"
-            :onhover "eww update hovering=true"
-            :onhoverlost "eww update hovering=false"
+            :onhover "eww update topbar_hovering=true"
+            :onhoverlost "eww update topbar_hovering=false"
     (box :orientation "horizontal"
          :class "container"
          :space-evenly false
          :height 36
          :spacing 7
+         :halign "center"
          :valign "center"
           (divet :align "start" 
                  :size 3
@@ -48,13 +67,68 @@
                  :size 3
                  :transparency 0.15))))
 
+(defwidget appicon [class title ?focused ?pid ?pinned]
+  (box :class "appicon ${focused ? "active-window" : "inactive-window"}"
+       :valign "center"
+       :halign "center"
+       :width 38
+       :height 38
+    (label :text "${class}")))
+
+(defwidget sidebar []
+  (eventbox :class "container"
+    (box :orientation "vertical"
+         :width 56
+         :height 128
+         :halign "center"
+         :valign "center"
+         :space-evenly true
+         :spacing 8
+      (for entry in clients
+        (appicon :class {entry.class}
+                 :focused {entry.focusHistoryID == 0}
+                 :title {entry.title})))))
+
+(defwindow greeting
+           :monitor 0
+           :geometry (geometry :x "2%"
+                               :y "8px"
+                               :width "480px"
+                               :height "256px"
+                               :anchor "bottom left")
+           :stacking "bg"
+           :exclusive false
+           :focusable false
+           :namespace "background"
+  (greeting))
+
+(defwidget divider [] 
+  (box :orientation "horizontal"
+       :height "12px"
+       :halign "fill"
+       :valign "end"
+       :class "divider"))
+          
+(defwidget greeting []
+  (box :orientation "vertical"
+       :class "greeting"
+    (label :text "Hello, ${get_env("USER")}"
+           :class "hello"
+           :valign "start"
+           :halign "start")
+      (divider)))
+
 (defwidget system_tray [?align]
   (box :class "system_tray"
-       :width 256
-       :height 32
+       :width 48
+       :height 48
        :halign "${align ?: "center"}"
        :valign "center"
-       :orientation "horizontal"))
+       :orientation "vertical"
+       (systray :orientation "vertical"
+                :icon-size 32
+                :prepend-new false
+                :space-evenly true)))
 
 (defwidget divet [?align ?size ?transparency]
   (box :class "divet"
@@ -66,7 +140,7 @@
        :orientation "vertical"))
 
 (defwidget time []
-  (box :class "time ${hovering ? "hover" : ""}"
+  (box :class "time ${topbar_hovering ? "hover" : ""}"
        :width 120
        :height 32
        :halign "start"

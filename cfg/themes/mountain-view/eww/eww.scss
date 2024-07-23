@@ -1,5 +1,6 @@
 * {
   background: none;
+  font-family: "Josefin Sans";
 }
 
 .topbar {
@@ -19,7 +20,6 @@
 .application-name {
   padding-top:4px;
   font-size: 16px;
-  font-family: "Josefin Sans";
   color: #797488;
   font-weight: 300;
   text-shadow: 0px 0px 2px #595468;
@@ -39,11 +39,63 @@ box.time.hover label {
 }
 
 box.time label {
-
   color: #D7AFBB;
   padding-top:4px;
   text-shadow: 0px 0px 2px #797488;
   font-size: 18px;
-  font-family: "Josefin Sans";
   font-weight: 100;
+}
+
+box.greeting {
+  padding: 24px;
+  & > label {
+      color: white;
+      font-size: 24px;
+  };
+
+  & > .hello {
+    font-size: 32px;
+  };
+
+  border-radius: 4px;
+  background-color: rgba(0,0,0,0.75)
+};
+
+box.divider {
+  margin: 2px;
+  background: white;
+}
+
+.sidebar {
+  border: none;
+}
+
+
+.appicon {
+  transition: background 0.2s;
+  &.active-window {
+    background: rgba(225,125,125,0.5);
+    color: #D7AFBB;
+  }
+
+  &.inactive-window {
+    background: rgba(125,125,125,0.5);
+    color: grey;
+  }
+
+  border-radius: 8px;
+}
+
+tooltip {
+  opacity: 0.8;
+  border: none;
+}
+
+.sidebar > box, tooltip {
+  box-shadow: 0px 0px 4px 1px #0A0C0C;
+  background: #0A0C0C;
+  border-radius: 4px;
+  margin: 6px;
+  padding: 6px;
+  opacity: 0.7;
 }

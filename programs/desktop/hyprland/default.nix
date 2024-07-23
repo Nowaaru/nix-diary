@@ -1,37 +1,29 @@
 {
   pkgs,
   lib,
-  nix-colors,
+  # nix-colors,
+  configure,
   inputs,
   ...
 }: let
-  flakeRoot = inputs.self;
-  configRoot = "${flakeRoot}/cfg/hyprland";
+  # flakeRoot = inputs.self;
+  # configRoot = "${flakeRoot}/cfg/hyprland";
 
-  hypr-config = import configRoot {
-    inherit pkgs nix-colors;
-  };
+  # hypr-config = import configRoot {
+  #   inherit pkgs nix-colors;
+  # };
 
-  util = import "${configRoot}/util.nix" {
-    inherit pkgs lib;
-  };
+  hypr-config = configure "hyprland";
+
+  # util = import "${configRoot}/util.nix" {
+  #   inherit pkgs lib;
+  # };
 
   ifHyprland = then-what: ''
     if [ -n "$(printenv HYPRLAND_INSTANCE_SIGNATURE)" ]; then
       ${then-what}
     fi
   '';
-
-  ifHyprfish = then-what: ''
-    if [ -n "$(printenv HYPRLAND_INSTANCE_SIGNATURE)" ] then
-      ${then-what}
-    end
-  '';
-
-  applySwayTheme = ''$DRY_RUN_CMD ${selfTrace (util.str.applySwayTheme hypr-config.theme)}'';
-
-  selfTrace = t:
-    builtins.trace t t;
 in {
   imports = [
     ./fuzzel.nix
@@ -42,10 +34,6 @@ in {
     enable = true;
     settings = hypr-config.hypr;
   };
-
-  programs.fish.loginShellInit = ifHyprfish ''
-    $DRY_RUN_CMD ${selfTrace (util.str.applySwayTheme hypr-config.theme)}
-  '';
 
   home = {
     packages = with pkgs; [
@@ -81,10 +69,7 @@ in {
       ".config/eww" = {
         enable = lib.attrsets.hasAttrByPath ["theme" "widgets"] hypr-config;
         source = hypr-config.theme.widgets;
-        recursive = true;
-        onChange = ''
-          eww -c ~/.config/eww kill
-        '';
+        recursive = lib.mkForce true;
       };
     };
   };

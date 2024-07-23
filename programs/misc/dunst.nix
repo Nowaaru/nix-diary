@@ -1,12 +1,9 @@
 {
-  pkgs,
-  nix-colors,
-  inputs,
+  lib,
+  configure,
   ...
 }: let
-  inherit (inputs) self;
-  inherit (import "${self}/cfg/hyprland" {inherit pkgs nix-colors;}) theme;
-  # dunstThemeSettings = pkgs.lib.attrsets.attrByPath ["programs" "dunst"] defaultDunstTheme theme;
+  inherit ( configure "hyprland" ) theme;
   defaultDunstTheme = {
     global = {
       width = 300;
@@ -43,8 +40,9 @@
     };
   };
 in {
+
   services.dunst = {
-    enable = true;
+    enable = lib.mkDefault false;
     settings = defaultDunstTheme;
   };
 }

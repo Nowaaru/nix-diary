@@ -30,7 +30,7 @@
     programs.gaming.osu
 
     # Social media and social utilities.
-    programs.social.discord
+    programs.social.discord.vesktop
 
     # General things, auxiliary functionalities.
     programs.misc.qol.night-light
@@ -60,11 +60,13 @@
     programs.music.mixers.ncpamixer
     programs.music.players.spotify
 
+    user.programs.floorp.all
     user.programs.an-anime-team.all
     user.programs.librewolf
 
+    user.programs.sway-notification-center
+    user.programs.awesome
     user.programs.gimp
-    user.programs.floorp.all
     user.programs.piper
     user.programs.qt
   ];
@@ -74,6 +76,13 @@
       experimental-features = ["scale-monitor-framebuffer"];
     };
   };
+
+  # programs.fish.loginShellInit = ''
+  #   if [ -n "$(printenv HYPRLAND_INSTANCE_SIGNATURE)" ] then
+  #     $DRY_RUN_CMD ${(util.str.applySwayTheme (configure "hyprland").theme)}
+  #   end
+  # '';
+
 
   fonts.fontconfig.enable = true;
 

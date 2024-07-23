@@ -500,7 +500,8 @@ in {
   theme = {
     enable = true;
 
-    name = "onedark";
+    name = "oxocarbon";
+    transparent = true;
     style = "dark";
   };
 
