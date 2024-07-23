@@ -9,7 +9,7 @@
       isNormalUser = true;
       description = "user - ${k}";
       shell = pkgs.fish;
-      extraGroups = ["networkmanager" "wheel" "libvirt"];
+      extraGroups = ["users" "networkmanager" "wheel" "libvirtd"];
       packages = []; # managed via home-manager
     }
     // (
