@@ -1,28 +1,17 @@
 {
   pkgs,
   user,
-  programs,
   ...
 }: {
   imports = [
+    user.programs.git
     user.programs.fish
     user.programs.nvim
-    user.programs.git
   ];
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-curses;
+  home.shellAliases = {
+    ls = "${pkgs.lsd}/bin/lsd";
   };
 
-  nixpkgs = {
-    config = {};
-  };
-
-  home = {
-    shellAliases = {
-      ls = "${pkgs.lsd}/bin/lsd";
-    };
-  };
+  programs.home-manager.enable = true;
 }
