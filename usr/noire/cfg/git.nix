@@ -5,4 +5,6 @@ with lib; {
     email = mkForce "nowaaru@proton.me";
     name = mkForce "Nowaaru";
   };
+
+  commit.gpgsign = true;
 }
