@@ -1,0 +1,1 @@
+../../noire/cfg/git.nix
