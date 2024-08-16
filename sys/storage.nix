@@ -4,7 +4,6 @@
 
   devices = {
     ssd = "/dev/disk/by-uuid/0E2058022057EF69";
-    hdd = "/dev/disk/by-uuid/84D6B99BD6B98E44";
     global = "/dev/disk/by-label/Global";
   };
 
@@ -36,22 +35,6 @@ in {
       autoFormat = false;
       autoResize = false;
       mountPoint = "/mnt/windows";
-    };
-
-    "${miscellaneousFS}" = {
-      inherit options;
-      label = miscellaneousFS;
-      device = devices.hdd;
-      fsType = "ntfs";
-
-      depends = [
-        "/mnt/windows"
-      ];
-
-      # See above.
-      autoFormat = false;
-      autoResize = false;
-      mountPoint = "/mnt/miscellaneous";
     };
   };
 }
