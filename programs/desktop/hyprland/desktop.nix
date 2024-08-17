@@ -28,6 +28,7 @@ in {
 
       # hypr
       inputs.hyprpicker.packages.${pkgs.system}.hyprpicker
+      inputs.hyprcursor.packages.${pkgs.system}.hyprcursor
       hyprdim
       swww
 

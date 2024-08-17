@@ -13,17 +13,21 @@
     programs.desktop.hyprland.ags
 
     # Developer goodies.
-    programs.dev.fish
-    programs.dev.dotnet
-    programs.dev.formatters
-    programs.dev.lua
-    programs.dev.node
-    programs.dev.nvim
-    programs.dev.roblox
-    programs.dev.rust
+    programs.dev.formatters.dprint
 
-    programs.dev.git.lazygit
-    programs.dev.git.all
+    programs.dev.langs.javascript.typescript
+    programs.dev.langs.javascript.node
+    programs.dev.langs.javascript.bun
+
+    programs.dev.langs.dotnet
+    programs.dev.langs.rust
+    programs.dev.langs.lua
+
+    programs.dev.roblox
+    programs.dev.nvim
+
+    programs.dev.git
+    programs.dev.lazygit
 
     # Gaming and the like.
     programs.gaming.minecraft

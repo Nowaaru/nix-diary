@@ -1,8 +1,10 @@
 { pkgs, ... }:
 {
-    imports = [
-        ./kitty.nix
-    ];
+  imports = [
+      ./starship.nix
+      ./kitty.nix
+      ./fish.nix
+  ];
 
 	home.packages = with pkgs; [
         asciinema-agg
@@ -18,10 +20,4 @@
         lsd
     ];
 
-    programs.starship = {
-        settings = import ./starship.nix { inherit pkgs; };
-        enable = true;
-        enableTransience = true;
-        enableFishIntegration = true;
-    };
 }
