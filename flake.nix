@@ -141,6 +141,19 @@
           mongodb
           ;
       })
+      (_: super: {
+        lib =
+          super.lib.extend (_: prev:
+            prev
+            // {
+              gamindustri = import (inputs.self + /lib) (inputs
+                // {
+                  pkgs = super;
+                  lib = prev // home-manager.lib;
+                });
+            })
+          // home-manager.lib;
+      })
       # (_: super: {
       #   wlroots = super.wlroots.overrideAttrs (prev: {
       #     patches =
@@ -163,17 +176,8 @@
     system = "x86_64-linux";
   in
     useReleaseStream nixpkgs-unstable (nixpkgs: pkgs: let
-      lib =
-        nixpkgs.lib.extend (_: prev:
-          prev
-          // {
-            gamindustri = import (inputs.self + /lib) (inputs
-              // {
-                inherit pkgs;
-                lib = prev // home-manager.lib;
-              });
-          })
-        // home-manager.lib;
+      inherit (pkgs) lib;
+
       nur = import nurpkgs {
         inherit pkgs;
         nurpkgs = import nixpkgs {
@@ -222,6 +226,7 @@
         usrRoot = ./usr;
         specialArgs = {
           inherit inputs nix-colors nur stable master unstable modules;
+
           programs = import ./programs (inputs
             // {
               inherit (pkgs) config;
