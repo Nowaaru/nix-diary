@@ -91,17 +91,18 @@
       url = "github:hyprwm/hyprpicker";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
-        hyprland.follows = "hyprland";
         hyprutils.follows = "hyprutils";
       };
     };
 
+    hyprcursor = {
+      url = "github:hyprwm/hyprcursor";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     xdg-desktop-portal-hyprland = {
       url = "github:hyprwm/xdg-desktop-portal-hyprland";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-        hyprland.follows = "hyprland";
-      };
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     hyprland-plugins = {
