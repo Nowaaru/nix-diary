@@ -6,7 +6,7 @@
 in {
   imports = [
     # Managing the desktop.
-    programs.desktop.hyprland.all
+    programs.desktop.hyprland.desktop
   ];
 
   nixpkgs.config.allowUnfree = true;

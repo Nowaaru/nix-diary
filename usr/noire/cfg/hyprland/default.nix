@@ -62,7 +62,7 @@ in {
 
     # Stuff to run every reload.
     exec = [
-      "eww open-many -c ~/.config/eww topbar sidebarf"
+      # "eww open-many -c ~/.config/eww topbar sidebarf"
       (util.str.applySwayTheme theme)
     ];
 
@@ -77,9 +77,6 @@ in {
         "wl-paste -p --watch wl-copy -p ''" # disable primary buffer
         "wl-paste --type text --watch cliphist store" # Stores only text data
         "wl-paste --type image --watch cliphist store" # Stores only image data
-      ]
-      ++ [
-        "swaync"
       ];
   };
 }

@@ -79,16 +79,23 @@
     hyprland
     */
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    };
+
+    hyprutils = {
+      url = "github:hyprwm/hyprutils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
     hyprpicker = {
       url = "github:hyprwm/hyprpicker";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
         hyprland.follows = "hyprland";
+        hyprutils.follows = "hyprutils";
       };
     };
+
     xdg-desktop-portal-hyprland = {
       url = "github:hyprwm/xdg-desktop-portal-hyprland";
       inputs = {
@@ -103,6 +110,10 @@
         nixpkgs.follows = "nixpkgs-unstable";
         hyprland.follows = "hyprland";
       };
+    };
+
+    ags = {
+      url = "github:Aylur/ags";
     };
   };
 

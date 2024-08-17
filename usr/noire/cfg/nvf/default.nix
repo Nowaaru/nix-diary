@@ -22,7 +22,6 @@ in {
   syntaxHighlighting = true;
   useSystemClipboard = true;
   preventJunkFiles = false;
-  mapLeaderSpace = true;
   showSignColumn = true;
   searchCase = "smart";
   autoIndent = true;

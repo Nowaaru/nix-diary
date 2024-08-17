@@ -8,7 +8,9 @@
 }: {
   imports = [
     # Managing the desktop.
-    programs.desktop.hyprland.all
+    programs.desktop.hyprland.desktop
+    programs.desktop.hyprland.fuzzel
+    programs.desktop.hyprland.ags
 
     # Developer goodies.
     programs.dev.fish
@@ -44,8 +46,6 @@
     programs.misc.dunst
     programs.misc.print-screen
 
-    programs.misc.delta
-
     programs.misc.video
     programs.misc.audio
     programs.misc.clip
@@ -60,11 +60,16 @@
     programs.music.mixers.ncpamixer
     programs.music.players.spotify
 
+    # Games by those who rule the world.
+    user.programs.an-anime-team.anime-game
+    # user.programs.an-anime-team.honkers-railway
+    # user.programs.an-anime-team.honkers
+
+    # Browsers
     user.programs.floorp.all
-    user.programs.an-anime-team.all
     user.programs.librewolf
 
-    user.programs.sway-notification-center
+    # UI
     user.programs.awesome
     user.programs.gimp
     user.programs.piper
