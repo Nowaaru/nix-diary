@@ -8,7 +8,9 @@
 }: {
   imports = [
     # Managing the desktop.
+    programs.desktop.hyprland.cursors.macos
     programs.desktop.hyprland.desktop
+
     programs.desktop.hyprland.fuzzel
     programs.desktop.hyprland.ags
 
