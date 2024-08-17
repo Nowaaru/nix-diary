@@ -70,7 +70,7 @@ for directories above their own dedicated edirectory.
 
     kernelParams = [
       "amdgpu.ppfeaturemask=0xffffffff"
-      "nvidia-drm.modeset=1"
+      # "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
       "nvidia.NVreg_EnableGpuFirmware=0"
     ];
@@ -126,7 +126,7 @@ for directories above their own dedicated edirectory.
 
       # open = true;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
 
     graphics = {
@@ -290,15 +290,12 @@ for directories above their own dedicated edirectory.
     # Hyprland!
     hyprland = {
       enable = true;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       portalPackage =
         inputs
         .xdg-desktop-portal-hyprland
         .packages
-        ."${
-          if pkgs ? "system"
-          then pkgs.system
-          else "x86_64-linux"
-        }"
+        .${pkgs.system}
         .xdg-desktop-portal-hyprland;
     };
 
