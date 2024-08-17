@@ -12,9 +12,8 @@ for directories above their own dedicated edirectory.
   pkgs,
   lib,
   inputs,
-  configure,
   ...
-} @ args: {
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
@@ -185,6 +184,7 @@ for directories above their own dedicated edirectory.
         '';
       };
     };
+
     displayManager.sddm = {
       enable = true;
       wayland = {
@@ -266,11 +266,13 @@ for directories above their own dedicated edirectory.
   # users.users = import ./register-users.nix args;
   nix = {
     # Enable flakes.
-    gc = {
-      automatic = true;
-      randomizedDelaySec = "14m";
-      options = "--delete-older-than 10d";
-    };
+
+    # Disabled in favor of nh.
+    # gc = {
+    #   automatic = true;
+    #   randomizedDelaySec = "14m";
+    #   options = "--delete-older-than 10d";
+    # };
 
     # I am insane.
     package = pkgs.nixVersions.nix_2_21;
@@ -306,6 +308,17 @@ for directories above their own dedicated edirectory.
       enable = true;
       enableSSHSupport = true;
     };
+
+    nh = {
+      enable = true;
+      flake = "/home/noire/.diary"; # TODO: change to somewhere in /etc/ maybe? i dunno
+
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "";
+      };
+    };
   };
 
   environment = {
@@ -329,8 +342,7 @@ for directories above their own dedicated edirectory.
 
       TERMINAL = lib.mkDefault "kitty";
     };
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
+
     systemPackages = with pkgs; [
       # test, for now.
       (pkgs.writeTextDir "share/libratbag/logitech-g102-g203.device" ''
@@ -341,8 +353,9 @@ for directories above their own dedicated edirectory.
         Driver=hidpp20
         LedTypes=logo;side;
       '')
+
       corectrl
-      gnome.adwaita-icon-theme
+      adwaita-icon-theme
       libsForQt5.kio-admin
 
       grc
@@ -357,25 +370,12 @@ for directories above their own dedicated edirectory.
 
       dotnet-runtime
     ];
-
-    # Remove unnecessary packages from Plasma 6.
-    # plasma6.excludePackages = with pkgs.libsForQt5; [
-    #   plasma-browser-integration
-    #   konsole
-    #   oxygen
-    # ];
   };
 
   networking = {
     hostName = "lastation"; # Define your hostname.
-    # networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
-
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
     mihoyo-telemetry.block = true;
 
-    # Enable networking
     networkmanager.enable = true;
     firewall = {
       allowedTCPPorts = [25565];
@@ -389,12 +389,6 @@ for directories above their own dedicated edirectory.
     };
   };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
   virtualisation.waydroid.enable = true;
 }
