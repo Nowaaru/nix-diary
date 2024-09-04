@@ -25,7 +25,6 @@
     programs.dev.langs.rust
     programs.dev.langs.lua
 
-    programs.dev.roblox
     programs.dev.nvim
 
     programs.dev.git
@@ -67,19 +66,21 @@
     programs.music.players.spotify
 
     # Games by those who rule the world.
-    user.programs.an-anime-team.anime-game
+    # user.programs.an-anime-team.anime-game
     # user.programs.an-anime-team.honkers-railway
     # user.programs.an-anime-team.honkers
 
     # Browsers
+    user.programs.r2modman
     user.programs.floorp.all
-    user.programs.librewolf
+    # user.programs.librewolf
 
     # UI
     user.programs.awesome
     user.programs.gimp
     user.programs.piper
     user.programs.qt
+    user.programs.plasma
   ];
 
   dconf.settings = {
