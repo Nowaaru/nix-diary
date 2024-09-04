@@ -17,7 +17,9 @@ in
         kb_model = "";
         kb_options = "";
         kb_rules = "";
+
         accel_profile = "flat";
+        force_no_accel = true;
 
         follow_mouse = 1;
 
