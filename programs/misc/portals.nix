@@ -1,15 +1,7 @@
 {pkgs, ...}: let
   portalList = with pkgs; [
-    xdg-desktop-portal-gtk
     xdg-desktop-portal-kde
-    xdg-desktop-portal-xapp
-    xdg-desktop-portal-gnome
     xdg-desktop-portal-hyprland
-  ];
-
-  sessionConfigurations = with pkgs; [
-    cinnamon.cinnamon-session
-    gnome.gnome-session
   ];
 in {
   /*
