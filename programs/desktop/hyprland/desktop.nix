@@ -15,6 +15,7 @@
 in {
   wayland.windowManager.hyprland = {
     enable = true;
+    plugins = [];
     settings = hypr-config.hypr;
   };
 
