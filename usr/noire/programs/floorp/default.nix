@@ -1,28 +1,24 @@
-{pkgs, stable, master, ...}: let
-  floorpPath = "${master.floorp-unwrapped}/bin/floorp";
-in {
-  xdg.desktopEntries.floorp = {
-    name = "Floorp";
-    actions = {
-      "new-window" = {
-        exec = "${floorpPath} --new-instance %U";
-      };
-
-      "new-private-window" = {
-        exec = "${floorpPath} --private-window %U";
-      };
+{
+  pkgs,
+  lib,
+  ...
+}: {
+  xdg.desktopEntries = let
+    gecko = lib.gamindustri.gecko.withGecko pkgs.floorp;
+  in {
+    # TODO: somehow stop the default profile from changing all the time
+    floorp-noire = gecko.mkProfile {
+      profile = "noire";
     };
-    categories = ["Network" "WebBrowser"];
-    comment = "A beautiful, customizable gecko-based Japanese browser.";
-    exec = "${floorpPath} --name floorp %U -p noire";
-    genericName = "Web Browser";
-    startupNotify = true;
-    type = "Application";
-    icon = "${master.floorp-unwrapped}/lib/floorp/browser/chrome/icons/default/default128.png";
-    mimeType = ["text/html" "text/xml" "application/xhtml+xml" "application/vnd.mozilla.xul+xml" "x-scheme-handler/http" "x-scheme-handler/https"];
+    floorp-test2 = gecko.mkProfile {
+      profile = "the smelly ward";
+    };
+    floorp-test3 = gecko.mkProfile { 
+      profile = "lego gotham city";
+    };
   };
 
-  home.packages = with master; [
-    floorp-unwrapped
+  home.packages = with pkgs; [
+    floorp
   ];
 }
