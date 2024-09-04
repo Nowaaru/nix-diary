@@ -1,7 +1,7 @@
 {theme, ...}: let
   fileManager = "kitty ranger";
   terminal = "kitty";
-  browser = "floorp";
+  browser = "floorp --MOZ_ENABLE_WAYLAND=1 -p noire";
   mainMod = "SUPER";
 
   menu = "fuzzel -D no";
