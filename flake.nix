@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
+    # nixpkgs-master.url = "github:nixos/nixpkgs/master"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
     nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/d9e28880025f124abe4f79dc99500d7ec155d55d";
     nurpkgs.url = "github:nix-community/NUR";
 
@@ -67,7 +67,7 @@
     /*
     neovim
     */
-    nvf.url = "github:NotAShelf/nvf";
+    nvf.url = "github:NotAShelf/nvf/v0.7";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
@@ -144,15 +144,15 @@
       (_: super: {
         lib =
           super.lib.extend (_: prev:
-            prev
+            home-manager.lib
+            // prev
             // {
               gamindustri = import (inputs.self + /lib) (inputs
                 // {
                   pkgs = super;
                   lib = prev // home-manager.lib;
                 });
-            })
-          // home-manager.lib;
+            });
       })
       # (_: super: {
       #   wlroots = super.wlroots.overrideAttrs (prev: {
@@ -185,15 +185,16 @@
         };
       };
 
-      modules = lib.gamindustri.modules.mkModules (inputs.self + /modules);
+      modules =  lib.gamindustri.modules.mkModules (inputs.self + /modules);
     in {
       inherit lib;
+
       nixosConfigurations = let
         specialArgs = {
           inherit inputs modules;
         };
       in {
-        lastation = lib.nixosSystem {
+        lastation = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           modules = [
             lanzaboote.nixosModules.lanzaboote
@@ -202,7 +203,7 @@
           ];
         };
 
-        leanbox = lib.nixosSystem {
+        leanbox = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           modules = [
             ./sys/wsl
@@ -215,9 +216,9 @@
           inherit system overlays config;
         };
 
-        master = import inputs.nixpkgs-master {
-          inherit system overlays config;
-        };
+        # master = import inputs.nixpkgs-master {
+        #   inherit system overlays config;
+        # };
 
         unstable = import inputs.nixpkgs-unstable {
           inherit system overlays config;
@@ -225,12 +226,12 @@
 
         usrRoot = ./usr;
         specialArgs = {
-          inherit inputs nix-colors nur stable master unstable modules;
+          inherit inputs lib nix-colors nur stable unstable modules;
 
           programs = import ./programs (inputs
             // {
               inherit (pkgs) config;
-              inherit inputs pkgs lib nur stable master unstable modules;
+              inherit inputs pkgs lib nur stable unstable modules;
             });
         };
       in
