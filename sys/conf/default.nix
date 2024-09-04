@@ -25,6 +25,7 @@ for directories above their own dedicated edirectory.
     # Users
     ./register-users.nix
   ];
+
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
@@ -69,7 +70,7 @@ for directories above their own dedicated edirectory.
 
     kernelParams = [
       "amdgpu.ppfeaturemask=0xffffffff"
-      # "nvidia-drm.modeset=1"
+      "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
       "nvidia.NVreg_EnableGpuFirmware=0"
     ];
@@ -123,9 +124,9 @@ for directories above their own dedicated edirectory.
       powerManagement.enable = true; # can cause sleep problems but supposedly fixed with the newest nvidia update
       powerManagement.finegrained = false;
 
-      # open = true;
+      open = lib.mkForce false;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
 
     graphics = {
@@ -250,7 +251,14 @@ for directories above their own dedicated edirectory.
   };
 
   # Enable sound with pipewire.
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;
+    wrappers = {
+      firejail = {
+        source = "${pkgs.firejail.out}/bin/firejail";
+      };
+    };
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -283,11 +291,16 @@ for directories above their own dedicated edirectory.
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Desktop things
+  services.desktopManager.plasma6.enable = true;
   programs = {
     # Noisetorch
     noisetorch.enable = true;
 
     dconf.enable = true;
+
+    firejail.enable = true;
 
     # Hyprland!
     hyprland = {
@@ -362,6 +375,7 @@ for directories above their own dedicated edirectory.
       fzf
       zip
       unzip
+      unrar
 
       fishPlugins.done
       fishPlugins.forgit
@@ -369,6 +383,7 @@ for directories above their own dedicated edirectory.
       fishPlugins.grc
 
       dotnet-runtime
+      nix-du
     ];
   };
 
