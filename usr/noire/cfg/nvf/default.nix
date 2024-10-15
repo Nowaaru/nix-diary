@@ -6,6 +6,7 @@
   maps = import ./keybindings.nix lib;
   languages = import ./languages.nix pkgs;
   mkUnused = keybinding: "<leader><leader>${keybinding}";
+  util = import ./util.nix lib;
 in {
   inherit maps languages;
 
@@ -16,7 +17,19 @@ in {
   withPython3 = true;
 
   viAlias = true;
-  # luaConfigRC = lib.hm.dag.entryAnywhere "";
+  startPlugins = with pkgs.vimPlugins; [ oxocarbon-nvim ]; 
+  pluginRC.alpha = lib.mkForce (lib.hm.dag.entryAfter ["image-nvim"] (util.fetchLuaSource "alpha-startup"));
+  luaConfigRC.theme = lib.mkForce (lib.hm.dag.entryAfter ["pluginConfigs"] ''
+    require('oxocarbon')
+    vim.opt.background = "dark" -- set this to dark or light
+    vim.cmd.colorscheme "oxocarbon"
+
+    -- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    -- vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+    -- vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+    -- vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
+  '');
   vimAlias = true;
 
   syntaxHighlighting = true;
@@ -33,7 +46,7 @@ in {
 
   extraPlugins = with pkgs.vimPlugins; {
     lsp-signature-help = {
-      package = cmp-nvim-lsp-signature-help; 
+      package = cmp-nvim-lsp-signature-help;
     };
 
     smart-splits = {
@@ -56,34 +69,6 @@ in {
     level = 16;
 
     logFile = "/tmp/nvf.log";
-  };
-
-  autocomplete = {
-    enable = true;
-    alwaysComplete = true;
-    type = "nvim-cmp";
-
-    sources = {
-      # nvim_lsp_signature_help = null;
-    };
-
-    mappings = {
-      confirm = "<CR>";
-      complete = "<C-Space>";
-
-      previous = "<S-Tab>";
-      next = "<Tab>";
-
-      close = "<C-Esc>";
-
-      scrollDocsUp = "<C-S-,>";
-      scrollDocsDown = "<C-S-/>";
-    };
-  };
-
-  autopairs = {
-    enable = true;
-    type = "nvim-autopairs";
   };
 
   binds = {
@@ -119,6 +104,36 @@ in {
 
         toggleSelectedBlock = "gb";
         toggleSelectedLine = "gc";
+      };
+    };
+  };
+
+  autocomplete = {
+    nvim-cmp = {
+      enable = true;
+      setupOpts = {
+        sorting.comparators = [
+          "exact"
+          "offset"
+          "locality"
+          "scopes"
+          "kind"
+          "recently_used"
+          "length"
+          "sort_text"
+        ];
+        mappings = {
+          confirm = "<CR>";
+          complete = "<C-Space>";
+
+          previous = "<S-Tab>";
+          next = "<Tab>";
+
+          close = "<C-Esc>";
+
+          scrollDocsUp = "<C-S-,>";
+          scrollDocsDown = "<C-S-/>";
+        };
       };
     };
   };
@@ -280,11 +295,6 @@ in {
       format = "<leader>cf";
     };
 
-    lspkind = {
-      enable = true;
-      mode = "symbol_text";
-    };
-
     lspconfig = {
       enable = true;
       sources = {};
@@ -333,17 +343,6 @@ in {
       };
     };
 
-    nvimCodeActionMenu = {
-      enable = true;
-      show = {
-        actionKind = true;
-        details = true;
-        diff = true;
-      };
-
-      mappings.open = "<leader>ca";
-    };
-
     trouble = {
       enable = true;
       mappings = {
@@ -365,11 +364,24 @@ in {
   treesitter = {
     enable = true;
     autotagHtml = true;
-    addDefaultGrammars = true;
+    addDefaultGrammars = false;
 
     highlight.enable = true;
     context.enable = true;
     indent.enable = true;
+
+    grammars = with pkgs.vimPlugins.nvim-treesitter-parsers; [
+      fish
+      bash
+      luau
+      lua
+      luadoc
+      nix
+      rust
+      typescript
+      javascript
+      json
+    ];
   };
 
   minimap = {
@@ -497,11 +509,12 @@ in {
   };
 
   theme = {
-    enable = true;
+    enable = false;
 
-    name = "oxocarbon";
-    transparent = true;
-    style = "dark";
+    name = "tokyonight";
+    style = "moon";
+    # transparent = true;
+    # style = "dark";
   };
 
   ui = {
@@ -511,6 +524,10 @@ in {
     breadcrumbs = {
       enable = true;
       alwaysRender = true;
+    };
+
+    fastaction = {
+      enable = true;
     };
 
     borders = {
@@ -523,25 +540,19 @@ in {
           style = "single";
         };
 
-        code-action-menu = {
-          enable = true;
-          style = "double";
-        };
-
         which-key = {
           enable = true;
           style = "double";
         };
-        
 
         lsp-signature = {
           enable = true;
           style = "single"; # maybe single?
         };
 
-        lspsaga = {
+        fastaction = {
           enable = true;
-          style = "single";
+          style = "rounded";
         };
       };
     };
@@ -627,7 +638,7 @@ in {
 
       movePrevious = null;
       moveNext = null;
-      
+
       pick = null;
       sortByDirectory = null;
       sortByExtension = null;
@@ -635,6 +646,17 @@ in {
     };
   };
 
-  snippets.vsnip.enable = true;
+  snippets = {
+    luasnip = {
+      enable = true;
+      providers = [
+        "friendly-snippets"
+      ];
+      loaders = ''
+        require('luasnip.loaders.from_vscode').lazy_load()
+      '';
+    };
+  };
+
   spellcheck.enable = lib.mkForce false;
 }
