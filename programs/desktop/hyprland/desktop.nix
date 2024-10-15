@@ -22,6 +22,7 @@ in {
   home = {
     packages = with pkgs; [
       # dependencies 'n stuff.
+      wayland-scanner
       xwaylandvideobridge
       wlr-randr
 
@@ -35,7 +36,6 @@ in {
 
       # sway
       swayidle
-      swaylock-effects
 
       # utilities
       font-awesome

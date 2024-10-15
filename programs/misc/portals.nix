@@ -1,7 +1,7 @@
 {pkgs, ...}: let
   portalList = with pkgs; [
     xdg-desktop-portal-kde
-    xdg-desktop-portal-hyprland
+    # xdg-desktop-portal-hyprland
   ];
 in {
   /*
