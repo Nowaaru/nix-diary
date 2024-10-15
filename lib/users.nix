@@ -71,16 +71,23 @@
               // usr.__.extraSpecialArgs;
 
             programs-dir = self + /programs;
+
+            _pkgs = 
+              if _extraSpecialArgs ? "pkgs"
+              then _extraSpecialArgs.pkgs
+              else pkgs;
           in rec {
-            inherit pkgs;
+            pkgs = _pkgs;
             extraSpecialArgs =
               _extraSpecialArgs
               // {
-                configure = _configure (_extraSpecialArgs
-                  // {
+                configure = _configure (
+                  {
                     inherit pkgs;
                     inherit (pkgs) lib;
-                  });
+                  }
+                  // _extraSpecialArgs
+                );
                 programs = libprograms.mkProgramTreeFromDir programs-dir;
                 user = let
                   name = usr.home.username.content;

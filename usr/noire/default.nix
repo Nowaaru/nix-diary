@@ -10,6 +10,7 @@
     # Managing the desktop.
     programs.desktop.hyprland.cursors.macos
     programs.desktop.hyprland.desktop
+    user.programs.plasma
 
     programs.desktop.hyprland.fuzzel
     programs.desktop.hyprland.ags
@@ -70,9 +71,13 @@
     # user.programs.an-anime-team.honkers-railway
     # user.programs.an-anime-team.honkers
 
+  
+
     # Browsers
     user.programs.r2modman
     user.programs.floorp.all
+    user.programs.rojo
+
     # user.programs.librewolf
 
     # UI
@@ -80,7 +85,6 @@
     user.programs.gimp
     user.programs.piper
     user.programs.qt
-    user.programs.plasma
   ];
 
   dconf.settings = {
