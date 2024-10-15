@@ -59,8 +59,8 @@ lib:
       };
 
       "<leader>bP" = {
-        action = lib.mkForce "<cmd>BufferLineTogglePin<CR>";
-        desc = lib.mkForce "Pin Current Buffer";
+        action = "<cmd>BufferLineTogglePin<CR>";
+        desc = "Pin Current Buffer";
       };
 
       "<leader>bp" = lib.mkForce {
@@ -119,7 +119,6 @@ lib:
       };
 
       # Smart Splits
-
       "<C-S-a>" = {
         action = "require('smart-splits').resize_left";
         lua = true;
@@ -162,7 +161,6 @@ lib:
       };
 
       # LSP Stuff
-
       "gd" = {
         action = "<leader>lgd";
         noremap = false;
