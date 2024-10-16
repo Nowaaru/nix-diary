@@ -91,9 +91,10 @@ local function fetchImageDimensions(imgSource)
     local imageHeight = math.min(img.image_height, IMAGE_MAX_DIMENSIONS.height);
 
     local screenDimensions = utils.term.get_size();
-    local topLeftPosition = (screenDimensions.screen_cols / 2) - (imageWidth / 2);
+    local topLeftPositionX = math.floor((screenDimensions.screen_cols / 2) - (imageWidth / 2));
+    local topLeftPositionY = math.floor((screenDimensions.screen_rows / 2) - (imageHeight / 2));
 
-    return imageWidth, imageHeight, topLeftPosition;
+    return imageWidth, imageHeight, topLeftPositionX, topLeftPositionY;
 end
 
 local function fetchHeaderImageAdjustments(imgSource)
@@ -127,13 +128,13 @@ end
 
 local function renderImage(imgSource)
     local img = imgSource or currentImage;
-    local width, height, topLeft  = fetchImageDimensions(img);
+    local width, height, topLeftX, topLeftY = fetchImageDimensions(img);
     img:clear();
     img:render({
         -- turns out ALL of the size metrics are in cells and NOT 
         -- in pixels. Huh.
-        x = topLeft,
-        y = IMAGE_MARGINS.top;
+        x = topLeftX,
+        y = IMAGE_MARGINS.top,
 
         width = width;
         height = height;
