@@ -59,7 +59,6 @@
     programs.misc.dir
 
     programs.misc.portals
-    programs.misc.hydrus
     programs.misc.obs
 
     # Skate through the world, there's no one way to grind...
@@ -72,6 +71,8 @@
     # user.programs.an-anime-team.honkers
 
   
+    # Images
+    user.programs.hydrus
 
     # Browsers
     user.programs.r2modman

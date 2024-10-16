@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/release-24.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/ae455cac191f33d4df2cedcbbcef883f668b604e";
     # nixpkgs-master.url = "github:nixos/nixpkgs/master"; # "path:/home/noire/Documents/nix-flakes/nixpkgs";
     nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/d9e28880025f124abe4f79dc99500d7ec155d55d";
     nurpkgs.url = "github:nix-community/NUR";
