@@ -3,25 +3,38 @@ local dashboard = require("alpha.themes.dashboard");
 
 --#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#--
 
-local ENABLE_RANDOM_HEADERS = false;
-local ENABLE_RANDOM_FOOTERS = false;
+local DATE = os.date("*t");
 
-local IMAGE_SOURCE = "/home/noire/Pictures/IMG_1883.png";
+local ENABLE_RANDOM_IMAGES = true;
+local ENABLE_RANDOM_HEADERS = false;
+local ENABLE_RANDOM_FOOTERS = true;
+
+
+local IMAGE_SOURCES = {
+    { "/home/noire/Pictures/IMG_1883.png", 0.5 };
+};
+
 local IMAGE_MAX_DIMENSIONS = { width = 24, height = 24 };
 local IMAGE_MARGINS = { top = 2, bottom = 0 };
 
 local HEADERS = {
-    {
+    ["neovim-block"] = {
         [[                               __                ]],
         [[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
         [[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
         [[/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
         [[\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
         [[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
-    }
+    },
 }
 
-local DATE = os.date("*t");
+local HEADER_KEYS = {}; do
+    for i in pairs(HEADERS) do
+        table.insert(HEADER_KEYS, i);
+    end
+end
+
+
 
 local BUTTONS = {
     dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
@@ -49,7 +62,62 @@ local FOOTERS = {
 
 --#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#--
 
-local HEADER = ENABLE_RANDOM_HEADERS and HEADERS[math.random(1, #HEADERS)] or HEADERS[1];
+local function weighted_random(LIST)
+    local errorMessage = "expected a table of { weight = num, src = string } , { string, num } , or string.";
+    local overallWeight = 0;
+
+    local tableIndices = {};
+    for i, _ in pairs(LIST) do
+        local item = LIST[i];
+        if (type(item) == "table") then
+            local tableWeight = item.weight or item[2];
+            overallWeight = overallWeight + tableWeight;
+            tableIndices[#tableIndices+1] = item;
+        elseif (type(item) == "string") then
+            local weight = (overallWeight == 0 and 1 or overallWeight) / (#tableIndices + 1);
+            overallWeight = overallWeight + weight;
+            tableIndices[#tableIndices+1] = { weight = weight, src = item };
+        else
+            error(errorMessage);
+        end
+    end
+
+    table.sort(tableIndices, function(a, b)
+        return (a.weight or a[2]) < (b.weight or b[2]);
+    end);
+
+    local randomValue; do
+        if (overallWeight == 1) then
+            randomValue = math.random();
+        else
+            randomValue = math.random(math.floor(overallWeight)) + (overallWeight % 1 ~= 0 and (math.random((overallWeight % 1) * 100) / 100) or 0);
+        end
+    end;
+
+    local weightsCursor = 0;
+    for i = 1, #tableIndices do
+        local currentIndex = tableIndices[i];
+        weightsCursor = weightsCursor + (currentIndex.weight or currentIndex[2]);
+        if (weightsCursor >= randomValue) then
+             return (currentIndex.src or currentIndex.item or currentIndex.img or currentIndex.image or currentIndex.source or currentIndex[1]), weightsCursor, randomValue;
+        end
+    end
+
+    return nil, weightsCursor, randomValue;
+end
+
+local IMAGE_SOURCE; do
+    if (ENABLE_RANDOM_IMAGES) then
+        local randomImage, weightsCursor, randomValue = weighted_random(IMAGE_SOURCES);
+        assert(randomImage, "weight out of bounds: ".. weightsCursor .. " out of " .. randomValue);
+
+        IMAGE_SOURCE = randomImage;
+    else
+        IMAGE_SOURCE = IMAGE_SOURCES[1];
+    end
+end
+
+local HEADER = ENABLE_RANDOM_HEADERS and HEADERS[HEADER_KEYS[math.random(1, #HEADER_KEYS)]] or HEADERS[HEADER_KEYS[1]];
 local FOOTER = ENABLE_RANDOM_FOOTERS and FOOTERS[math.random(1, #FOOTERS)] or FOOTERS[1];
 local originalAlphaSetup = alpha.setup;
 alpha.setup = function(...) end;
@@ -68,6 +136,7 @@ dashboard.section.buttons.val = BUTTONS;
 dashboard.section.header.val = HEADER;
 dashboard.section.footer.val = FOOTER;
 
+dashboard.section.header.opts.position = "center";
 dashboard.config.opts.noautocmd = true
 
 local currentImage;
@@ -92,7 +161,7 @@ local function fetchImageDimensions(imgSource)
 
     local screenDimensions = utils.term.get_size();
     local topLeftPositionX = math.floor((screenDimensions.screen_cols / 2) - (imageWidth / 2));
-    local topLeftPositionY = math.floor((screenDimensions.screen_rows / 2) - (imageHeight / 2));
+    local topLeftPositionY = math.floor((screenDimensions.screen_rows / 2) - imageHeight);
 
     return imageWidth, imageHeight, topLeftPositionX, topLeftPositionY;
 end
@@ -102,7 +171,7 @@ local function fetchHeaderImageAdjustments(imgSource)
     local imageHeight = select(2, fetchImageDimensions(img));
     local newHeaderValue = {unpack(HEADER)};
 
-    local result = math.floor(imageHeight / 4) + currentImage.geometry.y;
+    local result = math.ceil(imageHeight / 4) + currentImage.geometry.y + 1;
     local longestIndex = 0;
     for i = 1, #newHeaderValue do
         local len = #newHeaderValue[i];
