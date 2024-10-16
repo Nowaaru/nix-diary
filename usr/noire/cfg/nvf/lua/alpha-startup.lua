@@ -87,8 +87,8 @@ local function weighted_random(LIST)
     end);
 
     local randomValue; do
-        if (overallWeight == 1) then
-            randomValue = math.random();
+        if (overallWeight <= 1) then
+            randomValue = math.random(overallWeight * 100) / 100;
         else
             randomValue = math.random(math.floor(overallWeight)) + (overallWeight % 1 ~= 0 and (math.random((overallWeight % 1) * 100) / 100) or 0);
         end
