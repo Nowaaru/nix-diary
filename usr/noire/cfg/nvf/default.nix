@@ -17,19 +17,25 @@ in {
   withPython3 = true;
 
   viAlias = true;
-  startPlugins = with pkgs.vimPlugins; [ oxocarbon-nvim ]; 
+  startPlugins = with pkgs.vimPlugins; [oxocarbon-nvim];
   pluginRC.alpha = lib.mkForce (lib.hm.dag.entryAfter ["image-nvim"] (util.fetchLuaSource "alpha-startup"));
-  luaConfigRC.theme = lib.mkForce (lib.hm.dag.entryAfter ["pluginConfigs"] ''
-    require('oxocarbon')
-    vim.opt.background = "dark" -- set this to dark or light
-    vim.cmd.colorscheme "oxocarbon"
 
-    -- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-    -- vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
-    -- vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
-    -- vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
-  '');
+  luaConfigRC = {
+    theme = lib.mkForce (lib.hm.dag.entryAfter ["pluginConfigs"] ''
+      require('oxocarbon')
+      vim.opt.background = "dark" -- set this to dark or light
+      vim.cmd.colorscheme "oxocarbon"
+
+      -- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+      -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+      -- vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+      -- vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+      -- vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
+    '');
+
+    lualine-gaps = lib.mkForce (lib.hm.dag.entryAfter ["lualine"] (util.fetchLuaSource "lualine-gaps"));
+  };
+
   vimAlias = true;
 
   syntaxHighlighting = true;
