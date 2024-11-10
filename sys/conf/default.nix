@@ -17,7 +17,6 @@ for directories above their own dedicated edirectory.
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
-    inputs.virtio.outputs.x86_64-linux
 
     # System configuration loader.
     ../.
