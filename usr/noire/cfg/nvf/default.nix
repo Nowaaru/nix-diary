@@ -663,14 +663,14 @@ in {
   };
 
   snippets = {
-    luasnip = {
+    vsnip = {
       enable = true;
-      providers = [
-        "friendly-snippets"
-      ];
-      loaders = ''
-        require('luasnip.loaders.from_vscode').lazy_load()
-      '';
+      # providers = [
+      #   "friendly-snippets"
+      # ];
+      # loaders = ''
+      #   require('luasnip.loaders.from_vscode').lazy_load()
+      # '';
     };
   };
 
