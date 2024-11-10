@@ -68,6 +68,7 @@ in {
         require('legendary').setup({})
       '';
     };
+
     # precognition = {
     #   package = precognition-nvim;
     #   setup = ''
@@ -78,6 +79,40 @@ in {
     #   '';
     # };
 
+    showkeys = {
+      package =
+        pkgs.fetchFromGitHub
+        {
+          owner = "NvChad";
+          repo = "showkeys";
+          hash = "sha256-uZnJaN/JDCfWfzGmjwJ0CmpYP9GDn4MbyoZU06QIArI=";
+          rev = "10cfd50";
+        };
+
+      setup = ''
+        require("showkeys").setup({
+          timeout = 3, -- in seconds
+          maxkeys = 5,
+
+          excluded_modes = {"i"};
+          position = "top-center",
+
+          keyformat = {
+            ["<BS>"] = "󰁮 ",
+            ["<CR>"] = "󰘌",
+            ["<Space>"] = "󱁐",
+            ["<Up>"] = "󰁝",
+            ["<Down>"] = "󰁅",
+            ["<Left>"] = "󰁍",
+            ["<Right>"] = "󰁔",
+            ["<PageUp>"] = "Page 󰁝",
+            ["<PageDown>"] = "Page 󰁅",
+            ["<M>"] = "Alt",
+            ["<C>"] = "Ctrl",
+          },
+        });
+      '';
+    };
   };
 
   debugMode = {
@@ -125,33 +160,33 @@ in {
   };
 
   autocomplete = {
-    nvim-cmp = {
-      enable = true;
-      setupOpts = {
-        sorting.comparators = [
-          "exact"
-          "offset"
-          "locality"
-          "scopes"
-          "kind"
-          "recently_used"
-          "length"
-          "sort_text"
-        ];
-        mappings = {
-          confirm = "<CR>";
-          complete = "<C-Space>";
+    enable = true;
+    type = "nvim-cmp";
 
-          previous = "<S-Tab>";
-          next = "<Tab>";
+    # setupOpts = {
+    # sorting.comparators = [
+    #   "exact"
+    #   "offset"
+    #   "locality"
+    #   "scopes"
+    #   "kind"
+    #   "recently_used"
+    #   "length"
+    #   "sort_text"
+    # ];
+    mappings = {
+      confirm = "<CR>";
+      complete = "<C-Space>";
 
-          close = "<C-Esc>";
+      previous = "<S-Tab>";
+      next = "<Tab>";
 
-          scrollDocsUp = "<C-S-,>";
-          scrollDocsDown = "<C-S-/>";
-        };
-      };
+      close = "<C-Esc>";
+
+      scrollDocsUp = "<C-S-,>";
+      scrollDocsDown = "<C-S-/>";
     };
+    # };
   };
 
   dashboard = {
@@ -584,6 +619,10 @@ in {
       enable = true;
     };
 
+    motion.precognition = {
+      enable = true;
+    };
+
     images.image-nvim = {
       enable = true;
 
@@ -604,6 +643,7 @@ in {
     enable = true;
 
     cellularAutomaton = {
+      enable = true;
       mappings.makeItRain = "<leader>fml";
     };
 
@@ -663,15 +703,7 @@ in {
   };
 
   snippets = {
-    vsnip = {
-      enable = true;
-      # providers = [
-      #   "friendly-snippets"
-      # ];
-      # loaders = ''
-      #   require('luasnip.loaders.from_vscode').lazy_load()
-      # '';
-    };
+    vsnip.enable = true;
   };
 
   telescope.enable = lib.mkForce true;
