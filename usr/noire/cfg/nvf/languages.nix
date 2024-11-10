@@ -20,7 +20,7 @@ pkgs: {
     #   package = pkgs.dprint;
     # };
 
-    extraDiagnostics.types = ["eslint_d"];
+    extraDiagnostics.types = [];
   };
 
   lua = {
@@ -28,6 +28,7 @@ pkgs: {
     lsp.neodev.enable = true;
   };
 
+  python.enable = true;
   nix.enable = true;
   bash.enable = true;
   css.enable = true;
