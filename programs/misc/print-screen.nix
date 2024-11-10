@@ -1,10 +1,7 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
 	home.packages = with pkgs; [
     gpu-screen-recorder
-    grimblast
-		copyq
-		slurp
-		grim
+    inputs.hyprland-contrib.packages.${pkgs.system}.grimblast 
 	];
 }
 

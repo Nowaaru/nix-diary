@@ -112,6 +112,11 @@
       };
     };
 
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     ags = {
       url = "github:Aylur/ags";
     };
