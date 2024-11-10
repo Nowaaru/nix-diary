@@ -158,18 +158,6 @@
                 });
             });
       })
-      # (_: super: {
-      #   wlroots = super.wlroots.overrideAttrs (prev: {
-      #     patches =
-      #       prev.patches
-      #       ++ [
-      #         (super.fetchpatch {
-      #           url = "freedesktop.org/wlroots/wlroots/-/merge_requests/4715.patch";
-      #           hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-      #         })
-      #       ];
-      #   });
-      # })
     ];
 
     config = {
