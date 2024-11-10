@@ -72,6 +72,7 @@ for directories above their own dedicated edirectory.
       "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
       "nvidia.NVreg_EnableGpuFirmware=0"
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     ];
 
     # consoleLogLevel = 0;
