@@ -66,7 +66,7 @@
     /*
     neovim
     */
-    nvf.url = "github:NotAShelf/nvf/caaacbf59c2d7514fc0d633f623ad55e005d1096";
+    nvf.url = "github:NotAShelf/nvf/v0.7";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
