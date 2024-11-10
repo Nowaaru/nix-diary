@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   imports = [
     # Directory initializers.
-    ./shell
     ./git
 
     # WINE: WINE Is Now an Emulator.
@@ -10,31 +9,26 @@
     # Build utilities.
     ./util/build.nix
 
-    # Don't ever use this.
-    ./util/electron.nix
-
     # Kitty terminal.
     ./util/kitty.nix
 
     # Various performance metrics.
     ./util/status.nix
 
-    # Stuff.
-    ./mpd.nix
-    ./firefox.nix
+    # Makes the system work.
+    ./input.nix
+    ./shell.nix
+    ./sound.nix
     ./storage.nix
-    ./qemu.nix
   ];
 
   # Dependencies and things.
   environment.systemPackages = with pkgs;
     [
-      libsForQt5.kio-admin
       dotnet-runtime
-      grc
-      fzf
-      zip
-      unzip
+      unrar # unzip replacement
+      grc # generic colourizer
+      fzf # fuzzy find
     ]
     ++ [home-manager]; # do not remove home-manager.
 
