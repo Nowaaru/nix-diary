@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ stable, ... }:
 {
-	home.packages = with pkgs; [
+	home.packages = with stable; [
 		r2modman
 	];
 }
