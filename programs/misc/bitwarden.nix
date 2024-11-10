@@ -1,5 +1,5 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
+{stable, ...}: {
+  home.packages = with stable; [
     bitwarden
   ];
 }
