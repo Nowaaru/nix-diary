@@ -10,7 +10,6 @@
     # Managing the desktop.
     programs.desktop.hyprland.cursors.macos
     programs.desktop.hyprland.desktop
-    user.programs.plasma
 
     programs.desktop.hyprland.fuzzel
     programs.desktop.hyprland.ags
@@ -33,7 +32,8 @@
 
     # Gaming and the like.
     programs.gaming.minecraft
-    programs.gaming.lutris
+    programs.gaming.bottles
+    # programs.gaming.lutris
     programs.gaming.steam
     programs.gaming.osu
 
@@ -70,16 +70,21 @@
     # user.programs.an-anime-team.honkers-railway
     # user.programs.an-anime-team.honkers
 
+    # Desktop
+    user.programs.plasma
+
   
     # Images
     user.programs.hydrus
 
     # Browsers
-    user.programs.r2modman
     user.programs.floorp.all
-    user.programs.rojo
+    user.programs.brave.all
 
-    # user.programs.librewolf
+    # Applications/Misc
+    user.programs.r2modman
+    user.programs.rojo
+    user.programs.umu
 
     # UI
     user.programs.awesome
