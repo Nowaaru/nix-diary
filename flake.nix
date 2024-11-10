@@ -23,6 +23,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    umu-launcher = {
+      url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     /*
     libraries for this flake n stuff
     */
