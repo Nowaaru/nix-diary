@@ -68,6 +68,16 @@ in {
         require('legendary').setup({})
       '';
     };
+    # precognition = {
+    #   package = precognition-nvim;
+    #   setup = ''
+    #     require("precognition").setup({
+    #       showBlankVirtLine = false;
+    #       disabled_fts = {"alpha"};
+    #     });
+    #   '';
+    # };
+
   };
 
   debugMode = {
@@ -664,5 +674,6 @@ in {
     };
   };
 
+  telescope.enable = lib.mkForce true;
   spellcheck.enable = lib.mkForce false;
 }
