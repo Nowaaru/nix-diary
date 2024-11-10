@@ -51,10 +51,6 @@ in {
   luaConfigPost = '''';
 
   extraPlugins = with pkgs.vimPlugins; {
-    lsp-signature-help = {
-      package = cmp-nvim-lsp-signature-help;
-    };
-
     smart-splits = {
       package = smart-splits-nvim;
       setup = ''
@@ -160,33 +156,40 @@ in {
   };
 
   autocomplete = {
-    enable = true;
-    type = "nvim-cmp";
+    nvim-cmp = {
+      enable = true;
+      setupOpts = {
+        completion.completeopt = "menu,menuone,preview";
 
-    # setupOpts = {
-    # sorting.comparators = [
-    #   "exact"
-    #   "offset"
-    #   "locality"
-    #   "scopes"
-    #   "kind"
-    #   "recently_used"
-    #   "length"
-    #   "sort_text"
-    # ];
-    mappings = {
-      confirm = "<CR>";
-      complete = "<C-Space>";
+        sourcePlugins = with pkgs.vimPlugins; [
+          "cmp-nvim-lsp-signature-help"
+        ];
 
-      previous = "<S-Tab>";
-      next = "<Tab>";
+        sorting.comparators = [
+          "exact"
+          "offset"
+          "locality"
+          "scopes"
+          "kind"
+          "recently_used"
+          "length"
+          "sort_text"
+        ];
 
-      close = "<C-Esc>";
+        mappings = {
+          confirm = "<CR>";
+          complete = "<C-Space>";
 
-      scrollDocsUp = "<C-S-,>";
-      scrollDocsDown = "<C-S-/>";
+          previous = "<S-Tab>";
+          next = "<Tab>";
+
+          close = "<C-Esc>";
+
+          scrollDocsUp = "<C-S-,>";
+          scrollDocsDown = "<C-S-/>";
+        };
+      };
     };
-    # };
   };
 
   dashboard = {
@@ -574,7 +577,7 @@ in {
 
     breadcrumbs = {
       enable = true;
-      alwaysRender = true;
+      lualine.winbar.alwaysRender = true;
     };
 
     fastaction = {
@@ -621,6 +624,7 @@ in {
 
     motion.precognition = {
       enable = true;
+      setupOpts.showBlankVirtLine = false;
     };
 
     images.image-nvim = {
@@ -640,9 +644,7 @@ in {
   };
 
   visuals = {
-    enable = true;
-
-    cellularAutomaton = {
+    cellular-automaton = {
       enable = true;
       mappings.makeItRain = "<leader>fml";
     };
@@ -679,9 +681,10 @@ in {
         };
       };
     };
-    cursorline.enable = true;
-    smoothScroll.enable = true;
-    nvimWebDevicons.enable = true;
+
+    cinnamon-nvim.enable = true;
+    nvim-cursorline.enable = true;
+    nvim-web-devicons.enable = true;
   };
 
   tabline.nvimBufferline = {
@@ -703,7 +706,7 @@ in {
   };
 
   snippets = {
-    vsnip.enable = true;
+    luasnip.enable = true;
   };
 
   telescope.enable = lib.mkForce true;
