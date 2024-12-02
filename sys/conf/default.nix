@@ -37,8 +37,8 @@ for directories above their own dedicated edirectory.
       noto-fonts
       google-fonts
       dejavu_fonts
-      (nerdfonts.override {fonts = ["JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono"];})
-    ];
+      # (nerdfonts.override {fonts = ["JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono"];})
+    ] ++ (with pkgs.nerd-fonts; [ jetbrains-mono fira-mono fira-code space-mono ]);
 
     fontDir.enable = true;
   };
@@ -269,7 +269,7 @@ for directories above their own dedicated edirectory.
     # };
 
     # I am insane.
-    package = pkgs.nixVersions.nix_2_21;
+    package = pkgs.nixVersions.latest;
 
     # Experimental settings.
     settings.experimental-features = ["nix-command" "flakes"];
