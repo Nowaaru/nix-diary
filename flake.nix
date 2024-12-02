@@ -177,13 +177,21 @@
         };
       };
 
+      stable = import inputs.nixpkgs-stable {
+        inherit system overlays config;
+      };
+
+      unstable = import inputs.nixpkgs-unstable {
+        inherit system overlays config;
+      };
+
       modules =  lib.gamindustri.modules.mkModules (inputs.self + /modules);
     in {
       inherit lib;
 
       nixosConfigurations = let
         specialArgs = {
-          inherit inputs modules;
+          inherit stable unstable inputs modules;
         };
       in {
         lastation = nixpkgs.lib.nixosSystem {
@@ -204,14 +212,6 @@
       };
 
       homeConfigurations = let
-        stable = import inputs.nixpkgs-stable {
-          inherit system overlays config;
-        };
-
-        unstable = import inputs.nixpkgs-unstable {
-          inherit system overlays config;
-        };
-
         usrRoot = ./usr;
         specialArgs = {
           inherit inputs lib nix-colors nur stable unstable modules;
