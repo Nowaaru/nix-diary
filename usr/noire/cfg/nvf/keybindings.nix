@@ -53,7 +53,7 @@ lib:
         desc = "Sort By Extension";
       };
 
-      "<leader>bst" = {
+      "<leader>bsi" = {
         action = "<cmd>BufferLineSortByTabs<CR>";
         desc = "Sort By Tab ID";
       };
@@ -68,7 +68,7 @@ lib:
         desc = lib.mkForce "Pick Buffer";
       };
 
-      "<leader>bsr" = {
+      "<leader>br" = {
         action = "<cmd>BufferLineTabRename<CR>";
         desc = "Rename Current Buffer";
       };
@@ -88,9 +88,9 @@ lib:
         desc = "Close Other Buffers";
       };
 
-      "<leader>b<C-d>" = {
-        action = "<cmd>BufferLineCloseOthers<CR>";
-        desc = "Close Other Buffers";
+      "<leader>bm" = {
+        action = "<noop>";
+        desc = null;
       };
 
       "<C-S-h>" = {
