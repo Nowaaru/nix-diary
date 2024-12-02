@@ -206,6 +206,7 @@ for directories above their own dedicated edirectory.
 
       # Disable XTerm
       desktopManager.xterm.enable = false;
+      exportConfiguration = true;
     };
 
     # Configure keymap in Wayland.
