@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, inputs, ...}: {
   imports = [
     # Directory initializers.
     ./git
@@ -20,6 +20,15 @@
     ./shell.nix
     ./sound.nix
     ./storage.nix
+
+     # Peripheral things
+    ./razer.nix
+  
+    # XDG
+    ./xdg.nix
+
+    # Plex alternative
+    ./jellyfin.nix
   ];
 
   # Dependencies and things.
