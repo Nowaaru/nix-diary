@@ -39,6 +39,7 @@ end
 local BUTTONS = {
     dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
     dashboard.button("q", "󰅚  Quit NVIM", ":qa<CR>"),
+    dashboard.button("o", "  Open Recent", ":qa<CR>"),
 }
 
 local FOOTERS = {
