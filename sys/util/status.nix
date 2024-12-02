@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ stable, ... }:
 {
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with stable; [
 		nvtopPackages.full
 		htop
   ];
