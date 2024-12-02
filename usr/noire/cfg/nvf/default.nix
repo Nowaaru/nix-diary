@@ -124,12 +124,21 @@ in {
 
       # TODO: Make registers.
       register = {
+        "<leader>f" = "[] Telescope";
+        "<leader>q" = "[] Super";
+        "<leader>o" = "[] Notes";
+        "<leader>d" = "[] Debug";
         "<leader>m" = "[] Minimap";
         "<leader>g" = "[] GitSigns";
         "<leader>b" = "[] Buffers & Tabs";
         "<leader>t" = "[] Todo";
         "<leader>c" = "[] Code Actions";
+
         "<leader>l" = "[] LSP Actions";
+        "<leader>lg" = "[] LSP - Go To...";
+        "<leader>lt" = "[] LSP - Toggle...";
+        "<leader>lw" = "[] LSP - Workspace";
+
         "<leader>x" = "[] Trouble";
         "<leader><leader>" = "[] Lost & Found";
       };
@@ -400,7 +409,6 @@ in {
     trouble = {
       enable = true;
       mappings = {
-        toggle = "<leader>xx";
         quickfix = "<leader>xq";
 
         workspaceDiagnostics = "<leader>xD";
@@ -709,6 +717,8 @@ in {
     luasnip.enable = true;
   };
 
-  telescope.enable = lib.mkForce true;
+  telescope = {
+    enable = lib.mkForce true;
+  };
   spellcheck.enable = lib.mkForce false;
 }
