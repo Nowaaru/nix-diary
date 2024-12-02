@@ -2,6 +2,7 @@
 # remove all of these and start
 # using Folder/Default.nix
 {
+  configure,
   programs,
   user,
   ...
@@ -62,8 +63,9 @@
     programs.misc.obs
 
     # Skate through the world, there's no one way to grind...
-    programs.music.mixers.ncpamixer
-    programs.music.players.spotify
+    programs.entertainment.music.mixers.ncpamixer
+    programs.entertainment.music.players.spotify
+    programs.entertainment.jellyfin
 
     # Games by those who rule the world.
     # user.programs.an-anime-team.anime-game
@@ -99,14 +101,10 @@
     };
   };
 
-  # programs.fish.loginShellInit = ''
-  #   if [ -n "$(printenv HYPRLAND_INSTANCE_SIGNATURE)" ] then
-  #     $DRY_RUN_CMD ${(util.str.applySwayTheme (configure "hyprland").theme)}
-  #   end
-  # '';
-
 
   fonts.fontconfig.enable = true;
 
   nixpkgs.config.allowUnfree = true;
+
+  xdg = configure "xdg";
 }

@@ -12,40 +12,47 @@
       ${then-what}
     fi
   '';
+
+  hyprPackages = inputs.hyprland.packages.${pkgs.system};
 in {
+  xdg.portal = {
+    configPackages = [
+      hyprPackages.hyprland
+    ];
+
+    extraPortals = [
+      hyprPackages.xdg-desktop-portal-hyprland
+    ];
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     plugins = [];
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    package = hyprPackages.hyprland;
     settings = hypr-config.hypr;
+
+    sourceFirst = true;
+
+    systemd = {
+      enable = true;
+      enableXdgAutostart = true;
+    };
   };
 
   home = {
     packages = with pkgs; [
-      # dependencies 'n stuff.
-      wayland-scanner
-      xwaylandvideobridge
-      wlr-randr
-
-      ps
-
-      # hypr
       inputs.hyprpicker.packages.${pkgs.system}.hyprpicker
       inputs.hyprcursor.packages.${pkgs.system}.hyprcursor
       hyprdim
       swww
 
-      # sway
-      swayidle
-
       # utilities
       font-awesome
-      wlogout
     ];
 
     activation = {
       hyprland_reload =
-        lib.hm.dag.entryAfter ["writeBoundary"] (ifHyprland "${inputs.hyprland.packages.${pkgs.system}.hyprland}/bin/hyprctl reload");
+        lib.hm.dag.entryAfter ["writeBoundary"] (ifHyprland "${hyprPackages.hyprland}/bin/hyprctl reload");
     };
   };
 }

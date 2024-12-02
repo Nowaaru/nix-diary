@@ -1,6 +1,6 @@
 _: {
   imports = [
     ./players.nix
-    ./displays.nix
+    ./visualizers.nix
   ];
 }

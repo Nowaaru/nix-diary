@@ -1,0 +1,6 @@
+{
+  imports = [
+    ./jellyfin.nix
+    ./music
+  ];
+}
