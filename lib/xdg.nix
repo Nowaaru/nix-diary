@@ -25,7 +25,7 @@ _: {
     settings ? extraSettings,
   }: {
       inherit categories genericName startupNotify actions type icon settings;
-      name = display-name;
+      name = if display-name != null then display-name else instance-name;
       comment = "${shortcut-comment}";
       # https://specifications.freedesktop.org/desktop-entry-spec/latest/exec-variables.html
       exec = "${executable}";
