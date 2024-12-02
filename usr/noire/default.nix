@@ -49,7 +49,6 @@
 
     programs.misc.terminal.all
 
-    programs.misc.font
     programs.misc.dunst
     programs.misc.print-screen
 
@@ -80,7 +79,7 @@
     user.programs.hydrus
 
     # Browsers
-    user.programs.floorp.all
+    # user.programs.floorp.all
     user.programs.brave.all
 
     # Applications/Misc
@@ -93,6 +92,7 @@
     user.programs.gimp
     user.programs.piper
     user.programs.qt
+    user.programs.fonts.nerdfont.all
   ];
 
   dconf.settings = {

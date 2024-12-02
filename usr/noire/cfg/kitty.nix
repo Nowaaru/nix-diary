@@ -31,7 +31,7 @@ in
 
   font = {
     name = lib.mkForce fontName;
-    package = lib.mkForce pkgs.nerdfonts; # (pkgs.nerdfonts.override {fonts = [ fontName ];});
+    package = lib.mkForce pkgs.nerd-fonts.victor-mono; # (pkgs.nerdfonts.override {fonts = [ fontName ];});
   };
 }
 

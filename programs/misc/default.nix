@@ -9,7 +9,6 @@ _: {
     ./audio.nix
     ./delta.nix
     ./dunst.nix
-    ./font.nix
     ./clip.nix
     ./disk.nix
     ./obs.nix
