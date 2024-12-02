@@ -40,16 +40,16 @@ in {
   input.mice = [
     {
       enable = true;
-
-      acceleration = 0.5;
+      # Bus 003 Device 005: ID 1532:00c1 Razer USA, Ltd Razer Viper V3 Pro
+      acceleration = 0;
       accelerationProfile = "none";
 
       leftHanded = false;
       middleButtonEmulation = false;
-      name = "Logitech G Pro";
+      name = "Razer Viper V3 Pro";
 
-      vendorId = "046d";
-      productId = "c539";
+      vendorId = "1532";
+      productId = "00c1";
     }
   ];
 }
