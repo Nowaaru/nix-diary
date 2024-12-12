@@ -7,7 +7,8 @@
     env = [
         "WLR_DRM_NO_ATOMIC,1"
     ];
+
     windowrulev2 = [
-        "immediate, class:^(.*)"
+        "immediate, class:^(cs2)"
     ];
 }

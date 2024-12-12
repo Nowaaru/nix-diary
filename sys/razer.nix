@@ -1,5 +1,10 @@
 { inputs, ... }: 
 {
+  users.groups.openrazer = {
+    name = "openrazer";
+    gid = null;
+  };
+
   hardware.openrazer = {
     enable = true;
     keyStatistics = true;

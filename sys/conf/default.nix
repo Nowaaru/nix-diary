@@ -23,7 +23,7 @@ for directories above their own dedicated edirectory.
 
     # Users
     ./register-users.nix
-  ];
+  ] ++ lib.gamindustri.mkModules (inputs.self + /modules);
 
   fonts = {
     enableDefaultPackages = true;

@@ -29,6 +29,9 @@
 
     # Plex alternative
     ./jellyfin.nix
+
+    # Hydrus
+    ./hydrus.nix
   ];
 
   # Dependencies and things.

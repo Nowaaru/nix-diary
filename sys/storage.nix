@@ -1,6 +1,5 @@
-{...}: let
+{ lib, ... }: let
   windowsFS = "Windows (C:)";
-  miscellaneousFS = "Miscellaneous (D:)";
 
   devices = {
     ssd = "/dev/disk/by-uuid/0E2058022057EF69";
@@ -20,12 +19,12 @@ in {
       device = "/dev/disk/by-label/swap";
     }
   ];
-
+  /*
   fileSystems = {
     "${windowsFS}" = {
       inherit options;
       label = windowsFS;
-      device = devices.ssd;
+      device = lib.mkForce devices.ssd;
       fsType = "ntfs";
 
       # If this is enabled, say goodbye
@@ -37,4 +36,5 @@ in {
       mountPoint = "/mnt/windows";
     };
   };
+  */
 }

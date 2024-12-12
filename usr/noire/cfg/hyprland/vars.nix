@@ -63,12 +63,6 @@ in
             special = true;
             popups = true;
         };
-
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
-        
-        "col.shadow" = convertRgb colors.base01;
     };
 
     animations = 
