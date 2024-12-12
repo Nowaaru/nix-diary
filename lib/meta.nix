@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   mkIfElse = with lib;
     predicate: yes: no:
       mkMerge [
@@ -10,6 +7,12 @@
       ];
 
   selfTrace = this: builtins.trace this this;
+
+  mkModules = dir:
+    lib.attrsets.foldlAttrs (
+      acc: filename: _type: acc ++ ["${dir}/${filename}"]
+    ) []
+    (builtins.readDir dir);
 
   withInputs = this: with_inputs: let
     imported = import this;
