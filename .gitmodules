@@ -1,6 +1,0 @@
-[submodule "/home/noire/.diary/Config/LazyVim/client/"]
-	path = /home/noire/.diary/Config/LazyVim/client/
-	url = https://github.com/Nowaaru/vim
-[submodule "/home/noire/.diary/Config/LazyVim"]
-	path = /home/noire/.diary/Config/LazyVim
-	url = https://github.com/Nowaaru/vim
