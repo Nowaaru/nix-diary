@@ -1,6 +1,9 @@
-{ inputs, pkgs, configure, ... }: 
+{ inputs, lib, configure, ... }: 
 {
-  imports = [inputs.plasma-manager.homeManagerModules.plasma-manager];
+  imports = [
+    inputs.plasma-manager.homeManagerModules.plasma-manager
+    (inputs.self + /home-modules/plasma)
+  ];
   
   programs.plasma = configure "plasma";
 
