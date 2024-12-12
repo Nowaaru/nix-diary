@@ -56,11 +56,17 @@
 
     /*
     plasma-manager
+    plasma look and feels
     */
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.home-manager.follows = "home-manager";
+    };
+
+    plasma-theme-moe-dark = {
+      url = "gitlab:jomada/moe-dark";
+      flake = false;
     };
 
     /*
@@ -70,7 +76,7 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
-    home computer things
+    secure boot
     */
     lanzaboote.url = "github:nix-community/lanzaboote";
 
@@ -120,6 +126,11 @@
     ags = {
       url = "github:Aylur/ags";
     };
+
+    hyprland-astal = {
+      url = "path:/home/noire/Documents/hyprland";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = {
@@ -148,9 +159,10 @@
       (_: super: {
         lib =
           super.lib.extend (_: prev:
-            home-manager.lib
-            // prev
+              # home-manager.lib // 
+            prev
             // {
+              inherit (home-manager.lib) hm;
               gamindustri = import (inputs.self + /lib) (inputs
                 // {
                   pkgs = super;
@@ -191,7 +203,7 @@
 
       nixosConfigurations = let
         specialArgs = {
-          inherit stable unstable inputs modules;
+          inherit stable unstable inputs modules lib;
         };
       in {
         lastation = nixpkgs.lib.nixosSystem {
@@ -227,6 +239,8 @@
           mkHomeManager [
             # me!
             (mkUser "noire" {
+              /* unsure why hardware.openrazer.users doesn't work? */
+              groups = [ "openrazer" ];
               sessionVariables = {
                 EDITOR = "nvim";
               };
