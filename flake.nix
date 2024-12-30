@@ -22,6 +22,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    nix-mod-manager = {
+      url = "path:/home/noire/Documents/nix-flakes/nix-mod-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     umu-launcher = {
       url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -42,6 +47,18 @@
     secrets.url = "path:/home/noire/Documents/nix-secrets";
 
     /*
+    game mods
+    */
+    nmm-mods = {
+      url = "path:/home/noire/Documents/game-mods";
+      inputs = {
+        nix-mod-manager.follows = "nix-mod-manager";
+        home-manager.follows = "nixpkgs-unstable";
+        nixpkgs.follows = "nixpkgs-unstable";
+      };
+    };
+
+    /*
     an anime game launcher
     */
     an-anime-game-launcher.url = "github:ezKEA/aagl-gtk-on-nix";
@@ -57,6 +74,7 @@
     /*
     plasma-manager
     plasma look and feels
+    plasma cursors
     */
     plasma-manager = {
       url = "github:pjones/plasma-manager";
@@ -66,6 +84,13 @@
 
     plasma-theme-moe-dark = {
       url = "gitlab:jomada/moe-dark";
+      flake = false;
+    };
+
+    catppuccin-cursors.url = "github:catppuccin/cursors";
+
+    tela-icons = {
+      url = "github:vinceliuice/tela-icon-theme";
       flake = false;
     };
 
@@ -146,7 +171,7 @@
     useReleaseStream = release-stream: function-that-uses-stream: (function-that-uses-stream release-stream (import release-stream {inherit system overlays config;}));
     overlays = [
       hyprpicker.overlays.default
-      nurpkgs.overlay
+      nurpkgs.overlays.default
       (_: super: {
         inherit
           ((import nixpkgs-mongodb-pin {
@@ -157,12 +182,16 @@
           ;
       })
       (_: super: {
-        lib =
-          super.lib.extend (_: prev:
-              # home-manager.lib // 
+        lib = super.lib.extend (_: prev:
+          # home-manager.lib //
             prev
             // {
+              # add lib.hm to my lib
               inherit (home-manager.lib) hm;
+
+              # add lib.nnmm to lib
+              inherit (inputs.nix-mod-manager.lib) nnmm;
+
               gamindustri = import (inputs.self + /lib) (inputs
                 // {
                   pkgs = super;
@@ -174,7 +203,6 @@
 
     config = {
       allowUnfree = true;
-      permittedInsecurePackages = ["electron-25.9.0"];
     };
 
     system = "x86_64-linux";
@@ -197,9 +225,9 @@
         inherit system overlays config;
       };
 
-      modules =  lib.gamindustri.modules.mkModules (inputs.self + /modules);
+      modules = lib.gamindustri.modules.mkModules (inputs.self + /modules);
     in {
-      inherit lib;
+      inherit pkgs lib;
 
       nixosConfigurations = let
         specialArgs = {
@@ -239,8 +267,9 @@
           mkHomeManager [
             # me!
             (mkUser "noire" {
-              /* unsure why hardware.openrazer.users doesn't work? */
-              groups = [ "openrazer" ];
+              /*
+              unsure why hardware.openrazer.users doesn't work?
+              */
               sessionVariables = {
                 EDITOR = "nvim";
               };
