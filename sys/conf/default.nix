@@ -35,18 +35,20 @@ for directories above their own dedicated edirectory.
 
   fonts = {
     enableDefaultPackages = true;
-    packages = with pkgs; [
-      open-fonts
-      open-sans
-      roboto
-      roboto-mono
-      roboto-serif
-      migu
-      noto-fonts
-      google-fonts
-      dejavu_fonts
-      # (nerdfonts.override {fonts = ["JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono"];})
-    ] ++ (with pkgs.nerd-fonts; [ jetbrains-mono fira-mono fira-code space-mono ]);
+    packages = with pkgs;
+      [
+        open-fonts
+        open-sans
+        roboto
+        roboto-mono
+        roboto-serif
+        migu
+        noto-fonts
+        google-fonts
+        dejavu_fonts
+        # (nerdfonts.override {fonts = ["JetBrainsMono" "FiraMono" "FiraCode" "SpaceMono"];})
+      ]
+      ++ (with pkgs.nerd-fonts; [jetbrains-mono fira-mono fira-code space-mono]);
 
     fontDir.enable = true;
   };
