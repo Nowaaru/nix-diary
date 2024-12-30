@@ -15,7 +15,10 @@
     (builtins.readDir dir);
 
   withInputs = this: with_inputs: let
-    imported = import this;
+    imported =
+      if (builtins.elem (builtins.typeOf this) ["path" "string"])
+      then import this
+      else this;
     is_attrset = builtins.isAttrs imported;
     parameters = builtins.functionArgs imported;
     unfillableParameters = builtins.attrNames (lib.attrsets.filterAttrs (k: v: !v && this ? k)) parameters;
