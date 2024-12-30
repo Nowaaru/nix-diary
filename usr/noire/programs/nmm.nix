@@ -1,33 +1,11 @@
-{inputs, ...}: {
-  # Enable my mod manager.
+{inputs, ...}: let
+  removeOverrides = k: builtins.removeAttrs k ["__functors" "override" "overrideDerivation" "__functionArgs"];
+in {
+  imports = [inputs.nix-mod-manager.homeManagerModules.default];
   programs.nix-mod-manager = {
     enable = true;
-    clients = {
-      monster-hunter-world = let
-        inherit (inputs.nnmm.lib.nnmm) mkLocalMod fetchers providers;
-        inherit (inputs.home-manager.lib.hm) dag;
-      in
-        with inputs.mods.monster-hunter-world; {
-          enable = true;
-          rootPath = ".local/share/Steam/steamapps/common/Monster Hunter World";
-          deploymentType = "loose";
+    forceGnuUnzip = true;
 
-          modsPath = ".";
-          binaryPath = ".";
-
-          binaryMods = binary;
-
-          mods = lib.mkMerge [
-            efx
-            # npc
-
-            # nsfw
-            sfw
-            misc
-            # misc-nsfw
-            # monster
-          ];
-        };
-    };
+    clients = removeOverrides (builtins.mapAttrs (_: removeOverrides) inputs.nmm-mods.clients);
   };
 }
