@@ -8,7 +8,9 @@
   configFile = import ./config.nix;
 in {
   inherit configFile;
+  inherit (import ./icons { inherit (pkgs) stdenv lib; inherit inputs; }) iconThemes;
   enable = true;
+  
 
   powerdevil = {
     AC = {
@@ -24,17 +26,27 @@ in {
 
   workspace = {
     clickItemTo = "select";
-    lookAndFeel = "org.kde.breezedark.desktop";
-    iconTheme = "Papirus-Dark";
-    wallpaper = themes.mountain-view.background;
+    iconTheme = "Tela-dracula-dark";
+    wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images_dark/5120x2880.png";
 
-    cursor.theme = "Bibata-Modern-Ice";
+    cursor.theme = "Colloid-Pastel Dark";
   };
 
-  hotkeys.commands."launch-kitty" = {
-    name = "Launch Kitty";
-    key = "Meta+Q";
-    command = "kitty";
+  hotkeys = {
+    commands = {
+      "launch-kitty" = {
+        name = "Launch Kitty";
+        key = "Meta+Q";
+        command = "kitty";
+        comment = "Open the KiTTY terminal.";
+      };
+
+      "brave-browser" = {
+        name = "Open Browser";
+        key = "Meta+B";
+        command = "xdg-open https://search.brave.com";
+      };
+    };
   };
 
   input.mice = [
