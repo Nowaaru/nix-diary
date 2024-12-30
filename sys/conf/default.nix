@@ -49,11 +49,10 @@ for directories above their own dedicated edirectory.
   };
 
   # Bootloader.
+
   boot = {
     bootspec.enable = true;
-    kernelModules = ["nvidia"];
-    blacklistedKernelModules = ["nouveau"];
-    kernelPackages = pkgs.linuxPackages;
+    initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "sd_mod"];
 
     loader = {
       systemd-boot.enable = lib.mkForce false;
@@ -62,15 +61,19 @@ for directories above their own dedicated edirectory.
 
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
 
     # Plymouth and Friends.
     plymouth = {
-      enable = false;
+      enable = true;
       theme = "hexagon_red";
       themePackages = [(pkgs.adi1090x-plymouth-themes.override {selected_themes = ["hexagon_red"];})];
     };
+
+    kernelModules = ["nvidia"];
+    blacklistedKernelModules = ["nouveau"];
+    kernelPackages = pkgs.linuxPackages;
 
     kernelParams = [
       "amdgpu.ppfeaturemask=0xffffffff"
@@ -173,6 +176,8 @@ for directories above their own dedicated edirectory.
     };
 
     xserver = {
+      enable = true;
+
       # Configure keymap in X11
       xkb.layout = "us";
       xkb.variant = "";

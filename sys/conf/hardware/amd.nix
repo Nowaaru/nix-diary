@@ -10,8 +10,8 @@
   };
 
   hardware.opengl = with pkgs; {
-    extraPackages = [amdvlk];
-    extraPackages32 = [driversi686Linux.amdvlk];
+    # extraPackages = [amdvlk];
+    # extraPackages32 = [driversi686Linux.amdvlk];
   };
 
   services.xserver = {

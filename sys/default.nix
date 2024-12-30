@@ -29,9 +29,6 @@
     # Plex alternative
     ./jellyfin.nix
 
-    # Hydrus
-    ./hydrus.nix
-
     ./gaming.nix
   ];
 

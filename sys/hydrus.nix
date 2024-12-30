@@ -1,5 +1,0 @@
-{
-  services.hydrus = {
-    enable = true;
-  };
-}

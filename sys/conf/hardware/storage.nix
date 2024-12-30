@@ -1,4 +1,4 @@
-{ lib, ... }: let
+{lib, ...}: let
   windowsFS = "Windows (C:)";
 
   devices = {
@@ -18,23 +18,18 @@ in {
     {
       device = "/dev/disk/by-label/swap";
     }
-  ];
-  /*
-  fileSystems = {
-    "${windowsFS}" = {
-      inherit options;
-      label = windowsFS;
-      device = lib.mkForce devices.ssd;
-      fsType = "ntfs";
 
-      # If this is enabled, say goodbye
-      # to Windows if something.. goes wrong.
-      #
-      # Please don't enable this.
-      autoFormat = false;
-      autoResize = false;
-      mountPoint = "/mnt/windows";
-    };
+    {device = "/dev/disk/by-uuid/7304f85c-848d-4ff2-a054-bd572fb4d8d0";}
+  ];
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/6f07d7da-21a7-4c5c-9036-8882fe094415";
+    fsType = "ext4";
   };
-  */
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/A644-2DDD";
+    fsType = "vfat";
+    options = ["fmask=0022" "dmask=0022"];
+  };
 }
