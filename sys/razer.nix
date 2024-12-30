@@ -3,6 +3,8 @@
   users.groups.openrazer = {
     name = "openrazer";
     gid = null;
+
+    members = [ "noire" "root" ];
   };
 
   hardware.openrazer = {
