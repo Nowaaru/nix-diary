@@ -2,105 +2,107 @@
 # remove all of these and start
 # using Folder/Default.nix
 {
+  config,
   configure,
   programs,
   user,
   ...
 }: {
-  imports = [
-    # Managing the desktop.
-    programs.desktop.hyprland.cursors.macos
-    programs.desktop.hyprland.desktop
+  imports =
+    [
+      # Managing the desktop.
+      programs.desktop.hyprland.cursors.macos
+      programs.desktop.hyprland.desktop
 
-    programs.desktop.hyprland.fuzzel
-    programs.desktop.hyprland.ags
+      programs.desktop.hyprland.fuzzel
+      programs.desktop.hyprland.ags
 
-    # Developer goodies.
-    programs.dev.formatters.dprint
+      # Developer goodies.
+      programs.dev.formatters.dprint
 
-    programs.dev.langs.javascript.typescript
-    programs.dev.langs.javascript.node
-    programs.dev.langs.javascript.bun
+      programs.dev.langs.javascript.typescript
+      programs.dev.langs.javascript.node
+      programs.dev.langs.javascript.bun
 
-    programs.dev.langs.dotnet
-    programs.dev.langs.rust
-    programs.dev.langs.lua
+      programs.dev.langs.dotnet
+      programs.dev.langs.rust
+      programs.dev.langs.lua
 
-    programs.dev.nvim
+      programs.dev.nvim
 
-    programs.dev.git
-    programs.dev.lazygit
+      programs.dev.git
+      programs.dev.lazygit
 
-    # Gaming and the like.
-    programs.gaming.minecraft
-    programs.gaming.bottles
-    # programs.gaming.lutris
-    programs.gaming.steam
-    programs.gaming.osu
+      # Gaming and the like.
+      programs.gaming.minecraft
+      programs.gaming.bottles
+      # programs.gaming.lutris
+      programs.gaming.steam
+      programs.gaming.osu
 
-    # Social media and social utilities.
-    programs.social.discord.vesktop
+      # Social media and social utilities.
+      programs.social.discord.vesktop
 
-    # General things, auxiliary functionalities.
-    programs.misc.qol.night-light
-    programs.misc.qol.kdenlive
-    programs.misc.qol.obsidian
-    programs.misc.bitwarden
+      # General things, auxiliary functionalities.
+      programs.misc.qol.night-light
+      programs.misc.qol.kdenlive
+      programs.misc.qol.obsidian
+      programs.misc.bitwarden
 
-    programs.misc.terminal.all
+      programs.misc.terminal.all
 
-    programs.misc.dunst
-    programs.misc.print-screen
+      programs.misc.dunst
+      programs.misc.print-screen
 
-    programs.misc.video
-    programs.misc.audio
-    programs.misc.clip
-    programs.misc.disk
-    programs.misc.dir
+      programs.misc.video
+      programs.misc.audio
+      programs.misc.clip
+      programs.misc.disk
+      programs.misc.dir
 
-    programs.misc.portals
-    programs.misc.obs
+      programs.misc.portals
+      programs.misc.obs
 
-    # Skate through the world, there's no one way to grind...
-    programs.entertainment.music.mixers.ncpamixer
-    programs.entertainment.music.players.spotify
-    programs.entertainment.jellyfin
+      # Skate through the world, there's no one way to grind...
+      programs.entertainment.music.mixers.ncpamixer
+      programs.entertainment.music.players.spotify
+      programs.entertainment.jellyfin
 
-    # Games by those who rule the world.
-    # user.programs.an-anime-team.anime-game
-    # user.programs.an-anime-team.honkers-railway
-    # user.programs.an-anime-team.honkers
+      # Games by those who rule the world.
+      # user.programs.an-anime-team.anime-game
+      # user.programs.an-anime-team.honkers-railway
+      # user.programs.an-anime-team.honkers
 
-    # Desktop
-    user.programs.plasma
+      # Desktop
+      user.programs.plasma
 
-  
-    # Images
-    user.programs.hydrus
+      # Images
+      user.programs.hydrus
 
-    # Browsers
-    # user.programs.floorp.all
-    user.programs.brave.all
+      # Browsers
+      # user.programs.floorp.all
+      user.programs.brave.all
 
-    # Applications/Misc
-    user.programs.r2modman
-    user.programs.rojo
-    user.programs.umu
+      # Applications/Misc
+      user.programs.gpu-screen-recorder
+      user.programs.r2modman
+      user.programs.nmm
+      user.programs.rojo
+      user.programs.umu
 
-    # UI
-    user.programs.awesome
-    user.programs.gimp
-    user.programs.piper
-    user.programs.qt
-    user.programs.fonts.nerdfont.all
-  ];
+      # UI
+      user.programs.awesome
+      user.programs.gimp
+      user.programs.piper
+      user.programs.qt
+      user.programs.fonts.nerdfont.all
+    ];
 
   dconf.settings = {
     "org/gnome/mutter" = {
       experimental-features = ["scale-monitor-framebuffer"];
     };
   };
-
 
   fonts.fontconfig.enable = true;
 
