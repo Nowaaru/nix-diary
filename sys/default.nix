@@ -19,7 +19,6 @@
     ./input.nix
     ./shell.nix
     ./sound.nix
-    ./storage.nix
 
      # Peripheral things
     ./razer.nix

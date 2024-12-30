@@ -16,14 +16,9 @@ for directories above their own dedicated edirectory.
 }: {
   imports =
     [
-      # Include the results of the hardware scan.
-      ./hardware.nix
-
-      # System configuration loader.
-      ../.
-
-      # Users
       ./register-users.nix
+      ./hardware
+      ../.
     ]
     ++ (lib.gamindustri.mkModules (inputs.self + /modules));
 
@@ -124,34 +119,6 @@ for directories above their own dedicated edirectory.
     LC_TIME = "en_US.UTF-8";
   };
 
-  hardware = {
-    # Hardware setup.
-    bluetooth.enable = true;
-    bluetooth.powerOnBoot = true;
-
-    nvidia = {
-      modesetting.enable = true; # required
-      powerManagement.enable = true; # can cause sleep problems but supposedly fixed with the newest nvidia update
-      powerManagement.finegrained = false;
-
-      open = lib.mkForce false;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
-    };
-
-    graphics = {
-      enable = lib.mkDefault true;
-      enable32Bit = true;
-
-      extraPackages = with pkgs; [
-        intel-compute-runtime
-      ];
-    };
-
-    # Enable OpenTabletDriver.
-    opentabletdriver.enable = true;
-  };
-
   services = {
     kanata = {
       enable = true;
@@ -206,10 +173,6 @@ for directories above their own dedicated edirectory.
     };
 
     xserver = {
-      # Enable the X11 windowing system.
-      enable = true;
-      videoDrivers = ["nvidia"];
-
       # Configure keymap in X11
       xkb.layout = "us";
       xkb.variant = "";
