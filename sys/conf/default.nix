@@ -14,16 +14,24 @@ for directories above their own dedicated edirectory.
   inputs,
   ...
 }: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware.nix
+  imports =
+    [
+      # Include the results of the hardware scan.
+      ./hardware.nix
 
-    # System configuration loader.
-    ../.
+      # System configuration loader.
+      ../.
 
-    # Users
-    ./register-users.nix
-  ] ++ lib.gamindustri.mkModules (inputs.self + /modules);
+      # Users
+      ./register-users.nix
+    ]
+    ++ (lib.gamindustri.mkModules (inputs.self + /modules));
+
+  programs.gpu-screen-recorder = {
+    enable = true;
+    ui.enable = true;
+    notify.enable = true;
+  };
 
   fonts = {
     enableDefaultPackages = true;
