@@ -2,15 +2,19 @@
   lib,
   config,
   modulesPath,
-  pkgs,
   ...
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./storage.nix
+    ./amd.nix
     ./nvidia.nix
-    # ./amd.nix
   ];
+
+  environment.sessionVariables = {
+    # "KWIN_DRM_DEVICES" = ''/dev/dri/by-path/pci-0000\:06\:00.0-card:/dev/dri/by-path/pci-0000\:09\:00.0-card'';
+    # "AQ_DRM_DEVICES" = ''/dev/dri/by-path/pci-0000\:06\:00.0-card:/dev/dri/by-path/pci-0000\:09\:00.0-card'';
+  };
 
   hardware = {
     # Hardware setup.
@@ -20,15 +24,15 @@
     graphics = {
       enable = lib.mkDefault true;
       enable32Bit = true;
-
-      extraPackages = with pkgs; [
-        intel-compute-runtime
-      ];
     };
 
     # Enable OpenTabletDriver.
     opentabletdriver.enable = true;
   };
+
+  boot.kernelModules = [
+    "kvm-amd"
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

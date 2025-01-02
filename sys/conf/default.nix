@@ -17,15 +17,16 @@ for directories above their own dedicated edirectory.
   imports =
     [
       ./register-users.nix
+      ./plymouth.nix
       ./hardware
       ../.
     ]
     ++ (lib.gamindustri.mkModules (inputs.self + /modules));
 
   programs.gpu-screen-recorder = {
-    enable = true;
-    ui.enable = true;
-    notify.enable = true;
+    enable = false;
+    ui.enable = false;
+    notify.enable = false;
   };
 
   fonts = {
@@ -64,44 +65,7 @@ for directories above their own dedicated edirectory.
       pkiBundle = "/var/lib/sbctl";
     };
 
-    # Plymouth and Friends.
-    plymouth = {
-      enable = true;
-      theme = "hexagon_red";
-      themePackages = [(pkgs.adi1090x-plymouth-themes.override {selected_themes = ["hexagon_red"];})];
-    };
-
-    kernelModules = ["nvidia"];
-    blacklistedKernelModules = ["nouveau"];
     kernelPackages = pkgs.linuxPackages;
-
-    kernelParams = [
-      "amdgpu.ppfeaturemask=0xffffffff"
-      "nvidia-drm.modeset=1"
-      "nvidia-drm.fbdev=1"
-      "nvidia.NVreg_EnableGpuFirmware=0"
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-    ];
-
-    # consoleLogLevel = 0;
-    # kernelParams = [
-    #   "quiet"
-    #   "splash"
-    #   "boot.shell_on_fail"
-    #   "nosgx"
-    #   "loglevel=3"
-    #   "rd.systemd.show_status=false"
-    #   "rd.udev.log_level=3"
-    #   "udev.log_priority=3"
-    # ];
-    # Hide the OS choice for bootloaders.
-    # It's still possible to open the bootloader list by pressing any key
-    # It will just not appear on screen unless a key is pressed
-    # loader.timeout = 0;
-    # initrd = {
-    #   systemd.enable = true;
-    #   verbose = true;
-    # };
   };
 
   # Set your time zone.

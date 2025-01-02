@@ -4,22 +4,31 @@
   ...
 }: {
   hardware.nvidia = {
-    modesetting.enable = true; # required
-    powerManagement.enable = true; # can cause sleep problems but supposedly fixed with the newest nvidia update
-    powerManagement.finegrained = false; # turns off gpu when nothing is using the nvidia graphics stack (pretty cool!!!)
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
 
-    open = lib.mkForce false;
+      amdgpuBusId = "PCI:6:0:0";
+      nvidiaBusId = "PCI:9:0:0";
+    };
+
+    modesetting.enable = lib.mkDefault true; # required
+    powerManagement.enable = true; # can cause sleep problems but supposedly fixed with the newest nvidia update
+
+    open = lib.mkDefault false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
   boot = {
     # boot nvidia second
-    initrd.kernelModules = [
+    kernelModules = [
       "nvidia"
-      "nvidia_modeset"
-      "nvidia_drm"
-      "nvidia_uvm"
+      # "nvidia_modeset"
+      # "nvidia_drm"
+      # "nvidia_uvm"
     ];
 
     kernelParams = [
@@ -29,7 +38,7 @@
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     ];
 
-    # blacklistedKernelModules = ["nouveau"];
+    blacklistedKernelModules = ["nouveau"];
   };
 
   services.xserver = {
