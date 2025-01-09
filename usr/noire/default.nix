@@ -88,6 +88,9 @@
     user.programs.rojo
     # user.programs.umu
 
+    # Multi-GPU
+    user.programs.nixgl
+
     # UI
     user.programs.awesome
     user.programs.gimp
@@ -100,16 +103,6 @@
     "org/gnome/mutter" = {
       experimental-features = ["scale-monitor-framebuffer"];
     };
-  };
-
-  nixGL = {
-    prime = {
-      card = "pci-0000_09_00_0";
-      installScript = "nvidia"; # use nvidia graphics library
-    };
-
-    offloadWrapper = "nvidiaPrime"; # want to offload to nvidia card
-    defaultWrapper = "mesa";
   };
 
   fonts.fontconfig.enable = true;

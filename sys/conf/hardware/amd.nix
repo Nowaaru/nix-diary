@@ -17,22 +17,6 @@
 
   environment.variables.AMD_VULKAN_ICD = "RADV";
 
-  chaotic.mesa-git = {
-    enable = true;
-    extraPackages = with pkgs; [
-      amdvlk
-    ];
-
-    extraPackages32 = with pkgs; [
-      driversi686Linux.amdvlk
-    ];
-  };
-
-  hardware.graphics = {
-    package = pkgs.mesa_git.drivers;
-    package32 = pkgs.mesa32_git.drivers;
-  };
-
   services.xserver = {
     # Enable the X11 windowing system.
     videoDrivers = ["amdgpu"];

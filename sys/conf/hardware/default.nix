@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   modulesPath,
@@ -7,8 +8,8 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./storage.nix
-    ./amd.nix
     ./nvidia.nix
+    ./amd.nix
   ];
 
   environment.sessionVariables = {
@@ -30,10 +31,28 @@
     opentabletdriver.enable = true;
   };
 
-  boot.kernelModules = [
-    "kvm-amd"
-  ];
+  # chaotic.mesa-git = {
+  #   enable = true;
+  #   extraPackages = with pkgs; [
+  #     amdvlk
+  #   ];
+  #
+  #   extraPackages32 = with pkgs; [
+  #     driversi686Linux.amdvlk
+  #   ];
+  # };
 
+  boot = {
+    # using prime sync so im overriding with nvidia first then amd, hopefully it will work
+    initrd.kernelModules = lib.mkForce [
+      "nvidia"
+    ];
+
+    # enable for virtualization
+    # kernelModules = [
+    #   "kvm-amd"
+    # ];
+  };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
