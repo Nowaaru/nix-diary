@@ -18,7 +18,9 @@ for directories above their own dedicated edirectory.
     [
       ./register-users.nix
       ./plymouth.nix
+
       ./hardware
+      ./secure-boot.nix
       ../.
     ]
     ++ (lib.gamindustri.mkModules (inputs.self + /modules));
@@ -54,16 +56,6 @@ for directories above their own dedicated edirectory.
   boot = {
     bootspec.enable = true;
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "sd_mod"];
-
-    loader = {
-      systemd-boot.enable = lib.mkForce false;
-      efi.canTouchEfiVariables = true;
-    };
-
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
-    };
 
     kernelPackages = pkgs.linuxPackages;
   };

@@ -5,7 +5,7 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/release-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # 9aa6de663bcf2ade2a79d88a2d527c2a9986631c
     nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/d9e28880025f124abe4f79dc99500d7ec155d55d";
-    nixpkgs-chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    # nixpkgs-chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     nurpkgs.url = "github:nix-community/NUR";
 
     /*
@@ -16,7 +16,7 @@
     nix-colors.url = "github:misterio77/nix-colors";
 
     /*
-    experimental modules
+    experimental modules - home manager
     */
     power-mode-nvim = {
       url = "path:/home/noire/Documents/projects/power-mode.nvim";
@@ -32,6 +32,8 @@
       url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    nixgl.url = "github:nix-community/nixGL";
 
     /*
     libraries for this flake n stuff
@@ -167,12 +169,15 @@
     lanzaboote,
     hyprpicker,
     nixpkgs-mongodb-pin,
+    nixgl,
     ...
   } @ inputs: let
     useReleaseStream = release-stream: function-that-uses-stream: (function-that-uses-stream release-stream (import release-stream {inherit system overlays config;}));
     overlays = [
       hyprpicker.overlays.default
       nurpkgs.overlays.default
+      nixgl.overlay
+
       (_: super: {
         inherit
           ((import nixpkgs-mongodb-pin {
@@ -196,9 +201,17 @@
               gamindustri = import (inputs.self + /lib) (inputs
                 // {
                   pkgs = super;
-                  lib = prev // home-manager.lib;
+                  lib =
+                    prev
+                    // home-manager.lib
+                    // (
+                      if super.config ? "lib"
+                      then super.config.lib
+                      else {}
+                    );
                 });
             });
+        # override with
       })
     ];
 
@@ -240,7 +253,7 @@
           modules = [
             lanzaboote.nixosModules.lanzaboote
             inputs.an-anime-game-launcher.nixosModules.default
-            inputs.nixpkgs-chaotic.nixosModules.default
+              # inputs.nixpkgs-chaotic.nixosModules.default
             ./sys/conf
           ];
         };
