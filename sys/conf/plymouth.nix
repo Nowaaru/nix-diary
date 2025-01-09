@@ -2,8 +2,10 @@
   boot = {
     plymouth = {
       enable = true;
-      theme = "hexagon_red";
-      themePackages = [(pkgs.adi1090x-plymouth-themes.override {selected_themes = ["hexagon_red"];})];
+      theme = "catppuccin-mocha"; themePackages = with pkgs; [
+        (catppuccin-plymouth.override { variant = "mocha"; })
+        (adi1090x-plymouth-themes.override {selected_themes = ["hexagon_red"];})
+      ];
     };
 
     consoleLogLevel = 0;
