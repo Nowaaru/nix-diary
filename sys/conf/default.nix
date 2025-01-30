@@ -8,7 +8,6 @@ to their own ~/.diary folder and rescind permissions
 for directories above their own dedicated edirectory.
 */
 {
-  config,
   pkgs,
   lib,
   inputs,
@@ -24,12 +23,6 @@ for directories above their own dedicated edirectory.
       ../.
     ]
     ++ (lib.gamindustri.mkModules (inputs.self + /modules));
-
-  programs.gpu-screen-recorder = {
-    enable = false;
-    ui.enable = false;
-    notify.enable = false;
-  };
 
   fonts = {
     enableDefaultPackages = true;

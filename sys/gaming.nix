@@ -1,5 +1,15 @@
 {
   programs = {
+    gpu-screen-recorder = {
+      enable = true;
+      ui = {
+        enable = true;
+        autostart.enable = true;
+        keymaps.register = true;
+      };
+      notify.enable = true;
+    };
+
     gamemode = {
       enable = true;
     };
