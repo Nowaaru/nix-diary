@@ -15,7 +15,7 @@
 with stdenv;
   mkDerivation (finalAttrs: {
     pname = "gpu-screen-recorder-ui";
-    version = "0.1.0";
+    version = "1.0.8";
 
     outputs = ["build" "out"];
     phases = ["setupPhase" "configurePhase" "buildPhase" "fixupPhase"];
@@ -23,13 +23,14 @@ with stdenv;
     src = fetchgit {
       name = "gsr-ui";
       url = "https://repo.dec05eba.com/gpu-screen-recorder-ui";
-      rev = "ec6d4090af22db59991e9c621238c96795814379";
-      hash = "sha256-ObVlSNVJM8qclr/0+XwFWs8kx1lT6Dl44xCfjIxhCuw=";
+      rev = "92401d8bc8fa3cbc8017936eb1d18280199942e0";
+      hash = "sha256-dOsJvdW+cZ7U03XUEYgAA6GniQ85jl/HO9vRqzPLKEs=";
     };
 
     nativeBuildInputs = with xorg; [
       libX11
       libXrandr
+      libXcursor
       libXcomposite
       libXfixes
       libXi
@@ -57,6 +58,7 @@ with stdenv;
     '';
 
     buildPhase = ''
+      ls -R;
       ninja -C $build install
     '';
 

@@ -13,20 +13,21 @@
 with stdenv;
   mkDerivation (finalAttrs: {
     pname = "gpu-screen-recorder-notification";
-    version = "0.1.0";
+    version = "1.0.1";
     outputs = ["build" "out"];
     phases = ["setupPhase" "configurePhase" "buildPhase" "fixupPhase"];
 
     src = fetchgit {
       name = "gsr-notify";
       url = "https://repo.dec05eba.com/gpu-screen-recorder-notification";
-      rev = "2edd13cb94340bf2ddb0cfc66fe216889b216fa1";
-      hash = "sha256-PRC/aEmU6lmoCbai8ZgNQFlFZFcthDuswkDlT0qk8A4=";
+      rev = "4eaeba2a39874c76bfc71d69b97f7619f471747a";
+      hash = "sha256-i5rHyG66ZduibiL/zhriR/tS+yd5IVn2+heD3NiOluo=";
     };
 
     nativeBuildInputs = with xorg; [
       libX11
       libXrandr
+      libXcursor
       libXcomposite
       libXfixes
       libXi
