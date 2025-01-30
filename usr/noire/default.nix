@@ -86,7 +86,7 @@
     user.programs.r2modman
     user.programs.nmm
     user.programs.rojo
-    # user.programs.umu
+    user.programs.umu
 
     # Multi-GPU
     user.programs.nixgl
@@ -105,9 +105,13 @@
     };
   };
 
+
+
   fonts.fontconfig.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
   xdg = configure "xdg";
+
+  i18n = configure "ime";
 }
