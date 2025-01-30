@@ -18,8 +18,8 @@ in {
       displayBrightness = 100;
 
       dimDisplay = {
-        enable = true;
-        idleTimeout = 300;
+        enable = false;
+        # idleTimeout = 300;
       };
     };
   };
@@ -27,7 +27,7 @@ in {
   workspace = {
     clickItemTo = "select";
     iconTheme = "Tela-dracula-dark";
-    wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images_dark/5120x2880.png";
+    wallpaper = themes.slay-the-spire.background;
 
     cursor.theme = "Colloid-Pastel Dark";
   };
