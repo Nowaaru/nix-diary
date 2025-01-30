@@ -29,6 +29,7 @@
     # Plex alternative
     ./jellyfin.nix
 
+    ./deluge.nix
     ./gaming.nix
   ];
 
