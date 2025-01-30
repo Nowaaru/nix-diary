@@ -16,6 +16,10 @@
     nix-colors.url = "github:misterio77/nix-colors";
 
     /*
+    experimental modules - nixos
+    */
+
+    /*
     experimental modules - home manager
     */
     power-mode-nvim = {
@@ -38,6 +42,10 @@
     /*
     libraries for this flake n stuff
     */
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+    };
+
     nix-utils = {
       url = "github:nowaaru/nix-utils";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -163,6 +171,7 @@
 
   outputs = {
     nixpkgs-unstable,
+    flake-parts,
     nurpkgs,
     home-manager,
     nix-colors,
@@ -240,67 +249,70 @@
       };
 
       modules = lib.gamindustri.modules.mkModules (inputs.self + /modules);
-    in {
-      inherit pkgs lib;
+    in
+      flake-parts.lib.mkFlake {inherit inputs;} {
+        systems = [ "x86_64-linux" "aarch64-linux" ];
+        flake = {
+          inherit pkgs stable lib;
 
-      nixosConfigurations = let
-        specialArgs = {
-          inherit stable unstable inputs modules lib;
+          nixosConfigurations = let
+            specialArgs = {
+              inherit stable unstable inputs modules lib;
+            };
+          in {
+            lastation = nixpkgs.lib.nixosSystem {
+              inherit specialArgs;
+              modules = [
+                lanzaboote.nixosModules.lanzaboote
+                inputs.an-anime-game-launcher.nixosModules.default
+                ./sys/conf
+              ];
+            };
+
+            leanbox = nixpkgs.lib.nixosSystem {
+              inherit specialArgs;
+              modules = [
+                ./sys/wsl
+              ];
+            };
+          };
+
+          homeConfigurations = let
+            usrRoot = ./usr;
+            specialArgs = {
+              inherit inputs lib nix-colors nur stable unstable modules;
+
+              programs = import ./programs (inputs
+                // {
+                  inherit (pkgs) config;
+                  inherit inputs pkgs lib nur stable unstable modules;
+                });
+            };
+          in
+            with lib.gamindustri.users;
+              mkHomeManager [
+                # me!
+                (mkUser "noire" {
+                  /*
+                  unsure why hardware.openrazer.users doesn't work?
+                  */
+                  sessionVariables = {
+                    EDITOR = "nvim";
+                  };
+                })
+
+                (mkUser "vert" {
+                  sessionVariables = {
+                    EDITOR = "nvim";
+                  };
+                })
+
+                (mkUser "neptune" {
+                  sessionVariables = {
+                    EDITOR = "nvim";
+                  };
+                })
+              ] {inherit usrRoot specialArgs;};
         };
-      in {
-        lastation = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          modules = [
-            lanzaboote.nixosModules.lanzaboote
-            inputs.an-anime-game-launcher.nixosModules.default
-              # inputs.nixpkgs-chaotic.nixosModules.default
-            ./sys/conf
-          ];
-        };
-
-        leanbox = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          modules = [
-            ./sys/wsl
-          ];
-        };
-      };
-
-      homeConfigurations = let
-        usrRoot = ./usr;
-        specialArgs = {
-          inherit inputs lib nix-colors nur stable unstable modules;
-
-          programs = import ./programs (inputs
-            // {
-              inherit (pkgs) config;
-              inherit inputs pkgs lib nur stable unstable modules;
-            });
-        };
-      in
-        with lib.gamindustri.users;
-          mkHomeManager [
-            # me!
-            (mkUser "noire" {
-              /*
-              unsure why hardware.openrazer.users doesn't work?
-              */
-              sessionVariables = {
-                EDITOR = "nvim";
-              };
-            })
-
-            (mkUser "vert" {
-              sessionVariables = {
-                EDITOR = "nvim";
-              };
-            })
-
-            (mkUser "neptune" {
-              sessionVariables = {
-                EDITOR = "nvim";
-              };
-            })
-          ] {inherit usrRoot specialArgs;};
-    });
+      });
 }
