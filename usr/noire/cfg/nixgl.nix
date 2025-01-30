@@ -1,6 +1,6 @@
 {inputs, ...}: {
   inherit (inputs.nixgl) packages;
-  vulkan.enable = true;
+  vulkan.enable = false;
 
   # also include mesaPrime just-in-case
   # nvidiaPrime's OpenGL sucks asscheeks
