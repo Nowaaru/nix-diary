@@ -1,5 +1,5 @@
 {lib, ...} @ inputs: let
-  specialLibraries = ["users.nix" "hypr.nix" "images.nix"];
+  specialLibraries = ["users.nix" "hypr.nix" "meta.nix" "images.nix"];
   metaFunctions = import ./meta.nix inputs;
 in
   (lib.attrsets.foldlAttrs (

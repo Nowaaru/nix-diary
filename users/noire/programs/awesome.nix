@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, root, ... }:
 {
   xsession.windowManager.awesome = {
     enable = true;
@@ -12,7 +12,7 @@
   home.file = {
     ".config/awesome/rc.lua" = {
       enable = true;
-      source = ../cfg/awesome.lua;
+      source = root + /cfg/awesome.lua;
       target = ".config/awesome/rc.lua";
     };
   };

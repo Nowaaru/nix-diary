@@ -20,9 +20,10 @@ for directories above their own dedicated edirectory.
 
       ./hardware
       ./secure-boot.nix
-      ../.
+
+      ../sys
     ]
-    ++ (lib.gamindustri.mkModules (inputs.self + /modules));
+    ++  (lib.gamindustri.mkModules (inputs.self + /modules));
 
   fonts = {
     enableDefaultPackages = true;
@@ -202,9 +203,6 @@ for directories above their own dedicated edirectory.
     settings.experimental-features = ["nix-command" "flakes"];
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # Desktop things
   services.desktopManager.plasma6.enable = true;
   programs = {
@@ -298,8 +296,6 @@ for directories above their own dedicated edirectory.
 
   networking = {
     hostName = "lastation"; # Define your hostname.
-    mihoyo-telemetry.block = true;
-
     networkmanager.enable = true;
     firewall = {
       allowedTCPPorts = [25565];

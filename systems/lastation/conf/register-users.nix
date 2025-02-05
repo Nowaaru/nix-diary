@@ -14,11 +14,11 @@
     }
     // (
       let
-        path = inputs.self + /usr/${k}/meta.nix;
+        path = inputs.self + /users/${k}/meta.nix;
       in
         if (builtins.pathExists path)
         then (import path)
         else {}
     ))
-  (lib.attrsets.filterAttrs (_: v: v == "directory") (builtins.readDir (inputs.self + /usr)));
+  (lib.attrsets.filterAttrs (_: v: v == "directory") (builtins.readDir (inputs.self + /users)));
 }

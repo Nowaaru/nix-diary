@@ -11,11 +11,6 @@
   # ];
 
   nixpkgs.overlays = [
-    (final: prev: {
-      nodePackages = prev.nodePackages // {
-        neovim = final.neovim-node-client;
-      };
-    })
   ];
 
   programs.nvf = {

@@ -5,6 +5,7 @@
   config,
   configure,
   programs,
+  lib,
   user,
   ...
 }: {
@@ -73,7 +74,7 @@
     # user.programs.an-anime-team.honkers
 
     # Desktop
-    user.programs.plasma
+     user.programs.plasma
 
     # Images
     user.programs.hydrus
