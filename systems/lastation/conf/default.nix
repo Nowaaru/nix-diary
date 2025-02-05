@@ -214,12 +214,7 @@ for directories above their own dedicated edirectory.
     firejail.enable = true;
 
     # Hyprland!
-    hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-      portalPackage =
-        inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-    };
+    hyprland = { enable = true; };
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
@@ -244,10 +239,6 @@ for directories above their own dedicated edirectory.
   environment = {
     # Session variables for gaming/gamescope.
     sessionVariables = {
-      # Hyprland!
-      WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
-      NIX_OZONE_WL = lib.mkDefault "1";
-
       # Gamescope.
       # WLR_RENDERER = lib.mkDefault "vulkan";
       # __GL_GSYNC_ALLOWED = lib.mkDefault "1";

@@ -16,12 +16,9 @@
   hyprPackages = inputs.hyprland.packages.${pkgs.system};
 in {
   xdg.portal = {
+    enable = true;
     configPackages = [
       hyprPackages.hyprland
-    ];
-
-    extraPortals = [
-      hyprPackages.xdg-desktop-portal-hyprland
     ];
   };
 
