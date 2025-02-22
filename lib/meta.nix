@@ -17,8 +17,9 @@
     description ? "A cool Plymouth theme.",
     comment ? "Welcome to Gamindustri!",
     image ? null,
+    resolution ? null,
     framerate ? 50,
-  }:
+  }@params:
     with lib; let
       themeOptions =
         (evalModules {
@@ -63,7 +64,8 @@
                     inherit pkgs lib;
                   };
 
-                  inherit (imgLib.gifToImages image) outPath;
+                  
+                  inherit (imgLib.${if (lib.strings.hasSuffix ".gif" image) then "gifToImages" else "resizeImage"} resolution image) outPath;
                 in
                   builtins.map (x: "${outPath}/${x}") (builtins.attrNames (
                     builtins.readDir outPath
@@ -97,7 +99,7 @@
 
           sed -i -re "s!progress\\-!!gm" $SCRIPT;
           sed -i -re "s!SPEED!${builtins.toString (themeOptions.framerate / 50)}!gm" $SCRIPT;
-          sed -i -re "s!NUM!${builtins.toString ((builtins.length themeOptions.image) - 1)}!gm" $SCRIPT;
+          sed -i -re "s!NUM!${builtins.toString ((builtins.length themeOptions.image)/*  - 1 */)}!gm" $SCRIPT;
         '';
 
         configurePhase = ''

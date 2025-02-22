@@ -178,83 +178,83 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} ({
-        withSystem,
-        flake-parts-lib,
-        ...
-      } @ args: let
-        inherit (flake-parts-lib) importApply;
-        inherit
-          (import ./overlays/extend-lib.nix
-            # unsure on how to beat the infinite recursion
-            # allegations
-            withSystem
-            (inputs // {self = ./.;})
-            {} nixpkgs)
-          lib
-          ;
-        overlays = import ./overlays withSystem (inputs // {
+      withSystem,
+      flake-parts-lib,
+      ...
+    }: let
+      inherit (flake-parts-lib) importApply;
+      inherit
+        (import ./overlays/extend-lib.nix
+          # unsure on how to beat the infinite recursion
+          # allegations
+          withSystem
+          (inputs // {self = ./.;})
+          {}
+          nixpkgs)
+        lib
+        ;
+      overlays = import ./overlays withSystem (inputs
+        // {
           inherit lib;
         });
 
-        config = {
-          allowUnfree = true;
+      # = {};
+
+      config = {
+        allowUnfree = true;
+      };
+
+      modules = lib.gamindustri.modules.mkModules (inputs.self + /modules);
+      _args = {
+        inherit inputs importApply withSystem;
+        inherit (inputs) self;
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
         };
+        lib = builtins.trace lib.gamindustri lib;
+      };
 
-        modules = lib.gamindustri.modules.mkModules (inputs.self + /modules);
+      flakeModules.users = importApply ./users _args;
+      flakeModules.systems = importApply ./systems _args;
+    in {
+      imports = [
+        inputs.flake-parts.flakeModules.flakeModules
+        # inputs.home-manager.flakeModules.home-manager
+        flakeModules.systems
+        flakeModules.users
+      ];
 
-        flakeModules.users = importApply ./users {
-          inherit inputs importApply withSystem;
-          lib = builtins.trace lib.gamindustri lib;
-        };
+      systems = ["x86_64-linux" "aarch64-linux"];
 
-        flakeModules.systems = importApply ./systems {
-          inherit inputs importApply withSystem lib;
-        };
+      perSystem = {
+        system,
+        self',
+        ...
+      }: {
+        legacyPackages = {
+          default = import nixpkgs {
+            inherit system overlays config;
+          };
 
-        homeConfigurations = {};
-      in {
-        imports = [
-          inputs.flake-parts.flakeModules.flakeModules
-          inputs.home-manager.flakeModules.home-manager
-          flakeModules.systems
-          flakeModules.users
-        ];
+          stable = import inputs.nixpkgs-mirror {
+            inherit system overlays config;
+          };
 
-        systems = ["x86_64-linux" "aarch64-linux"];
-
-        perSystem = args @ {
-          system,
-          self',
-          ...
-        }: {
-          legacyPackages = {
-            # TODO: fold import args
-            # over all elements into
-            # attrset
-
-            default = import nixpkgs {
-              inherit system overlays config;
-            };
-
-            stable = import inputs.nixpkgs-mirror {
-              inherit system overlays config;
-            };
-
-            nur = import nurpkgs {
-              pkgs = self'.legacyPackages.default;
-              nurpkgs = import nixpkgs {
-                inherit system;
-              };
+          nur = import nurpkgs {
+            pkgs = self'.legacyPackages.default;
+            nurpkgs = import nixpkgs {
+              inherit system;
             };
           };
         };
+      };
 
-        flake = {
-          #  inherit pkgs stable lib;
-          inherit flakeModules;
-          inherit lib;
+      flake = {
+        inherit flakeModules;
+        inherit lib;
 
-          nixosModules = modules;
-        };
-      });
+          # homeConfigurations = 
+        nixosModules = modules;
+      };
+    });
 }

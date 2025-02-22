@@ -2,16 +2,8 @@ toplevel @ {
   withSystem,
   inputs,
   ...
-}: {
-  self,
-  system,
-  ...
-}: {
-  flake.nixosConfigurations.lastation = withSystem "x86_64-linux" ({
-    system,
-    self',
-    ...
-  }: let
+}: _: {
+  flake.nixosConfigurations.lastation = withSystem "x86_64-linux" ({self', ...}: let
     pkgs = self'.legacyPackages.default;
     specialArgs = {
       inherit (self'.legacyPackages) nur unstable stable;
