@@ -23,7 +23,7 @@ for directories above their own dedicated edirectory.
 
       ../sys
     ]
-    ++  (lib.gamindustri.mkModules (inputs.self + /modules));
+    ++ (lib.gamindustri.mkModules (inputs.self + /modules));
 
   fonts = {
     enableDefaultPackages = true;
@@ -214,7 +214,7 @@ for directories above their own dedicated edirectory.
     firejail.enable = true;
 
     # Hyprland!
-    hyprland = { enable = true; };
+    hyprland = {enable = true;};
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
