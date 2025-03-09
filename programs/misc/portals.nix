@@ -1,6 +1,8 @@
 {pkgs, ...}: let
   portalList = with pkgs; [
-    xdg-desktop-portal-kde
+    kdePackages.xdg-desktop-portal-kde
+    # libsForQt5.xdg-desktop-portal-kde
+
     # xdg-desktop-portal-hyprland
   ];
 in {
