@@ -6,37 +6,34 @@ withSystem: {
   nurpkgs,
   nixgl,
   ...
-} @ inputs: [
+} @ inputs: let
+  # TODO: recursively call these with withSystem and inputs
+  unwrap-overlay = overlay_path_or_overlay:
+    if builtins.isPath overlay_path_or_overlay
+    then builtins.trace "recursing with array args" (unwrap-overlay (import overlay_path_or_overlay))
+    else
+      (let
+        overlay = overlay_path_or_overlay;
+      in
+        if
+          builtins.isFunction overlay
+          && builtins.length (builtins.attrValues (builtins.functionArgs overlay)) == 0
+        then builtins.trace "unwrapping withsystem ${overlay_path_or_overlay}" (unwrap-overlay overlay withSystem)
+        else
+          (
+            if builtins.isFunction overlay
+            then builtins.trace "function named" (overlay inputs)
+            else builtins.trace "using default return" overlay
+          ));
+in [
   rust-overlay.overlays.default
   hyprpicker.overlays.default
   nurpkgs.overlays.default
   nixgl.overlay
 
-  (
-    _: prev:
-    # withSystem prev.system ({self', ...}: {
-    #   inherit (self'.legacyPackages.stable) basedpyright;
-    # })
-    {
-      # basedpyright because nvf configuration
-      # currently errors
-      inherit
-        (import inputs.nixpkgs-mirror {
-          inherit (prev) system;
-        })
-        basedpyright lldb
-        ;
-    }
-  )
-
-  (final: prev: {
-    nodePackages =
-      prev.nodePackages
-      // {
-        neovim = final.neovim-node-client;
-      };
-  })
-
+  (import ./node-neovim.nix withSystem inputs)
+  (import ./stable-basedpyright.nix withSystem inputs)
+  (import ./wine-update.nix withSystem inputs)
   (import ./extend-lib.nix withSystem inputs)
 ]
 /*
