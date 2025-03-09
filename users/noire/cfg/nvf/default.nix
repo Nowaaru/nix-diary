@@ -10,13 +10,35 @@
 in {
   inherit maps languages;
 
+  globals = {
+    editorconfig = true;
+    mapleader = " ";
+    maplocalleader = ",";
+  };
+
+  options = {
+    autoindent = true;
+    termguicolors = true;
+    signcolumn = true;
+    splitbelow = true;
+    splitright = true;
+    wrap = true;
+
+    tabstop = 4;
+    shiftwidth = 4;
+
+    mouse = "nvi";
+  };
+
   luaConfigPre = '''';
-  enableEditorconfig = true;
+
   enableLuaLoader = true;
   withNodeJs = true;
   withPython3 = true;
 
   viAlias = true;
+  vimAlias = true;
+
   startPlugins = with pkgs.vimPlugins; [oxocarbon-nvim];
   pluginRC.alpha = lib.mkForce (lib.hm.dag.entryAfter ["image-nvim"] (util.fetchLuaSource "alpha-startup"));
 
@@ -36,18 +58,13 @@ in {
     lualine-gaps = lib.mkForce (lib.hm.dag.entryAfter ["lualine"] (util.fetchLuaSource "lualine-gaps"));
   };
 
-  vimAlias = true;
-
+  lineNumberMode = "relNumber";
   syntaxHighlighting = true;
   useSystemClipboard = true;
   preventJunkFiles = false;
-  showSignColumn = true;
   searchCase = "smart";
-  autoIndent = true;
   bell = "on";
-  mouseSupport = "a";
-  disableArrows = true;
-  lineNumberMode = "relNumber";
+
   luaConfigPost = '''';
 
   extraPlugins = with pkgs.vimPlugins; {
@@ -121,6 +138,16 @@ in {
   binds = {
     whichKey = {
       enable = true;
+      setupOpts = {
+        notify = true;
+        preset = "helix";
+        replace = {
+          "<cr>" = "RETURN";
+          "<leader>" = "SPACE";
+          "<space>" = "SPACE";
+          "<tab>" = "TAB";
+        };
+      };
 
       # TODO: Make registers.
       register = {
@@ -369,7 +396,7 @@ in {
         rename = "<leader>cr";
         showLineDiagnostics = "<leader>cD";
         showCursorDiagnostics = "<leader>cd";
-        codeAction = mkUnused "ca";
+        codeAction = "<leader>ca";
 
         previousDiagnostic = "<leader>lp";
         nextDiagnostic = "<leader>ln";

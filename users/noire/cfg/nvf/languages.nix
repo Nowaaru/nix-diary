@@ -27,9 +27,12 @@ pkgs: {
     enable = true;
     lsp.neodev.enable = true;
   };
+  nix = {
+    enable = true;
+    lsp.server = "nixd";
+  };
 
   python.enable = true;
-  nix.enable = true;
   bash.enable = true;
   css.enable = true;
 }
