@@ -2,42 +2,54 @@
   stdenv,
   fetchgit,
   lib,
-  xorg,
   libGL,
   meson,
   cmake,
   ninja,
   pkg-config,
+
+  libX11,
+  libXrandr,
+  libXcursor,
+  libXrender,
+  libXcomposite,
+  libXfixes,
+  libXext,
+  libXi,
+
   ...
 }:
 with stdenv;
   mkDerivation (finalAttrs: {
     pname = "gpu-screen-recorder-notification";
-    version = "1.0.1";
+    version = "1.0.3";
     outputs = ["build" "out"];
     phases = ["setupPhase" "configurePhase" "buildPhase" "fixupPhase"];
 
     src = fetchgit {
       name = "gsr-notify";
       url = "https://repo.dec05eba.com/gpu-screen-recorder-notification";
-      rev = "4eaeba2a39874c76bfc71d69b97f7619f471747a";
-      hash = "sha256-i5rHyG66ZduibiL/zhriR/tS+yd5IVn2+heD3NiOluo=";
+      rev = "d0aee0cb0f8e471aedc40554ccd92ba60cf8aab6";
+      hash = "sha256-OXUQMnBu0m1jew9ZQXfc42k6sR9+OJiDwJGAOqTKxII=";
     };
 
-    nativeBuildInputs = with xorg; [
-      libX11
-      libXrandr
-      libXcursor
-      libXcomposite
-      libXfixes
-      libXi
-    ];
-
-    buildInputs = [
+    nativeBuildInputs = [
       pkg-config
       cmake
       meson
       ninja
+    ];
+
+    buildInputs = [
+      libX11
+      libXrandr
+      libXcursor
+      libXrender
+      libXcomposite
+      libXfixes
+      libXext
+      libXi
+
       libGL # libglvnd
     ];
 

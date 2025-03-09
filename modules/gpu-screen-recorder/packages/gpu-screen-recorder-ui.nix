@@ -1,21 +1,28 @@
 {
-  gpu-screen-recorder,
-  callPackage,
   stdenv,
   fetchgit,
   lib,
-  xorg,
-  libGL,
+  libglvnd,
+  libpulseaudio,
+  egl-wayland,
   meson,
   cmake,
   ninja,
   pkg-config,
+
+  libX11,
+  libXcomposite,
+  libXrandr,
+  libXcursor,
+  libXfixes,
+  libXi,
+
   ...
 }:
 with stdenv;
   mkDerivation (finalAttrs: {
     pname = "gpu-screen-recorder-ui";
-    version = "1.0.8";
+    version = "1.1.7";
 
     outputs = ["build" "out"];
     phases = ["setupPhase" "configurePhase" "buildPhase" "fixupPhase"];
@@ -23,11 +30,18 @@ with stdenv;
     src = fetchgit {
       name = "gsr-ui";
       url = "https://repo.dec05eba.com/gpu-screen-recorder-ui";
-      rev = "92401d8bc8fa3cbc8017936eb1d18280199942e0";
-      hash = "sha256-dOsJvdW+cZ7U03XUEYgAA6GniQ85jl/HO9vRqzPLKEs=";
+      rev = "8003c209fea16cd164817306cb33d46ac61a44f0";
+      hash = "sha256-qDehZ4Csj79kyGOZwbI6LUu2OlC3032tZ7Vr662knpg=";
     };
 
-    nativeBuildInputs = with xorg; [
+    nativeBuildInputs = [
+      pkg-config
+      cmake # needed (i think?)
+      meson # paired with ninja
+      ninja # paired with meson
+    ];
+
+    buildInputs = [
       libX11
       libXrandr
       libXcursor
@@ -35,17 +49,9 @@ with stdenv;
       libXfixes
       libXi
 
-      gpu-screen-recorder
-      libGL # libglvnd
-    ];
-
-    buildInputs = [
-      (callPackage ./gpu-screen-recorder-notification.nix {})
-      pkg-config
-      cmake # needed (i think?)
-      meson # paired with ninja
-      ninja # paired with meson
-      libGL # libglvnd
+      libpulseaudio
+      egl-wayland
+      libglvnd
     ];
 
     configurePhase = ''

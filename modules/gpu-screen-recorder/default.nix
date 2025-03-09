@@ -43,11 +43,10 @@ in
 
     config = let
       gsr-ui =
-        pkgs.callPackage ./packages/gpu-screen-recorder-ui.nix {
-          gpu-screen-recorder = cfg.package;
-        };
+        pkgs.callPackage ./packages/gpu-screen-recorder-ui.nix {};
 
       gsr-notify = pkgs.callPackage ./packages/gpu-screen-recorder-notification.nix {};
+
       packages = [
         (mkIf (cfg.enable && cfg.notify.enable) gsr-notify)
         (mkIf (cfg.enable && cfg.ui.enable) gsr-ui)
@@ -74,7 +73,15 @@ in
                 ExecStart = "systemctl start --now --user gpu-screen-recorder.service";
               };
             };
+
+            security.wrappers."gsr-kms-server" = lib.mkForce {
+              owner = "root";
+              group = "root";
+              capabilities = "cap_sys_admin+ep";
+              source = "${cfg.package}/gsr-kms-server";
+            };
           })
+
         (lib.mkIf (cfg.ui.autostart.enable) {
           systemd.user.services.start-gsr-ui = {
             wantedBy = ["multi-user.target" "graphical-session.target" "start-gsr.target"];
