@@ -287,7 +287,21 @@ for directories above their own dedicated edirectory.
 
   networking = {
     hostName = "lastation"; # Define your hostname.
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      dns = "systemd-resolved";
+      insertNameservers = lib.mkForce [
+        "192.168.0.165"
+        "192.168.0.165:53"
+        "192.168.0.165:4000"
+      ];
+    };
+    nameservers = lib.mkForce [
+      "192.168.0.165"
+      "192.168.0.165:53"
+      "192.168.0.165:4000"
+    ];
+
     firewall = {
       allowedTCPPorts = [25565];
       allowedTCPPortRanges = [
