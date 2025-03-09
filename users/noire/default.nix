@@ -84,6 +84,7 @@
     user.programs.brave.all
 
     # Applications/Misc
+    user.programs.blender
     user.programs.r2modman
     user.programs.nmm
     user.programs.rojo
