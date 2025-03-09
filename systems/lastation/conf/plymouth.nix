@@ -5,6 +5,22 @@ stable,
   inputs,
   ...
 }: {
+
+  systemd.services.wait-for-plymouth-animation = {
+    enable = true;
+    description = "Waits for Plymouth animation to finish";
+    before = ["plymouth-quit.service" "display-manager.service"];
+
+    restartIfChanged = false;
+
+    wantedBy = ["plymouth-start.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "/usr/bin/sleep 5";
+    };
+
+  };
+
   boot = {
     uvesafb = {
       enable = true;
@@ -14,7 +30,11 @@ stable,
 
     plymouth = {
       enable = true;
-      theme = "plymouth-theme"; # "catppuccin-mocha";
+      theme =  "plymouth-theme"; #  "catppuccin-mocha";
+      extraConfig = ''
+        [Daemon]
+        DeviceScale=96
+      '';
       themePackages = with pkgs; [
         (catppuccin-plymouth.override {variant = "mocha";})
         (adi1090x-plymouth-themes.override {selected_themes = ["hexagon_red"];})
@@ -23,6 +43,7 @@ stable,
           description = "A cool Plymouth theme.";
           comment = "Welcome to Gamindustri!";
           image = inputs.self + /cfg/themes/cat-anime-girl/cat-anime-girl.png;
+          resolution = "1920x1080";
           framerate = 50;
         })
       ];
