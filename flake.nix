@@ -208,9 +208,9 @@
       _args = {
         inherit inputs importApply withSystem;
         inherit (inputs) self;
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-        };
+        # pkgs = import nixpkgs {
+        #   system = "x86_64-linux";
+        # };
         lib = builtins.trace lib.gamindustri lib;
       };
 
