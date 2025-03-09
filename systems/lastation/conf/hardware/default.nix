@@ -44,9 +44,9 @@
 
   boot = {
     # using prime sync so im overriding with nvidia first then amd, hopefully it will work
-    initrd.kernelModules = lib.mkForce [
-      "nvidia"
-    ];
+    # initrd.kernelModules = lib.mkForce [
+    #   "nvidia"
+    # ];
 
     # enable for virtualization
     # kernelModules = [
