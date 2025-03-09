@@ -35,8 +35,7 @@
 
     # Gaming and the like.
     programs.gaming.minecraft
-    programs.gaming.bottles
-    # programs.gaming.lutris
+    programs.gaming.lutris
     programs.gaming.steam
     programs.gaming.osu
 
