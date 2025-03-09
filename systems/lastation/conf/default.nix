@@ -135,6 +135,7 @@ for directories above their own dedicated edirectory.
 
       # Disable XTerm
       desktopManager.xterm.enable = false;
+      displayManager.startx.enable = true;
       exportConfiguration = true;
     };
 
