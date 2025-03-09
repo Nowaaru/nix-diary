@@ -19,6 +19,7 @@ for directories above their own dedicated edirectory.
       ./plymouth.nix
 
       ./hardware
+      ./sleep.nix
       ./secure-boot.nix
 
       ../sys
