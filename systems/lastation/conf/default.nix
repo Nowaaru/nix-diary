@@ -160,7 +160,10 @@ for directories above their own dedicated edirectory.
     # List services that you want to enable:
 
     # Enable the OpenSSH daemon.
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      settings.X11Forwarding = true;
+    };
 
     # Enable Flatpak sandboxing.
     flatpak.enable = true;
