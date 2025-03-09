@@ -1,10 +1,8 @@
-_: {
+{ configure, ...}: {
   programs = {
     lazygit = {
       enable = true;
-      settings = {
-        git.commit.signOff = true;
-      };
+      settings = configure "git";
     };
   };
 }
