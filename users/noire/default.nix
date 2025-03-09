@@ -73,7 +73,7 @@
     # user.programs.an-anime-team.honkers
 
     # Desktop
-     user.programs.plasma
+    user.programs.plasma
 
     # Images
     user.programs.hydrus
@@ -88,6 +88,7 @@
     user.programs.nmm
     user.programs.rojo
     user.programs.umu
+    user.programs.libre
 
     # Multi-GPU
     user.programs.nixgl
