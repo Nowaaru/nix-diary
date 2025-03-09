@@ -115,6 +115,13 @@ toplevel @ {
                             if (builtins.pathExists usr-programs-dir)
                             then (libprograms.mkProgramTreeFromDir usr-programs-dir)
                             else {};
+
+                          # programs = import /${self}/programs (args
+                          #   // specialArgs
+                          #   // {
+                          #     inherit (/* localFlake.lib.traceVal */ pkgs) config;
+                          #     inherit (lib) withSystem;
+                          #   });
                         };
                       };
 
@@ -126,6 +133,14 @@ toplevel @ {
                         # patch to add application .desktop files
                         # automatically to launchers and things
                         xdg.systemDirs.data = ["/home/${usernameContent}/.local/state/nix/profiles/home-manager/home-path/share/applications/"];
+                      }
+
+                      # automatically setup wineprefix and other environment variables
+                      {
+                        sessionVariables = {
+                          GAMES_DIR = lib.mkDefault "/home/${usernameContent}/Games";
+                          WINEPREFIX = lib.mkDefault "/home/${usernameContent}/.wine";
+                        };
                       }
 
                       (lib.attrsets.filterAttrs (k: _: !(builtins.elem k ["__"])) usr)
