@@ -1,4 +1,4 @@
-{
+{ pkgs, inputs, ... }: {
   programs = {
     gpu-screen-recorder = {
       enable = true;
@@ -17,6 +17,10 @@
 
     steam = {
       enable = true; # steam-input works through programs.steam rather than just the package
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+        steam-play-none
+      ];
 
       gamescopeSession = {
         enable = true;
