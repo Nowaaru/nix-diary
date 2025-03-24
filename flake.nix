@@ -24,12 +24,12 @@
     experimental modules - home manager
     */
     power-mode-nvim = {
-      url = "path:/home/noire/Documents/projects/power-mode.nvim";
+      url = "github:nowaaru/power-mode.nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-mod-manager = {
-      url = "path:/home/noire/Documents/nix-flakes/nix-mod-manager";
+      url = "github:nowaaru/nix-mod-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -62,7 +62,7 @@
     game mods
     */
     nmm-mods = {
-      url = "path:/home/noire/Documents/game-mods";
+      url = "path:/home/noire/Documents/game-mods/clients";
       inputs = {
         nix-mod-manager.follows = "nix-mod-manager";
         home-manager.follows = "nixpkgs";
@@ -109,7 +109,7 @@
     /*
     neovim
     */
-    nvf.url = "github:NotAShelf/nvf/v0.7";
+    nvf.url = "github:NotAShelf/nvf/6576509";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
@@ -122,6 +122,7 @@
     */
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hyprutils = {
@@ -163,11 +164,6 @@
     ags = {
       url = "github:Aylur/ags";
     };
-
-    hyprland-astal = {
-      url = "path:/home/noire/Documents/hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -208,18 +204,17 @@
       _args = {
         inherit inputs importApply withSystem;
         inherit (inputs) self;
-        # pkgs = import nixpkgs {
-        #   system = "x86_64-linux";
-        # };
         lib = builtins.trace lib.gamindustri lib;
       };
 
       flakeModules.users = importApply ./users _args;
       flakeModules.systems = importApply ./systems _args;
     in {
+      # for nixd flake-parts debug
+      debug = true;
+
       imports = [
         inputs.flake-parts.flakeModules.flakeModules
-        # inputs.home-manager.flakeModules.home-manager
         flakeModules.systems
         flakeModules.users
       ];
