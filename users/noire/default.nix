@@ -5,7 +5,6 @@
   config,
   configure,
   programs,
-  lib,
   user,
   ...
 }: {
