@@ -2,14 +2,16 @@
   inputs,
   pkgs,
   lib,
+  configure,
 }: let
   maps = import ./keybindings.nix lib;
-  languages = import ./languages.nix pkgs;
-  mkUnused = keybinding: "<leader><leader>${keybinding}";
+  languages = import ./languages.nix inputs pkgs;
+  mkUnused = keybinding: "${if lib.strings.hasPrefix "<leader>" keybinding then "" else "<leader>"}<leader>${keybinding}";
   util = import ./util.nix lib;
 in {
   inherit maps languages;
-
+  # TODO: use withsystem or getsystem so i can use inputs'.["foobar"].packages.default;
+  package = inputs.neovim-nightly-overlay.packages.x86_64-linux.default;
   globals = {
     editorconfig = true;
     mapleader = " ";
@@ -17,9 +19,12 @@ in {
   };
 
   options = {
+    smartindent = true;
     autoindent = true;
+
     termguicolors = true;
-    signcolumn = true;
+    signcolumn = "yes";
+
     splitbelow = true;
     splitright = true;
     wrap = true;
@@ -28,6 +33,12 @@ in {
     shiftwidth = 4;
 
     mouse = "nvi";
+
+    directory = "/home/noire/.local/state/nvim/swap,~/tmp,/var/tmp,/tmp";
+    backupdir = "/home/noire/.local/state/nvim/backup";
+
+    undodir = "/home/noire/.local/state/nvim/undo";
+    undofile = true;
   };
 
   luaConfigPre = '''';
@@ -40,10 +51,20 @@ in {
   vimAlias = true;
 
   startPlugins = with pkgs.vimPlugins; [oxocarbon-nvim];
-  pluginRC.alpha = lib.mkForce (lib.hm.dag.entryAfter ["image-nvim"] (util.fetchLuaSource "alpha-startup"));
+  pluginOverrides = {
+      none-ls-nvim = pkgs.fetchFromGitHub {
+          owner = "nvimtools";
+          repo = "none-ls.nvim";
+          rev = "a117163db44c256d53c3be8717f3e1a2a28e6299";
+          hash = "sha256-KP/mS6HfVbPA5javQdj/x8qnYYk0G6oT0RZaPTAPseM=";
+      };
+  };
+  pluginRC = {
+    alpha = lib.mkForce (lib.hm.dag.entryAfter ["image-nvim"] (util.fetchLuaSource "alpha-startup"));
+  };
 
   luaConfigRC = {
-    theme = lib.mkForce (lib.hm.dag.entryAfter ["pluginConfigs"] ''
+    theme = lib.mkForce (lib.hm.dag.entryBefore ["pluginConfigs" "lazyConfigs"]''
       require('oxocarbon')
       vim.opt.background = "dark" -- set this to dark or light
       vim.cmd.colorscheme "oxocarbon"
@@ -56,6 +77,8 @@ in {
     '');
 
     lualine-gaps = lib.mkForce (lib.hm.dag.entryAfter ["lualine"] (util.fetchLuaSource "lualine-gaps"));
+
+    dirs = lib.mkForce (lib.hm.dag.entryAnywhere (util.fetchLuaSource "set-dirs"));
   };
 
   lineNumberMode = "relNumber";
@@ -75,6 +98,15 @@ in {
       '';
     };
 
+    # TODO: make flash-nvim part of nvf config via modules/neovim-flake
+    # flash-nvim = {
+    #     package = flash-nvim;
+    #     setup = ''
+    #             require('flash').setup({});
+    #     '';
+    # };
+
+    # TODO: make legendary part of nvf config via modules/neovim-flake
     legendary = {
       package = legendary-nvim;
       setup = ''
@@ -82,15 +114,6 @@ in {
       '';
     };
 
-    # precognition = {
-    #   package = precognition-nvim;
-    #   setup = ''
-    #     require("precognition").setup({
-    #       showBlankVirtLine = false;
-    #       disabled_fts = {"alpha"};
-    #     });
-    #   '';
-    # };
 
     showkeys = {
       package =
@@ -238,106 +261,7 @@ in {
   };
 
   filetree = {
-    nvimTree = {
-      enable = true;
-      mappings = {
-        focus = "<leader>e";
-        findFile = "<leader>f";
-        refresh = "<leader>R";
-      };
-
-      setupOpts = {
-        select_prompts = true;
-        respect_buf_cwd = false;
-
-        disable_netrw = true;
-        hijack_netrw = true;
-        hijack_unnamed_buffer_when_opening = true;
-        hijack_cursor = true;
-
-        hijack_directories = {
-          enable = true;
-          auto_open = true;
-        };
-
-        actions = {
-          change_dir.restrict_above_cwd = true;
-          open_file = {
-            quit_on_open = false;
-            resize_window = true;
-            eject = true;
-          };
-        };
-
-        filters = {
-          dotfiles = true;
-
-          git_clean = false;
-          git_ignored = true;
-        };
-
-        git = {
-          enable = true;
-          show_on_dirs = true;
-        };
-
-        modified = {
-          enable = true;
-          show_on_dirs = true;
-        };
-
-        renderer = {
-          full_name = true;
-          highlight_git = true;
-          reload_on_bufenter = true;
-          add_trailing = true;
-          group_empty = false;
-
-          highlight_opened_files = "icon";
-          highlight_modified = "name";
-        };
-
-        tab = {
-          sync = {
-            open = true;
-            close = true;
-            ignore = [];
-          };
-        };
-
-        ui = {
-          confirm.remove = true;
-          confirm.trash = true;
-        };
-
-        update_focused_file = {
-          enable = true;
-          update_root = true;
-        };
-
-        view = {
-          cursorline = true;
-          centralize_selection = false;
-          preserve_window_proportions = true;
-
-          side = "left";
-          signcolumn = "yes";
-
-          number = false;
-          relativenumber = false;
-
-          width = {
-            min = 30;
-            max = 36;
-            padding = 1;
-          };
-        };
-
-        diagnostics.enable = true;
-        icons.webdev_colors = true;
-        icons.modified_placement = "signcolumn";
-      };
-    };
+    nvimTree = configure "nvf.plugin.nvim-tree";
   };
 
   git = {
@@ -375,13 +299,13 @@ in {
 
     mappings = {
       hover = "<S-k>";
-      goToType = "<leader>lgt";
-      goToDefinition = "<leader>lgd";
-      goToDeclaration = "<leader>lgD";
+      goToType = "<leader>cgt";
+      goToDefinition = "<leader>cgd";
+      goToDeclaration = "<leader>cgD";
 
-      addWorkspaceFolder = "<leader>lwa";
-      documentHighlight = "<leader>lH";
-      codeAction = "<leader>la";
+      addWorkspaceFolder = "<leader>cwa";
+      documentHighlight = "<leader>cH";
+      codeAction = "<leader>ca";
       format = "<leader>cf";
     };
 
@@ -391,46 +315,39 @@ in {
     };
 
     lspsaga = {
+      # lspsaga is fried :/
+      /*
+        FIXME:
+            Error executing vim.schedule lua callback: ...k-dir/pack/mnw/start/lspsaga-nvim/lua/lspsaga/window.lua:158: attempt to call field '_trim' (a nil value)
+            stack traceback:
+                ...k-dir/pack/mnw/start/lspsaga-nvim/lua/lspsaga/window.lua:158: in function 'create_win_with_border'
+                ...mnw/start/lspsaga-nvim/lua/lspsaga/codeaction/window.lua:26: in function 'open'
+                ...r/pack/mnw/start/lspsaga-nvim/lua/lspsaga/codeaction.lua:32: in function 'handler'
+                ...vim-unwrapped-nightly/share/nvim/runtime/lua/vim/lsp.lua:1191: in function 'handler'
+                ...rapped-nightly/share/nvim/runtime/lua/vim/lsp/client.lua:679: in function ''
+                vim/_editor.lua: in function <vim/_editor.lua:0>
+      */
       enable = true;
       mappings = {
-        rename = "<leader>cr";
-        showLineDiagnostics = "<leader>cD";
-        showCursorDiagnostics = "<leader>cd";
-        codeAction = "<leader>ca";
+        rename = mkUnused "<leader>cr";
+        showLineDiagnostics = mkUnused "<leader>cD";
+        showCursorDiagnostics = mkUnused "<leader>cd";
+        codeAction = mkUnused "<leader>ca";
 
-        previousDiagnostic = "<leader>lp";
-        nextDiagnostic = "<leader>ln";
-        lspFinder = "<leader>lf";
+        previousDiagnostic = mkUnused "<leader>lp";
+        nextDiagnostic = mkUnused "<leader>ln";
+        lspFinder = mkUnused "<leader>lf";
 
-        renderHoveredDoc = "<leader>lh";
-        smartScrollUp = "<C-f>";
-        smartScrollDown = "<C-b>";
-        signatureHelp = "<leader>ls";
+        renderHoveredDoc = mkUnused "<leader>lh";
+        smartScrollUp = mkUnused "<C-f>";
+        smartScrollDown = mkUnused "<C-b>";
+        signatureHelp = mkUnused "<leader>ls";
       };
     };
 
     null-ls = {
       enable = true;
-      sources = {
-        # nixd = ''
-        #     local null_ls = require("null-ls");
-        #     local helpers = require("null-ls.helpers");
-        #
-        #
-        #     local source = null_ls.register({
-        #         name = "nixd",
-        #         filetypes = { "nix" },
-        #         method = null_ls.methods.DIAGNOSTICS,
-        #
-        #         generator = helpers.generator_factory({
-        #             command = "nixd";
-        #             on_output = function(params)
-        #                 print("output:", vim.inspect(params.output));
-        #             end
-        #         });
-        #     });
-        # '';
-      };
+      sources = {};
     };
 
     trouble = {
@@ -510,7 +427,7 @@ in {
       blacklist = inputs.secrets.neocord-blacklist;
 
       logo = "auto";
-      logo_tooltip = "Once you're too far in, you can never go back...";
+      logo_tooltip = "The Unstoppable 10x Programmer vs the Immovable NeoVim Config";
 
       line_number_text = "[%s/%s]";
 
@@ -520,7 +437,7 @@ in {
       reading_text = "📃 Catching up on %s...";
       terminal_text = "🖥️ Terminal time!";
       file_explorer_text = "🗂️ Using %s";
-      editing_text = "💥🔨 Tinkering with %s";
+      editing_text = "💥🔨 Editing %s";
       workspace_text = "🧰 %s";
     };
   };
@@ -653,8 +570,17 @@ in {
     vim-wakatime.enable = true;
     icon-picker.enable = true;
 
+    yanky-nvim = {
+        enable = true;
+        setupOpts.ring.storage = "shada";
+    };
+
     ccc = {
       enable = true;
+    };
+
+    motion.hop = {
+        enable = true;
     };
 
     motion.precognition = {
@@ -675,6 +601,24 @@ in {
     surround = {
       enable = true;
       useVendoredKeybindings = true;
+      setupOpts = {
+        keymaps = {
+            change = "cs";
+            change_line = "cS";
+            delete = "ds";
+
+            normal = "ys";
+            normal_line = "yss";
+            normal_cur = "yS";
+            normal_cur_line = "ySS";
+            
+            insert = "<C-y>s";
+            insert_line = "<C-y>S";
+
+            visual = "gs";
+            visual_line = "gS";
+        };
+      };
     };
   };
 
@@ -717,9 +661,30 @@ in {
       };
     };
 
-    cinnamon-nvim.enable = true;
+    cinnamon-nvim = {
+        enable = false;
+        setupOpts = { 
+            max_delta.line = true;
+            keymaps = {
+                extra = true;
+                basic = true;
+            };
+        };
+    };
+
+    indent-blankline = {
+        enable = true;
+        setupOpts.scope = {
+            show_start = true;
+            show_end = true;
+            show_exact_scope = true;
+        };
+    };
+
+    rainbow-delimiters.enable = true;
     nvim-cursorline.enable = true;
     nvim-web-devicons.enable = true;
+    tiny-devicons-auto-colors.enable = true;
   };
 
   tabline.nvimBufferline = {
@@ -747,5 +712,6 @@ in {
   telescope = {
     enable = lib.mkForce true;
   };
+
   spellcheck.enable = lib.mkForce false;
 }

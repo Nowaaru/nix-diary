@@ -3,6 +3,99 @@ local dashboard = require("alpha.themes.dashboard");
 
 --#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#--
 
+---@class (exact) HydrusClient
+---@field private API_KEY string The API key to use for the client.
+---@field private HYDRUS_URL string The Hydrus URL to use for the client.
+---@field public getFiles fun(self: HydrusClient): JSON
+
+---@alias JSON table<string, string | number | table<string, JSON>> A JSON table.
+--#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#--
+
+local http, hydrus = {}, {};
+do
+    ---Encode a string into its hexadecimal counterparts for
+    ---non-ASCII character sets.
+    ---@param str string
+    ---@return string EncodedString
+    function http.encode(str)
+        return (str:gsub(".", function(item_to_replace)
+            if (not item_to_replace:match("%w")) then
+                return ("%%%X"):format(tostring(string.byte(item_to_replace)));
+            end
+
+            return item_to_replace;
+        end))
+    end;
+
+    ---Fetch a URL. Returns a string.
+    ---@param url string
+    ---@return JSON Request
+    function http.fetch(url)
+        print("fetching url:", url);
+        local requestProcess = io.popen(("wget2 -qO- \"%s\""):format(url))
+        assert(requestProcess, ("expected string, got %s"):format(type(requestProcess)));
+
+        ---@type string
+        local response = requestProcess:read("all")
+        requestProcess:close()
+
+        local t = vim.json.decode(response)
+        return t;
+    end;
+end
+do
+    ---@overload fun(api_key: string): HydrusClient
+    local client = setmetatable({}, {
+        __call = function(self, api_key)
+            ---@class HydrusClient
+            local object = {
+                HYDRUS_URL = "http://127.0.0.1:45869",
+                API_KEY = api_key,
+            };
+
+            function object:getFiles()
+                return http.fetch(([[%s/get_files/search_files?tags=%s&Hydrus-Client-API-Access-Key=%s]]):format(
+                self.HYDRUS_URL, http.encode('["system:filetype = image/jpg, image/png, apng"]'), self.API_KEY))
+                --get_files/search_files?tags=%5B%22system%3Aeverything%22%5D&Hydrus-Client-API-Access-Key=d063d40e2f2dd7d3561a42539fec57fbc37dc300435fcaf9fadf96576e1750cb
+            end
+
+            ---@param fileId number
+            ---@param width? number
+            ---@param height? number
+            function object:getRender(fileId, width, height)
+                return ("%s/get_files/render?file_id=%i&download=true&render_quality=0&render_format=2%s&%s&Hydrus-Client-API-Access-Key=%s")
+                    :format(self.HYDRUS_URL, fileId, width and ("&width=" .. tostring(width)) or "",
+                        height and ("&height=" .. tostring(height)) or "", self.API_KEY)
+            end
+
+            function object:getMetadata(...)
+                local fileIds = { ... };
+                local outFileIds = {};
+                -- for _, fileId in ipairs(fileIds)
+                --     outFileIds[fileId] = http.fetch("%s"/get_
+                -- end
+                --
+                -- return http.fetch(
+                --     ("%s/get_files/file_metadata?file_ids
+            end
+
+            return object;
+        end
+    });
+
+    hydrus.client = client;
+end
+
+
+-- local a = hydrus.client("d063d40e2f2dd7d3561a42539fec57fbc37dc300435fcaf9fadf96576e1750cb")
+-- local fileIds = a:getFiles().file_ids;
+-- local randomId = fileIds[math.random(1, #fileIds)];
+-- local b = a:getRender(randomId);
+-- print(("got render for %s:"):format(randomId));
+-- print(vim.inspect(b));
+
+--#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#--
+
 local DATE = os.date("*t");
 
 local ENABLE_RANDOM_IMAGES = true;
@@ -11,7 +104,7 @@ local ENABLE_RANDOM_FOOTERS = true;
 
 
 local IMAGE_SOURCES = {
-    { "/home/noire/Pictures/IMG_1883.png", 0.5 };
+    { "/home/noire/Pictures/IMG_1883.png", 0.5 },
 };
 
 local IMAGE_MAX_DIMENSIONS = { width = 24, height = 24 };
@@ -58,7 +151,7 @@ local FOOTERS = {
     "there's no one way to grind.",
     "be productve",
     "good luck.",
-    ((DATE.month == 12 or DATE.month == 1) and "" or (DATE.month == 11 and "" or  (DATE.month == 10 and "󰮣" or ((DATE.month == 7 or DATE.month == 6 or (DATE.month == 5 and DATE.day >= 19)) and "󰖨" or ((DATE.month == 5 or DATE.month == 4 or DATE.month == 3) and "" or (DATE.month == 2 and "♥" or ""))))));
+    ((DATE.month == 12 or DATE.month == 1) and "" or (DATE.month == 11 and "" or (DATE.month == 10 and "󰮣" or ((DATE.month == 7 or DATE.month == 6 or (DATE.month == 5 and DATE.day >= 19)) and "󰖨" or ((DATE.month == 5 or DATE.month == 4 or DATE.month == 3) and "" or (DATE.month == 2 and "♥" or "")))))),
 };
 
 --#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#--
@@ -73,11 +166,11 @@ local function weighted_random(LIST)
         if (type(item) == "table") then
             local tableWeight = item.weight or item[2];
             overallWeight = overallWeight + tableWeight;
-            tableIndices[#tableIndices+1] = item;
+            tableIndices[#tableIndices + 1] = item;
         elseif (type(item) == "string") then
             local weight = (overallWeight == 0 and 1 or overallWeight) / (#tableIndices + 1);
             overallWeight = overallWeight + weight;
-            tableIndices[#tableIndices+1] = { weight = weight, src = item };
+            tableIndices[#tableIndices + 1] = { weight = weight, src = item };
         else
             error(errorMessage);
         end
@@ -91,7 +184,8 @@ local function weighted_random(LIST)
         if (overallWeight <= 1) then
             randomValue = math.random(overallWeight * 100) / 100;
         else
-            randomValue = math.random(math.floor(overallWeight)) + (overallWeight % 1 ~= 0 and (math.random((overallWeight % 1) * 100) / 100) or 0);
+            randomValue = math.random(math.floor(overallWeight)) +
+            (overallWeight % 1 ~= 0 and (math.random((overallWeight % 1) * 100) / 100) or 0);
         end
     end;
 
@@ -100,7 +194,9 @@ local function weighted_random(LIST)
         local currentIndex = tableIndices[i];
         weightsCursor = weightsCursor + (currentIndex.weight or currentIndex[2]);
         if (weightsCursor >= randomValue) then
-             return (currentIndex.src or currentIndex.item or currentIndex.img or currentIndex.image or currentIndex.source or currentIndex[1]), weightsCursor, randomValue;
+            return
+            (currentIndex.src or currentIndex.item or currentIndex.img or currentIndex.image or currentIndex.source or currentIndex[1]),
+                weightsCursor, randomValue;
         end
     end
 
@@ -110,7 +206,7 @@ end
 local IMAGE_SOURCE; do
     if (ENABLE_RANDOM_IMAGES) then
         local randomImage, weightsCursor, randomValue = weighted_random(IMAGE_SOURCES);
-        assert(randomImage, "weight out of bounds: ".. weightsCursor .. " out of " .. randomValue);
+        assert(randomImage, "weight out of bounds: " .. weightsCursor .. " out of " .. randomValue);
 
         IMAGE_SOURCE = randomImage;
     else
@@ -142,15 +238,31 @@ dashboard.config.opts.noautocmd = true
 
 local currentImage;
 local cachedImages = {};
-local function fetchImage(path)
-    local randomImage = image.from_file(path)
+local function cacheImage(img)
+    local imageChoice = img.path or img.original_path;
 
-    local imageChoice = randomImage.path or randomImage.original_path or path
     if (cachedImages[imageChoice]) then
         return cachedImages[imageChoice]
     else
-        cachedImages[imageChoice] = randomImage;
+        cachedImages[imageChoice] = img;
     end
+end
+
+local function fetchImageFromUrl(url)
+    return image.from_url(url, function(newImage)
+        cacheImage(newImage);
+
+        return newImage;
+    end)
+end
+
+local function fetchImage(path)
+    if (path:match("^https://") or path:match("^http://")) then
+        return fetchImageFromUrl(path);
+    end
+
+    local randomImage = image.from_file(path)
+    cacheImage(randomImage);
 
     return randomImage;
 end
@@ -170,7 +282,7 @@ end
 local function fetchHeaderImageAdjustments(imgSource)
     local img = imgSource or currentImage;
     local imageHeight = select(2, fetchImageDimensions(img));
-    local newHeaderValue = {unpack(HEADER)};
+    local newHeaderValue = { unpack(HEADER) };
 
     local result = math.ceil(imageHeight / 4) + currentImage.geometry.y + 1;
     local longestIndex = 0;
@@ -201,20 +313,20 @@ local function renderImage(imgSource)
     local width, height, topLeftX, topLeftY = fetchImageDimensions(img);
     img:clear();
     img:render({
-        -- turns out ALL of the size metrics are in cells and NOT 
+        -- turns out ALL of the size metrics are in cells and NOT
         -- in pixels. Huh.
         x = topLeftX,
         y = IMAGE_MARGINS.top,
 
-        width = width;
-        height = height;
+        width = width,
+        height = height,
     });
-
 end
+
 
 local isAlphaOpen = false;
 vim.api.nvim_create_autocmd("VimResized", {
-    callback = function ()
+    callback = function()
         if (isAlphaOpen) then
             renderImage(currentImage)
         end
@@ -239,7 +351,7 @@ vim.api.nvim_create_autocmd("User", {
         --
         -- it's really deferred on VimEnter but
         -- after that it's instant so i guess its
-        -- just an image.nvim bottleneck 
+        -- just an image.nvim bottleneck
         --]]
         isAlphaOpen = true;
         vim.defer_fn(function()
