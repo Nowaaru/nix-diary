@@ -18,7 +18,6 @@ stable,
       Type = "oneshot";
       ExecStart = "/usr/bin/sleep 5";
     };
-
   };
 
   boot = {
