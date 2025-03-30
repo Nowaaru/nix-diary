@@ -19,7 +19,7 @@ withSystem:
               // home-manager.lib
               // {  inherit withSystem; }
               // (
-                if super ? "config" && super.config ? "lib"
+                if (builtins.hasAttr "config" super) && (builtins.hasAttr "lib" super.config)
                 then builtins.trace "has config.lib" super.config.lib
                 else {}
               );
