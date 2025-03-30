@@ -191,22 +191,6 @@ for directories above their own dedicated edirectory.
   #   packages = []; # managed via home-manager
   # };
   # users.users = import ./register-users.nix args;
-  nix = {
-    # Enable flakes.
-
-    # Disabled in favor of nh.
-    # gc = {
-    #   automatic = true;
-    #   randomizedDelaySec = "14m";
-    #   options = "--delete-older-than 10d";
-    # };
-
-    # I am insane.
-    package = pkgs.nixVersions.latest;
-
-    # Experimental settings.
-    settings.experimental-features = ["nix-command" "flakes"];
-  };
 
   # Desktop things
   services.desktopManager.plasma6.enable = true;
@@ -220,6 +204,8 @@ for directories above their own dedicated edirectory.
 
     # Hyprland!
     hyprland = {enable = true;};
+
+    nix-ld.enable = true;
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
@@ -290,34 +276,6 @@ for directories above their own dedicated edirectory.
     ];
   };
 
-  networking = {
-    hostName = "lastation"; # Define your hostname.
-    networkmanager = {
-      enable = true;
-      dns = "systemd-resolved";
-      insertNameservers = lib.mkForce [
-        "192.168.0.165"
-        "192.168.0.165:53"
-        "192.168.0.165:4000"
-      ];
-    };
-    nameservers = lib.mkForce [
-      "192.168.0.165"
-      "192.168.0.165:53"
-      "192.168.0.165:4000"
-    ];
-
-    firewall = {
-      allowedTCPPorts = [25565];
-      allowedTCPPortRanges = [
-        {
-          from = 34872;
-          to = 34876;
-        }
-      ];
-      allowedUDPPorts = [];
-    };
-  };
 
   system.stateVersion = "23.11"; # Did you read the comment?
   virtualisation.waydroid.enable = true;
