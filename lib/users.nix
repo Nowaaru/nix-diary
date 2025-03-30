@@ -50,7 +50,9 @@ toplevel @ {
                   ...
                 } @ ctx:
                   lib.homeManagerConfiguration (let
-                    _configure = special_args: program_name: let
+                    _configure = special_args: pre_program_name: let
+                      program_name = lib.strings.replaceChars ["\\." "."] ["." "/"] pre_program_name;
+
                       mkCfgDir = cfgDir:
                         if builtins.pathExists cfgDir
                         then cfgDir
@@ -93,7 +95,7 @@ toplevel @ {
                     pkgs = _pkgs;
                     extraSpecialArgs =
                       _extraSpecialArgs
-                      // {
+                      // rec {
                         inherit inputs' self' self;
                         # directory for user data (like meta.nix, cfg, programs...)
                         root = /${usrRoot}/${usr.home.username.content};
@@ -102,6 +104,8 @@ toplevel @ {
                           {
                             pkgs = _pkgs;
                             inherit (_pkgs) lib;
+                            inherit configure;
+                            
                           }
                           // _extraSpecialArgs
                         );
@@ -137,7 +141,7 @@ toplevel @ {
 
                       # automatically setup wineprefix and other environment variables
                       {
-                        sessionVariables = {
+                        home.sessionVariables = {
                           GAMES_DIR = lib.mkDefault "/home/${usernameContent}/Games";
                           WINEPREFIX = lib.mkDefault "/home/${usernameContent}/.wine";
                         };
