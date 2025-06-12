@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./register-users.nix
+      ../programs.nix
     ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
