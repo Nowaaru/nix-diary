@@ -1,8 +1,7 @@
 {pkgs, stable, ...}: {
   environment.systemPackages = with pkgs; [
-    mono
-
     winetricks
-    wineWowPackages.full
+    freetype
+    wineWow64Packages.staging
   ];
 }
