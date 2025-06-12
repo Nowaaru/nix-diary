@@ -15,15 +15,16 @@ toplevel @ {
       inherit specialArgs;
       inherit (pkgs) lib;
 
-      modules = [
-        inputs.lanzaboote.nixosModules.lanzaboote
-        inputs.home-manager.nixosModules.home-manager
+      modules = with inputs; [
+        lanzaboote.nixosModules.lanzaboote
+        home-manager.nixosModules.home-manager
+        # nix-ld.nixosModules.nix-ld
         /*
         readonly pkgs
         */
         {
           imports = [
-            inputs.nixpkgs.nixosModules.readOnlyPkgs
+            nixpkgs.nixosModules.readOnlyPkgs
           ];
 
           nixpkgs.pkgs = pkgs.lib.mkForce pkgs;
