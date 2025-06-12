@@ -123,7 +123,9 @@ for directories above their own dedicated edirectory.
         enable = true;
       };
 
-      settings = {};
+      settings = {
+        #  X11.ServerArguments = "-listen tcp -dpi 96";
+      };
     };
 
     xserver = {
@@ -136,6 +138,7 @@ for directories above their own dedicated edirectory.
       # Disable XTerm
       desktopManager.xterm.enable = false;
       displayManager.startx.enable = true;
+      displayManager.xserverArgs = [ "-listen tcp" "-dpi 96" ];
       exportConfiguration = true;
     };
 
@@ -194,6 +197,7 @@ for directories above their own dedicated edirectory.
 
   # Desktop things
   services.desktopManager.plasma6.enable = true;
+
   programs = {
     # Noisetorch
     noisetorch.enable = true;
@@ -206,6 +210,8 @@ for directories above their own dedicated edirectory.
     hyprland = {enable = true;};
 
     nix-ld.enable = true;
+
+    xwayland.enable = true;
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
@@ -271,7 +277,6 @@ for directories above their own dedicated edirectory.
       fishPlugins.hydro
       fishPlugins.grc
 
-      dotnet-runtime
       nix-du
     ];
   };
