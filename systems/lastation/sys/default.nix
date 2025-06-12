@@ -31,12 +31,20 @@ System preinitialization. Used to configure Nix itself.
 
     # DNS
     ./dns.nix
+    ./blocky.nix
 
     # Plex alternative
     ./jellyfin.nix
+    
+    # Wireless Desktop
+    ./sunshine.nix
+    ./ibus.nix
 
     ./deluge.nix
     ./gaming.nix
+    
+    # fuck this stupid os
+    ./insecure.nix
   ];
 
   nix = {
@@ -48,7 +56,7 @@ System preinitialization. Used to configure Nix itself.
     };
 
     settings = {
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = ["nix-command" "flakes" "repl-flake"];
       substituters = [
         "https://nix-community.cachix.org"
       ];
@@ -61,11 +69,14 @@ System preinitialization. Used to configure Nix itself.
   # Dependencies and things.
   environment.systemPackages = with pkgs;
     [
-      dotnet-runtime
       unrar # unzip replacement
       grc # generic colourizer
       fzf # fuzzy find
       wget2 # oh yeah
+      kdePackages.colord-kde
+      kdePackages.kmag
+      gnome-color-manager
+      displaycal
     ]
     ++ [home-manager]; # do not remove home-manager.
 }

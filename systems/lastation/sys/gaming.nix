@@ -1,15 +1,15 @@
 { pkgs, inputs, ... }: {
   programs = {
-    gpu-screen-recorder = {
-      enable = true;
-      package = pkgs.callPackage (inputs.self + /modules/gpu-screen-recorder/packages/gpu-screen-recorder.nix) pkgs.xorg;
-      ui = {
-        enable = true;
-        autostart.enable = true;
-        keymaps.register = true;
-      };
-      notify.enable = true;
-    };
+    # gpu-screen-recorder = {
+    #   enable = true;
+    #   package = pkgs.callPackage (inputs.self + /modules/gpu-screen-recorder/packages/gpu-screen-recorder.nix) pkgs.xorg;
+    #   ui = {
+    #     enable = true;
+    #     autostart.enable = true;
+    #     keymaps.register = true;
+    #   };
+    #   notify.enable = true;
+    # };
 
     gamemode = {
       enable = true;
