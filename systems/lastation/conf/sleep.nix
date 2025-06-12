@@ -1,8 +1,9 @@
-_: {
+{ lib, ...}: {
   systemd.targets = {
-    sleep.enable = true;
-    suspend.enable = false; # this shit makes my pc un-wakeable after some time and i have to FULLY switch that mf off so nah
-    hibernate.enable = false;
-    hybrid-sleep.enable = false;
+    # this shit makes my pc un-wakeable after some time and i have to FULLY switch that mf off so nah
+    sleep.enable = lib.mkForce false;
+    suspend.enable = lib.mkForce false; 
+    hibernate.enable = lib.mkForce false;
+    hybrid-sleep.enable = lib.mkForce false;
   };
 }
