@@ -1,7 +1,7 @@
-{pkgs, ...}:
+{pkgs, stable, ...}:
 {
-  home.packages = with pkgs; [
-    librewolf
+  home.packages = with stable; [
     libreoffice
+    librewolf
   ];
 }
