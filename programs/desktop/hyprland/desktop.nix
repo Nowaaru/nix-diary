@@ -14,18 +14,25 @@
   '';
 
   hyprPackages = inputs.hyprland.packages.${pkgs.system};
+  hyprland = hyprPackages.hyprland.overrideAttrs (prev: {
+    buildInputs = lib.lists.foldl' (a: v:
+      if v.pname == "wayland-protocols"
+      then a ++ (lib.singleton (pkgs.callPackage (inputs.self + /packages/wayland-protocols.nix) {}))
+      else a ++ (lib.singleton v)) []
+    prev.buildInputs;
+  });
 in {
   xdg.portal = {
     enable = true;
     configPackages = [
-      hyprPackages.hyprland
+      hyprland
     ];
   };
 
   wayland.windowManager.hyprland = {
     enable = true;
     plugins = [];
-    package = hyprPackages.hyprland;
+    package = hyprland;
     settings = hypr-config.hypr;
 
     sourceFirst = true;
@@ -49,7 +56,7 @@ in {
 
     activation = {
       hyprland_reload =
-        lib.hm.dag.entryAfter ["writeBoundary"] (ifHyprland "${hyprPackages.hyprland}/bin/hyprctl reload");
+        lib.hm.dag.entryAfter ["writeBoundary"] (ifHyprland "${hyprland}/bin/hyprctl reload");
     };
   };
 }
