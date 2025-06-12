@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ stable, pkgs, ... }:
 {
-    environment.systemPackages = with pkgs; [
-      kitty
-      kitty-img
-    ];
+    # environment.systemPackages = with stable; [
+    #   kitty
+    #   kitty-img
+    # ];
 }
