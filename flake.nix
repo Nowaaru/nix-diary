@@ -7,6 +7,7 @@
     */
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-mirror.url = "github:nixos/nixpkgs/release-24.11";
+    nixpkgs-master.url = "github:nixos/nixpkgs/b3582c75c7f21ce0b429898980eddbbf05c68e55";
     nurpkgs.url = "github:nix-community/NUR";
 
     /*
@@ -20,6 +21,16 @@
     experimental modules - nixos
     */
 
+    nix-ld = {
+      url = "github:nix-community/nix-ld";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     /*
     experimental modules - home manager
     */
@@ -29,7 +40,8 @@
     };
 
     nix-mod-manager = {
-      url = "github:nowaaru/nix-mod-manager";
+      # url = "github:nowaaru/nix-mod-manager";
+      url = "path:/shared/flakes/nix-mod-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -56,13 +68,13 @@
     /*
     secrets
     */
-    secrets.url = "path:/home/noire/Documents/nix-secrets";
+    secrets.url = "path:/shared/secrets";
 
     /*
     game mods
     */
     nmm-mods = {
-      url = "path:/home/noire/Documents/game-mods/clients";
+      url = "path:/shared/modding/clients";
       inputs = {
         nix-mod-manager.follows = "nix-mod-manager";
         home-manager.follows = "nixpkgs";
@@ -109,7 +121,7 @@
     /*
     neovim
     */
-    nvf.url = "github:NotAShelf/nvf/6576509";
+    nvf.url = "github:NotAShelf/nvf/a1806457caf18e02bbf747e0263caf8740bacfb6";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     /*
@@ -198,6 +210,11 @@
 
       config = {
         allowUnfree = true;
+        permittedInsecurePackages = [
+          "dotnet-sdk-6.0.428"
+          "dotnet-sdk-7.0.410"
+          "dotnet-sdk_7"
+        ];
       };
 
       modules = lib.gamindustri.modules.mkModules (inputs.self + /modules);
@@ -225,13 +242,19 @@
         system,
         self',
         ...
-      }: {
+      }: rec {
+        _module.args.pkgs = legacyPackages.default;
+
         legacyPackages = {
           default = import nixpkgs {
             inherit system overlays config;
           };
 
           stable = import inputs.nixpkgs-mirror {
+            inherit system overlays config;
+          };
+
+          master = import inputs.nixpkgs-master {
             inherit system overlays config;
           };
 
@@ -248,7 +271,6 @@
         inherit flakeModules;
         inherit lib;
 
-          # homeConfigurations = 
         nixosModules = modules;
       };
     });
