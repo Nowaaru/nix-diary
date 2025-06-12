@@ -80,6 +80,7 @@
     # Browsers
     # user.programs.floorp.all
     user.programs.brave.all
+    user.programs.zen
 
     # Applications/Misc
     user.programs.blender
@@ -88,6 +89,7 @@
     user.programs.rojo
     user.programs.umu
     user.programs.libre
+    user.programs.kitty
 
     # Multi-GPU
     user.programs.nixgl
@@ -105,8 +107,6 @@
       experimental-features = ["scale-monitor-framebuffer"];
     };
   };
-
-
 
   fonts.fontconfig.enable = true;
 
