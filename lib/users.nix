@@ -12,12 +12,13 @@ toplevel @ {
       variables ? sessionVariables,
       extraSpecialArgs ? {},
       files ? {},
+      modules ? [],
       system,
     }: {
       # TODO: omit this hacky  ass way and
       # use the home-mousersdules/systemic-home-manager
       # module to enable home.system = "x86_64-linux"
-      __ = {inherit extraSpecialArgs system;};
+      __ = {inherit extraSpecialArgs system modules;};
       imports = programs;
 
       home = {
@@ -149,7 +150,7 @@ toplevel @ {
 
                       (lib.attrsets.filterAttrs (k: _: !(builtins.elem k ["__"])) usr)
                       (lib.traceVal /${usrRoot}/${usernameContent})
-                    ];
+                    ] ++ usr.__.modules;
                   }));
             }
         ) {}
