@@ -4,9 +4,13 @@
   lib,
   configure,
 }: let
-  maps = import ./keybindings.nix lib;
+  maps = import ./modules {inherit lib;};
   languages = import ./languages.nix inputs pkgs;
-  mkUnused = keybinding: "${if lib.strings.hasPrefix "<leader>" keybinding then "" else "<leader>"}<leader>${keybinding}";
+  mkUnused = keybinding: "${
+    if lib.strings.hasPrefix "<leader>" keybinding
+    then ""
+    else "<leader>"
+  }<leader>${keybinding}";
   util = import ./util.nix lib;
 in {
   inherit maps languages;
@@ -52,19 +56,19 @@ in {
 
   startPlugins = with pkgs.vimPlugins; [oxocarbon-nvim];
   pluginOverrides = {
-      none-ls-nvim = pkgs.fetchFromGitHub {
-          owner = "nvimtools";
-          repo = "none-ls.nvim";
-          rev = "a117163db44c256d53c3be8717f3e1a2a28e6299";
-          hash = "sha256-KP/mS6HfVbPA5javQdj/x8qnYYk0G6oT0RZaPTAPseM=";
-      };
+    # none-ls-nvim = pkgs.fetchFromGitHub {
+    #     owner = "nvimtools";
+    #     repo = "none-ls.nvim";
+    #     rev = "a117163db44c256d53c3be8717f3e1a2a28e6299";
+    #     hash = "sha256-KP/mS6HfVbPA5javQdj/x8qnYYk0G6oT0RZaPTAPseM=";
+    # };
   };
   pluginRC = {
     alpha = lib.mkForce (lib.hm.dag.entryAfter ["image-nvim"] (util.fetchLuaSource "alpha-startup"));
   };
 
   luaConfigRC = {
-    theme = lib.mkForce (lib.hm.dag.entryBefore ["pluginConfigs" "lazyConfigs"]''
+    theme = lib.mkForce (lib.hm.dag.entryBefore ["pluginConfigs" "lazyConfigs"] ''
       require('oxocarbon')
       vim.opt.background = "dark" -- set this to dark or light
       vim.cmd.colorscheme "oxocarbon"
@@ -98,6 +102,13 @@ in {
       '';
     };
 
+    scope-nvim = {
+      package = scope-nvim;
+      setup = ''
+        require("scope").setup({})
+      '';
+    };
+
     # TODO: make flash-nvim part of nvf config via modules/neovim-flake
     # flash-nvim = {
     #     package = flash-nvim;
@@ -113,7 +124,6 @@ in {
         require('legendary').setup({})
       '';
     };
-
 
     showkeys = {
       package =
@@ -158,6 +168,22 @@ in {
     logFile = "/tmp/nvf.log";
   };
 
+  formatter.conform-nvim = {
+    enable = true;
+    setupOpts = {
+      formatters_by_ft = {
+        nix = ["nixd"];
+        javascript = ["dprint"];
+        typescript = ["dprint"];
+        rust = ["rustfmt" "rust-analyzer"];
+      };
+
+      notify_on_error = true;
+      notify_no_formatters = true;
+      formatters.command = "${pkgs.dprint}";
+    };
+  };
+
   binds = {
     whichKey = {
       enable = true;
@@ -180,8 +206,9 @@ in {
         "<leader>d" = "[] Debug";
         "<leader>m" = "[] Minimap";
         "<leader>g" = "[] GitSigns";
-        "<leader>b" = "[] Buffers & Tabs";
-        "<leader>t" = "[] Todo";
+        "<leader>b" = "[] Buffers";
+        "<leader>t" = "[] Tabs";
+        "<leader>T" = "[] Todo";
         "<leader>c" = "[] Code Actions";
 
         "<leader>l" = "[] LSP Actions";
@@ -316,38 +343,11 @@ in {
 
     lspsaga = {
       # lspsaga is fried :/
-      /*
-        FIXME:
-            Error executing vim.schedule lua callback: ...k-dir/pack/mnw/start/lspsaga-nvim/lua/lspsaga/window.lua:158: attempt to call field '_trim' (a nil value)
-            stack traceback:
-                ...k-dir/pack/mnw/start/lspsaga-nvim/lua/lspsaga/window.lua:158: in function 'create_win_with_border'
-                ...mnw/start/lspsaga-nvim/lua/lspsaga/codeaction/window.lua:26: in function 'open'
-                ...r/pack/mnw/start/lspsaga-nvim/lua/lspsaga/codeaction.lua:32: in function 'handler'
-                ...vim-unwrapped-nightly/share/nvim/runtime/lua/vim/lsp.lua:1191: in function 'handler'
-                ...rapped-nightly/share/nvim/runtime/lua/vim/lsp/client.lua:679: in function ''
-                vim/_editor.lua: in function <vim/_editor.lua:0>
-      */
       enable = true;
-      mappings = {
-        rename = mkUnused "<leader>cr";
-        showLineDiagnostics = mkUnused "<leader>cD";
-        showCursorDiagnostics = mkUnused "<leader>cd";
-        codeAction = mkUnused "<leader>ca";
-
-        previousDiagnostic = mkUnused "<leader>lp";
-        nextDiagnostic = mkUnused "<leader>ln";
-        lspFinder = mkUnused "<leader>lf";
-
-        renderHoveredDoc = mkUnused "<leader>lh";
-        smartScrollUp = mkUnused "<C-f>";
-        smartScrollDown = mkUnused "<C-b>";
-        signatureHelp = mkUnused "<leader>ls";
-      };
     };
 
     null-ls = {
       enable = true;
-      sources = {};
     };
 
     trouble = {
@@ -408,9 +408,9 @@ in {
     todo-comments = {
       enable = true;
       mappings = {
-        quickFix = "<leader>tq";
-        trouble = "<leader>tx";
-        telescope = mkUnused "ts";
+        quickFix = "<leader>Tq";
+        trouble = "<leader>Tx";
+        telescope = mkUnused "Ts";
       };
     };
 
@@ -571,8 +571,8 @@ in {
     icon-picker.enable = true;
 
     yanky-nvim = {
-        enable = true;
-        setupOpts.ring.storage = "shada";
+      enable = true;
+      setupOpts.ring.storage = "shada";
     };
 
     ccc = {
@@ -580,7 +580,7 @@ in {
     };
 
     motion.hop = {
-        enable = true;
+      enable = true;
     };
 
     motion.precognition = {
@@ -603,20 +603,20 @@ in {
       useVendoredKeybindings = true;
       setupOpts = {
         keymaps = {
-            change = "cs";
-            change_line = "cS";
-            delete = "ds";
+          change = "cs";
+          change_line = "cS";
+          delete = "ds";
 
-            normal = "ys";
-            normal_line = "yss";
-            normal_cur = "yS";
-            normal_cur_line = "ySS";
-            
-            insert = "<C-y>s";
-            insert_line = "<C-y>S";
+          normal = "ys";
+          normal_line = "yss";
+          normal_cur = "yS";
+          normal_cur_line = "ySS";
 
-            visual = "gs";
-            visual_line = "gS";
+          insert = "<C-y>s";
+          insert_line = "<C-y>S";
+
+          visual = "gs";
+          visual_line = "gS";
         };
       };
     };
@@ -662,23 +662,23 @@ in {
     };
 
     cinnamon-nvim = {
-        enable = false;
-        setupOpts = { 
-            max_delta.line = true;
-            keymaps = {
-                extra = true;
-                basic = true;
-            };
+      enable = false;
+      setupOpts = {
+        max_delta.line = true;
+        keymaps = {
+          extra = true;
+          basic = true;
         };
+      };
     };
 
     indent-blankline = {
-        enable = true;
-        setupOpts.scope = {
-            show_start = true;
-            show_end = true;
-            show_exact_scope = true;
-        };
+      enable = true;
+      setupOpts.scope = {
+        show_start = true;
+        show_end = true;
+        show_exact_scope = true;
+      };
     };
 
     rainbow-delimiters.enable = true;

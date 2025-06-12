@@ -1,0 +1,3 @@
+lib: rec {
+  normal = {};
+}
