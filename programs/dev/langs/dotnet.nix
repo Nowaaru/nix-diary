@@ -1,8 +1,10 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    dotnet-sdk_8
+    dotnet-sdk_9
+    dotnet-runtime_9
   ];
+
   home.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_8}";
+    DOTNET_ROOT = pkgs.dotnet-runtime_9 + /shared;
   };
 }
