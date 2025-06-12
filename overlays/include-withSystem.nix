@@ -1,7 +1,6 @@
 withSystem: (_: super: {
-  lib = super.lib.extend (_: prev:
-    prev
-    // {
+  lib = super.lib.extend (_: _:
+    {
       inherit withSystem;
     });
 })

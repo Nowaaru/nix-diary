@@ -35,6 +35,8 @@ in [
   (import ./stable-basedpyright.nix withSystem inputs)
   (import ./wine-update.nix withSystem inputs)
   (import ./extend-lib.nix withSystem inputs)
+  (import ./fix-kdepackages-nondeterminism.nix withSystem inputs)
+  # (import ./wayland-protocol-1-43.nix withSystem inputs)
 ]
 /*
 (_: super: {
